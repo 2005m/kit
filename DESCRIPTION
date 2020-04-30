@@ -1,0 +1,14 @@
+Package: kit
+Type: Package
+Title: Useful R Functions Implemented in C
+Version: 0.0.1
+Date: 2020-04-14
+Authors@R: c(person("Morgan", "Jacob", role = c("aut", "cre", "cph"), email = "morgan.emailbox@gmail.com"))
+Author: Morgan Jacob [aut, cre, cph]
+Maintainer: Morgan Jacob <morgan.emailbox@gmail.com>
+Description: A R package with useful functions implemented in C and not available in base R. These function are all callable at C level so other packages can use them as an extension of the R C API.
+License: GPL-3 | file LICENSE
+Depends: R (>= 3.1.0)
+Encoding: UTF-8
+NeedsCompilation: yes
+Repository: CRAN

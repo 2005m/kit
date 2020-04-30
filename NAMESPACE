@@ -1,0 +1,3 @@
+useDynLib(kit, .registration = TRUE)
+
+export(fpos, iif, nif, pprod, psum, setlevels, topn, vswitch)
