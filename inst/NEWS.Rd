@@ -6,7 +6,7 @@
 \newcommand{\sspace}{\ifelse{latex}{\out{~}}{\Sexpr{"\u200B"} \Sexpr{"\u200B"} \Sexpr{"\u200B"} }}
 \newcommand{\sp}{{\Sexpr{"\u200B"} }}
 
-\section{version 0.0.1 (2020-04-14)}{
+\section{version 0.0.1 (2020-05-03)}{
   \subsection{Initial Release}{
     \itemize{
       \item Function \code{\strong{fpos}(needle, haystack, all=TRUE, overlap=TRUE)}, implemented in C, is
@@ -57,7 +57,7 @@
       \emph{ x = rnorm(1e7) # 76Mb\cr
       microbenchmark::microbenchmark(\cr
       \sspace  topn=kit::topn(x, 6L),\cr
-      \sspace  order=order(x)[1:6],\cr
+      \sspace  order=order(x, decreasing=TRUE)[1:6],\cr
       \sspace  times=10L\cr
       )\cr
       # Unit: milliseconds\cr
@@ -65,14 +65,14 @@
       # topn \sp\sp\sp\sp  11  \sp 11  \sp\sp\sp\sp  13   \sp\sp\sp\sp\sp\sp\sp  11  \sp\sp\sp 12  \sp\sp 18  \sp\sp\sp\sp  10\cr
       # order 563 565 \sp\sp  587  \sp\sp\sp\sp\sp  566 \sp 602 661 \sp\sp\sp 10\cr
       microbenchmark::microbenchmark(\cr
-      \sspace  topn=kit::topn(x, 6L),\cr
+      \sspace  topn=x[kit::topn(x, 6L, decreasing=FALSE)],\cr
       \sspace  sort=sort(x, partial=1:6)[1:6],\cr
       \sspace  times=10L\cr
       )\cr
       # Unit: milliseconds\cr
       # expr min \sp\sp\sp lq  mean median   \sp\sp uq  max neval\cr
-      # topn \sp\sp  13  \sp\sp 15  \sp\sp\sp\sp  17   \sp\sp\sp\sp\sp\sp\sp  17  \sp\sp 19  \sp\sp\sp 20  \sp\sp\sp\sp  10\cr
-      # sort \sp 113 126 \sp\sp  137  \sp\sp\sp\sp\sp  135  141 \sp 184 \sp\sp\sp\sp 10\cr
+      # topn \sp\sp  11  \sp\sp 11  \sp\sp\sp\sp  11   \sp\sp\sp\sp\sp\sp\sp  11  \sp\sp 12  \sp\sp\sp 12  \sp\sp\sp\sp  10\cr
+      # sort \sp 167 175 \sp\sp  197  \sp\sp\sp\sp\sp  178  205 \sp 303 \sp\sp\sp\sp 10\cr
       }
       
       \item Function \code{\strong{vswitch}(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"))}

@@ -35,11 +35,11 @@ extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
 extern SEXP ompEnabledR();
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);
-extern SEXP removeNA(SEXP x);
 extern SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent);
 extern SEXP topnR(SEXP vec, SEXP n, SEXP dec);
+extern SEXP uniquePR(SEXP x);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
 
 Rboolean hasNA(SEXP x);
 R_xlen_t countNA(SEXP x);
-SEXP removeNA(SEXP x);  
+SEXP removeNA(SEXP x);

@@ -1,14 +1,16 @@
 Package: kit
 Type: Package
-Title: Useful R Functions Implemented in C
+Title: Data Manipulation Functions Implemented in C
 Version: 0.0.1
-Date: 2020-04-14
+Date: 2020-05-03
 Authors@R: c(person("Morgan", "Jacob", role = c("aut", "cre", "cph"), email = "morgan.emailbox@gmail.com"))
 Author: Morgan Jacob [aut, cre, cph]
 Maintainer: Morgan Jacob <morgan.emailbox@gmail.com>
-Description: A R package with useful functions implemented in C and not available in base R. These function are all callable at C level so other packages can use them as an extension of the R C API.
-License: GPL-3 | file LICENSE
+Description: Basic functions, implemented in C, for large data manipulation. Fast vectorised ifelse()/nested if()/switch() functions, psum()/pprod() functions equivalent to pmin()/pmax() plus others which are missing from base R. Most of these functions are callable at C level.
+License: GPL-3
 Depends: R (>= 3.1.0)
 Encoding: UTF-8
+BugReports: https://github.com/2005m/kit/issues
 NeedsCompilation: yes
+ByteCompile: TRUE
 Repository: CRAN

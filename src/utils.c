@@ -243,3 +243,44 @@ Rboolean hasNA(SEXP x) {
   }
   return na;
 }
+
+SEXP uniquePR(SEXP x) {
+  const R_xlen_t xlen=xlength(x);
+  const SEXP lg=PROTECT(duplicated(x, FALSE));
+  const int *restrict plg=LOGICAL(lg);
+  R_xlen_t k=0;
+  const bool isLong = xlen > INT_MAX;
+  SEXP pos, ans=R_NilValue;
+  if (isLong) {
+    pos = PROTECT(allocVector(REALSXP, xlen));
+    double *restrict p=REAL(pos);
+    for (R_xlen_t i=0; i<xlen; ++i) {
+      if (plg[i]==0) {
+        p[k++]=i+1;
+      }
+    }
+    if(k==xlen) {
+      UNPROTECT(2);
+      return pos;
+    }
+    ans = PROTECT(allocVector(REALSXP, k));
+    memcpy(REAL(ans), p, (unsigned)k*sizeof(double));
+  } else {
+    pos = PROTECT(allocVector(INTSXP, xlen));
+    int *restrict p=INTEGER(pos);
+    for (int i=0; i<xlen; ++i) {
+      if (plg[i]==0) {
+        p[k++]=i+1;
+      }
+    }
+    if(k==xlen) {
+      UNPROTECT(2);
+      return pos;
+    }
+    ans = PROTECT(allocVector(INTSXP, k));
+    memcpy(INTEGER(ans), p, (unsigned)k*sizeof(int));
+  }
+  UNPROTECT(3);
+  return ans;
+}
+  

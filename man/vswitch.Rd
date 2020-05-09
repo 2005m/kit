@@ -10,7 +10,7 @@
 \arguments{
   \item{x}{A vector or list.}
   \item{values}{A vector or list with values from \code{x} to match. Note that \code{x} and \code{values} must have the same class and attributes.}
-  \item{outputs}{A list returning the outputs to return for every matching values. Each item of the list must be of length 1 or length of \code{x}.}
+  \item{outputs}{A list or vector with the outputs to return for every matching values. Each item of the list must be of length 1 or length of \code{x}. Note that if all list items are of length 1 then it might be simpler to use a vector.}
   \item{default}{Values to return is no match. Must be a vector or list of length 1 or same length as \code{x}. Also, \code{default} must have the same type, class and aatributes as items from \code{outputs}.}
   \item{nThread}{ A integer for the number of threads to use with \emph{openmp}. Default value is \code{getOption("kit.nThread")}.}
 }
@@ -29,7 +29,7 @@ x = sample(c(10L, 20L, 30L, 40L, 50L, 60L), 3e2, replace=TRUE)
 a = vswitch(
   x = x,
   values = c(10L,20L,30L,40L,50L),
-  outputs = list(11L,21L,31L,41L,51L),
+  outputs = c(11L,21L,31L,41L,51L),
   default = NA_integer_
 )
 
@@ -43,7 +43,23 @@ b = nif(
   x==50L, 51L,
   default = NA_integer_
 )
-
 identical(a, b)
+
+# Example with list in 'outputs' argument
+y = c(1, 0, NA_real_)
+c = vswitch(
+  x = y,
+  values = c(1, 0),
+  outputs = list(c(2, 3, 4), c(5, 6, 7)),
+  default = 8
+)
+
+d = nif(
+  y==1, c(2, 3, 4),
+  y==0, c(5, 6, 7),
+  default = 8
+)
+
+identical(c, d)
 }
 \keyword{ data }

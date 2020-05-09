@@ -18,55 +18,52 @@
 
 #include "kit.h"
 
+#define IIF_LOOP(a, b, n)   OMP_PARALLEL_FOR(nth)                                                  \
+                            for (ssize_t i=0; i<len_l; ++i) {                                      \
+                              pans[i] = pl[i]==0 ? b : (pl[i]==1 ? a : n);                         \
+                            }                                                                      \
+
 #define IIF_LOGIC(x) if(len_a>1) {                                                                 \
                       if(len_b>1) {                                                                \
-                        OMP_PARALLEL_FOR(nth)                                                      \
-                        for (ssize_t i=0; i<len_l; ++i) {                                          \
-                          pans[i] = pl[i]==0 ? pb[i] : (pl[i]==1 ? pa[i] : pna[i & namask]);       \
+                        if(len_na>1) {                                                             \
+                           IIF_LOOP(pa[i], pb[i], pna[i])                                          \
+                        } else {                                                                   \
+                          IIF_LOOP(pa[i], pb[i], pna[0])                                           \
                         }                                                                          \
                       } else {                                                                     \
-                        OMP_PARALLEL_FOR(nth)                                                      \
-                        for (ssize_t i=0; i<len_l; ++i) {                                          \
-                          pans[i] = pl[i]==0 ? pb[0] : (pl[i]==1 ? pa[i] : pna[i & namask]);       \
+                        if(len_na>1) {                                                             \
+                          IIF_LOOP(pa[i], pb[0], pna[i])                                           \
+                        } else {                                                                   \
+                          IIF_LOOP(pa[i], pb[0], pna[0])                                           \
                         }                                                                          \
                       }                                                                            \
                       } else {                                                                     \
                         if(len_b>1) {                                                              \
-                          OMP_PARALLEL_FOR(nth)                                                    \
-                          for (ssize_t i=0; i<len_l; ++i) {                                        \
-                            pans[i] = pl[i]==0 ? pb[i] : (pl[i]==1 ? pa[0] : pna[i & namask]);     \
+                          if(len_na>1) {                                                           \
+                            IIF_LOOP(pa[0], pb[i], pna[i])                                         \
+                          } else {                                                                 \
+                            IIF_LOOP(pa[0], pb[i], pna[0])                                         \
                           }                                                                        \
                         } else {                                                                   \
-                          OMP_PARALLEL_FOR(nth)                                                    \
-                          for (ssize_t i=0; i<len_l; ++i) {                                        \
-                            pans[i] = pl[i]==0 ? pb[0] : (pl[i]==1 ? pa[0] : pna[i & namask]);     \
+                          if(len_na>1) {                                                           \
+                            IIF_LOOP(pa[0], pb[0], pna[i])                                         \
+                          } else {                                                                 \
+                            IIF_LOOP(pa[0], pb[0], pna[0])                                         \
                           }                                                                        \
                         }                                                                          \
                       }                                                                            \
                       } else {                                                                     \
                         if(len_a>1) {                                                              \
                           if(len_b>1) {                                                            \
-                            OMP_PARALLEL_FOR(nth)                                                  \
-                            for (ssize_t i=0; i<len_l; ++i) {                                      \
-                              pans[i] = pl[i]==0 ? pb[i] : (pl[i]==1 ? pa[i] : x);                 \
-                            }                                                                      \
+                            IIF_LOOP(pa[i], pb[i], x)                                              \
                           } else {                                                                 \
-                            OMP_PARALLEL_FOR(nth)                                                  \
-                            for (ssize_t i=0; i<len_l; ++i) {                                      \
-                              pans[i] = pl[i]==0 ? pb[0] : (pl[i]==1 ? pa[i] : x);                 \
-                            }                                                                      \
+                            IIF_LOOP(pa[i], pb[0], x)                                              \
                           }                                                                        \
                         } else {                                                                   \
                           if(len_b>1) {                                                            \
-                            OMP_PARALLEL_FOR(nth)                                                  \
-                            for (ssize_t i=0; i<len_l; ++i) {                                      \
-                              pans[i] = pl[i]==0 ? pb[i] : (pl[i]==1 ? pa[0] : x);                 \
-                            }                                                                      \
+                            IIF_LOOP(pa[0], pb[i], x)                                              \
                           } else {                                                                 \
-                            OMP_PARALLEL_FOR(nth)                                                  \
-                            for (ssize_t i=0; i<len_l; ++i) {                                      \
-                              pans[i] = pl[i]==0 ? pb[0] : (pl[i]==1 ? pa[0] : x);                 \
-                            }                                                                      \
+                            IIF_LOOP(pa[0], pb[0], x)                                              \
                           }                                                                        \
                         }                                                                          \
 
@@ -185,7 +182,6 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     const int *restrict pb = LOGICAL(b);
     if(na_non_null) {
       const int *restrict pna = LOGICAL(na);
-      const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       IIF_LOGIC(NA_LOGICAL)
     }
   } break;
@@ -195,7 +191,6 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     const int *restrict pb = INTEGER(b);
     if(na_non_null) {
       const int *restrict pna = INTEGER(na);
-      const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       IIF_LOGIC(NA_INTEGER)
     }
   } break;
@@ -205,7 +200,6 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     const double *restrict pb = REAL(b);
     if(na_non_null) {
       const double *restrict pna = REAL(na);
-      const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       IIF_LOGIC(NA_REAL)
     }
   } break;
@@ -216,7 +210,6 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     Rcomplex NA_CPLX; NA_CPLX.r = NA_REAL; NA_CPLX.i = NA_REAL; // deal with that across all functions
     if(na_non_null) {
       const Rcomplex *restrict pna = COMPLEX(na);
-      const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       IIF_LOGIC(NA_CPLX)
     }
   } break;
@@ -249,9 +242,10 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
         }
         continue;
       }
-      switch(pl[i]) {
-        case 0 : SET_VECTOR_ELT(ans, i, pb[i & bmask]); break;
-        default : SET_VECTOR_ELT(ans, i, pa[i & amask]);
+      if (pl[i]==0) {
+        SET_VECTOR_ELT(ans, i, pb[i & bmask]);
+      } else {
+        SET_VECTOR_ELT(ans, i, pa[i & amask]);
       }
     }
   } break;
