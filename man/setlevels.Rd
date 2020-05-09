@@ -22,4 +22,3 @@ x = factor(c("A", "A", "B", "B", "B", "C")) # factor vector with levels A B C
 setlevels(x, new = c("X", "Y", "Z"))        # set factor levels to: X Y Z
 setlevels(x, old = "X", new = "A")          # set factor levels X to A
 }
-\keyword{ data }

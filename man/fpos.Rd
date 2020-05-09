@@ -39,5 +39,16 @@ fpos(small_matrix, big_matrix, all = FALSE)
 
 # return non overlapping occurences
 fpos(small_matrix, big_matrix, overlap = FALSE)
+
+# Benchmark
+# x = matrix(1:5, nrow=1e4, ncol=5e3) # 191Mb
+# microbenchmark::microbenchmark(
+#  fpos=kit::fpos(1L, x),
+#  which=which(x==1L, arr.ind=TRUE),
+#  times=10L
+# )
+# Unit: milliseconds
+#  expr  min  lq  mean median   uq  max neval
+# fpos   202  206  220    221  231  241  10
+# which  612  637  667    653  705  724  10
 }
-\keyword{ data }

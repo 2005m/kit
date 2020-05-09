@@ -61,5 +61,24 @@ d = nif(
 )
 
 identical(c, d)
+
+# Benchmark
+# x = sample(1:100, 3e8, TRUE) # 1.1Gb
+# microbenchmark::microbenchmark(
+# nif=kit::nif(
+#   x==10L,  0L,
+#   x==20L, 10L,
+#   x==30L, 20L,
+#   default= 30L
+#  ),
+# vswitch=kit::vswitch(
+#   x, c( 10L, 20L, 30L), list(0L, 10L, 20L), 30L
+# ),
+# times=10L
+# )
+# Unit: seconds
+#    expr   min    lq  mean median   uq  max neval
+# nif      4.27  4.37  4.43   4.42 4.52 4.53    10
+# vswitch  1.08  1.09  1.20   1.10 1.43 1.44    10 # 1 thread
+# vswitch  0.46  0.57  0.57   0.58 0.58 0.60    10 # 2 threads
 }
-\keyword{ data }

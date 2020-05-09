@@ -66,4 +66,3 @@ nif(
 	default = rep(5L, 10L)
 )
 }
-\keyword{ data }

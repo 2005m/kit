@@ -32,5 +32,26 @@ order(x, decreasing=TRUE)[1:6]
 # Example 3: top 6 negative values
 x[topn(x, 6L, decreasing=FALSE)]
 sort(x)[1:6]
+
+# Benchmark
+# x = rnorm(1e7) # 76Mb
+# microbenchmark::microbenchmark(
+#   topn=kit::topn(x, 6L),
+#   order=order(x, decreasing=TRUE)[1:6],
+#   times=10L
+# )
+# Unit: milliseconds
+#  expr min   lq  mean median   uq  max neval
+# topn   11   11    13     11   12   18    10
+# order 563  565   587    566  602  661    10
+#
+# microbenchmark::microbenchmark(
+#  topn=x[kit::topn(x, 6L, decreasing=FALSE)],
+#  sort=sort(x, partial=1:6)[1:6],
+#  times=10L
+# )
+# Unit: milliseconds
+# expr min  lq  mean median   uq  max neval
+# topn  11  11    11     11   12   12    10
+# sort 167 175   197    178  205  303    10
 }
-\keyword{ data }
