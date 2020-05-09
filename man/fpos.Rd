@@ -49,6 +49,6 @@ fpos(small_matrix, big_matrix, overlap = FALSE)
 # )
 # Unit: milliseconds
 #  expr  min  lq  mean median   uq  max neval
-# fpos   202  206  220    221  231  241  10
-# which  612  637  667    653  705  724  10
+# fpos   202  206  220    221  231  241    10
+# which  612  637  667    653  705  724    10
 }
