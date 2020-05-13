@@ -48,4 +48,3 @@ iif(test = c(-5L:5L < 0L, NA), yes = 1L, no = 0L, na = 2L)
 # Example of using the 'tprom' argument
 iif(test = c(-5L:5L < 0L, NA), yes = 1L, no = "0", na = 2L, tprom = TRUE)
 }
-\keyword{ data }

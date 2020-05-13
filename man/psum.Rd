@@ -30,4 +30,3 @@ psum(x, y, z, na.rm = TRUE)
 pprod(x, y, z, na.rm = FALSE)
 pprod(x, y, z, na.rm = TRUE)
 }
-\keyword{ data }
