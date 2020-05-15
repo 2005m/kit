@@ -3,6 +3,8 @@
 fpos      = function(needle, haystack, all=TRUE, overlap=TRUE) .Call(CfposR, needle, haystack, all, overlap)
 iif       = function(test, yes, no, na=NULL, tprom=FALSE, nThread=getOption("kit.nThread")) .Call(CiifR, test, yes, no, na, tprom, nThread)
 nif       = function(..., default=NULL) .Call(CnifR, default, parent.frame(), TRUE, as.list(substitute(...())))
+pany      = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, list(...))
+pall      = function(..., na.rm=FALSE) .Call(CpallR, na.rm, list(...))
 pprod     = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, list(...))
 psum      = function(..., na.rm=FALSE) .Call(CpsumR, na.rm, list(...))
 setlevels = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Call(CsetlevelsR, x, old, new, skip_absent))

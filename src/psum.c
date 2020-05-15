@@ -241,3 +241,99 @@ SEXP pprodR(SEXP na, SEXP args) {
   UNPROTECT(nprotect);
   return ans;
 }
+
+SEXP pallR(SEXP na, SEXP args) {
+  if (!IS_BOOL(na)) {
+    error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
+  }
+  const int n=length(args);
+  if (n < 1) {
+    error("Please supply at least 1 argument. (%d argument supplied)", n);
+  }
+  const SEXP args0 = PTR_ETL(args, 0);
+  if (n == 1) {
+    return args0;
+  }
+  SEXPTYPE anstype = UTYPEOF(args0);
+  const R_xlen_t len0 = xlength(args0);
+  if (anstype != LGLSXP) {
+    error("Argument %d is of type %s. Only logical type is supported.", 1, type2char(anstype));
+  }
+  for (int i = 1; i < n; ++i) {
+    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
+    R_xlen_t len1 = xlength(PTR_ETL(args, i));
+    if (type != LGLSXP) {
+      error("Argument %d is of type %s. Only logical type is supported.", i+1, type2char(type));
+    }
+    if (len1 != len0) {
+      error("Argument %d is of length %zu but argument %d is of length %zu. "
+              "If you wish to 'recycle' your argument, please use rep() to make this intent "
+              "clear to the readers of your code.", i+1, len1, 1, len0);
+    }
+  }
+  SEXP ans = PROTECT(duplicate(args0));
+  const bool narm = asLogical(na);
+  int *restrict pans =LOGICAL(ans);
+  for (int i = 1; i < n; ++i) {
+    int *pa = LOGICAL(PTR_ETL(args, i));
+    if (narm) {
+      for (ssize_t j = 0; j < len0; ++j) {
+        pans[j] = pans[j]==NA_LOGICAL ? (pa[j]==NA_LOGICAL ? 1 : pa[j]) : (pa[j]==NA_LOGICAL ? pans[j] : ((pans[j] != 1 || pa[j] != 1) ? 0 : 1));
+      }
+    } else {
+      for (ssize_t j = 0; j < len0; ++j) {
+        pans[j] = (pans[j] == 0 || pa[j] == 0) ? 0 : ((pans[j]==NA_LOGICAL || pa[j]==NA_LOGICAL) ? NA_LOGICAL : 1);
+      }
+    }
+  }
+  UNPROTECT(1);
+  return ans;
+}
+
+SEXP panyR(SEXP na, SEXP args) {
+  if (!IS_BOOL(na)) {
+    error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
+  }
+  const int n=length(args);
+  if (n < 1) {
+    error("Please supply at least 1 argument. (%d argument supplied)", n);
+  }
+  const SEXP args0 = PTR_ETL(args, 0);
+  if (n == 1) {
+    return args0;
+  }
+  SEXPTYPE anstype = UTYPEOF(args0);
+  const R_xlen_t len0 = xlength(args0);
+  if (anstype != LGLSXP) {
+    error("Argument %d is of type %s. Only logical type is supported.", 1, type2char(anstype));
+  }
+  for (int i = 1; i < n; ++i) {
+    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
+    R_xlen_t len1 = xlength(PTR_ETL(args, i));
+    if (type != LGLSXP) {
+      error("Argument %d is of type %s. Only logical type is supported.", i+1, type2char(type));
+    }
+    if (len1 != len0) {
+      error("Argument %d is of length %zu but argument %d is of length %zu. "
+              "If you wish to 'recycle' your argument, please use rep() to make this intent "
+              "clear to the readers of your code.", i+1, len1, 1, len0);
+    }
+  }
+  SEXP ans = PROTECT(duplicate(args0));
+  const bool narm = asLogical(na);
+  int *restrict pans =LOGICAL(ans);
+  for (int i = 1; i < n; ++i) {
+    int *pa = LOGICAL(PTR_ETL(args, i));
+    if (narm) {
+      for (ssize_t j = 0; j < len0; ++j) {
+        pans[j] = (ISNA(pans[j]) && ISNA(pa[j])) ? 0 : ((pans[j] == 1 || pa[j] == 1) ? 1 : 0);
+      }
+    } else {
+      for (ssize_t j = 0; j < len0; ++j) {
+        pans[j] = (pans[j] == 1 || pa[j] == 1) ? 1 : ((pans[j] == NA_LOGICAL || pa[j] == NA_LOGICAL) ? NA_LOGICAL:0);
+      }
+    }
+  }
+  UNPROTECT(1);
+  return ans;
+}

@@ -33,6 +33,8 @@ extern SEXP fposR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
 extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
 extern SEXP ompEnabledR();
+extern SEXP pallR(SEXP na, SEXP args);
+extern SEXP panyR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);
 extern SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent);
