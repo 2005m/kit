@@ -35,6 +35,7 @@ extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
 extern SEXP ompEnabledR();
 extern SEXP pallR(SEXP na, SEXP args);
 extern SEXP panyR(SEXP na, SEXP args);
+extern SEXP pmeanR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);
 extern SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent);

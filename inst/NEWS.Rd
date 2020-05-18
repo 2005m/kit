@@ -5,9 +5,21 @@
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
 \section{version 0.0.2 (2020-05-09)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{pmean}(..., na.rm=FALSE)}, \code{\strong{pall}(..., na.rm=FALSE)} and
+      \code{\strong{pany}(..., na.rm=FALSE)}, implemented in C, are similar to already available function 
+      \code{psum} and \code{pprod}. These functions respectively apply base \R functions \code{mean}, \code{all} 
+      and \code{any} element-wise. For more details, benchmarks and help, please see \code{?kit::pmean}.
+    }
+  }
   \subsection{Bug Fixes}{
     \itemize{
-      \item Fix Solaris Unicode warnings for NEWS file.
+      \item Fix Solaris Unicode warnings for NEWS file. Benchmarks have been moved from the NEWS file to 
+      each function Rd file.
+      
+      \item Fix some \code{NA} edge cases for \code{pprod} and \code{psum} so theses function behave more
+      like base \R function \code{prod} and \code{sum}.
     }
   }
 }

@@ -7,6 +7,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"CompEnabledR", (DL_FUNC) &ompEnabledR, -1},
   {"CpanyR",       (DL_FUNC) &panyR,       -1},
   {"CpallR",       (DL_FUNC) &pallR,       -1},
+  {"CpmeanR",      (DL_FUNC) &pmeanR,     -1},
   {"CpprodR",      (DL_FUNC) &pprodR,      -1},
   {"CpsumR",       (DL_FUNC) &psumR,       -1},
   {"CsetlevelsR",  (DL_FUNC) &setlevelsR,  -1},
@@ -25,6 +26,7 @@ void R_init_kit(DllInfo *dll)
   R_RegisterCCallable("kit", "CnifR",        (DL_FUNC) &nifR);
   R_RegisterCCallable("kit", "CpanyR",       (DL_FUNC) &panyR);
   R_RegisterCCallable("kit", "CpallR",       (DL_FUNC) &pallR);
+  R_RegisterCCallable("kit", "CmeanR",       (DL_FUNC) &pmeanR);
   R_RegisterCCallable("kit", "CpprodR",      (DL_FUNC) &pprodR);
   R_RegisterCCallable("kit", "CpsumR",       (DL_FUNC) &psumR);
   R_RegisterCCallable("kit", "CsetlevelsR",  (DL_FUNC) &setlevelsR);

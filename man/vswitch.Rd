@@ -62,7 +62,8 @@ d = nif(
 
 identical(c, d)
 
-# Benchmark
+# Benchmarks
+# ----------
 # x = sample(1:100, 3e8, TRUE) # 1.1Gb
 # microbenchmark::microbenchmark(
 # nif=kit::nif(
