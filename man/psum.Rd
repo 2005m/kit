@@ -55,43 +55,28 @@ pany(x, y, z, na.rm = TRUE)
 
 # Benchmarks
 # ----------
-# set.seed(123)
-# n = 1e7L
+# n = 1e8L
 # x = rnorm(n)
 # y = rnorm(n)
 # z = rnorm(n)
 # 
 # microbenchmark::microbenchmark(
-#   psum=psum(x, y, z, na.rm = TRUE), 
-#   sum=sapply(1:n, function(i) sum(x[i],y[i],z[i],na.rm=TRUE)),
-#   times = 5L
+#   kit=psum(x, y, z, na.rm = TRUE),
+#   base=rowSums(do.call(cbind,list(x, y, z)), na.rm=TRUE),
+#   times = 5L, unit = "s"
 # )
+# Unit: Second
+# expr  min   lq mean median   uq  max neval
+# kit  0.52 0.52 0.65   0.55 0.83 0.84     5
+# base 2.16 2.27 2.34   2.35 2.43 2.49     5
+#
+# x = sample(c(TRUE, FALSE, NA), n, TRUE)
+# y = sample(c(TRUE, FALSE, NA), n, TRUE)
+# z = sample(c(TRUE, FALSE, NA), n, TRUE)
 # 
 # microbenchmark::microbenchmark(
-#   pprod=pprod(x, y, z, na.rm = TRUE), 
-#   prod=sapply(1:n, function(i) prod(x[i],y[i],z[i],na.rm=TRUE)),
-#   times = 5L
-# )
-# 
-# microbenchmark::microbenchmark(
-#   pmean=pmean(x, y, z, na.rm = TRUE), 
-#   mean=sapply(1:n, function(i) mean(c(x[i],y[i],z[i]),na.rm=TRUE)),
-#   times = 5L
-# )
-# 
-# x = sample(c(TRUE, FALSE, NA),n,TRUE)
-# y = sample(c(TRUE, FALSE, NA),n,TRUE)
-# z = sample(c(TRUE, FALSE, NA),n,TRUE)
-# 
-# microbenchmark::microbenchmark(
-#   pany=pany(x, y, z, na.rm = TRUE), 
-#   any=sapply(1:n, function(i) any(x[i],y[i],z[i],na.rm=TRUE)),
-#   times = 5L
-# )
-# 
-# microbenchmark::microbenchmark(
-#   pall=pall(x, y, z, na.rm = TRUE), 
-#   all=sapply(1:n, function(i) all(x[i],y[i],z[i],na.rm=TRUE)),
+#   kit=pany(x, y, z, na.rm = TRUE),
+#   base=sapply(1:n, function(i) any(x[i],y[i],z[i],na.rm=TRUE)),
 #   times = 5L
 # )
 }

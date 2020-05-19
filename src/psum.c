@@ -409,20 +409,21 @@ SEXP pmeanR(SEXP na, SEXP args) {
               "clear to the readers of your code.", i+1, len1, 1, len0);
     }
   }
-  int nprotect=1;
+  int nprotect=2;
   SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, type0)) : PROTECT(duplicate(args0));
   const bool narm = asLogical(na);
-  ssize_t den[len0];
-  memset(den, 0, len0*sizeof(ssize_t));
+  SEXP den = PROTECT(allocVector(REALSXP, len0));
+  double *restrict pden = REAL(den);
+  memset(pden, 0, len0*sizeof(double));
   double *restrict pans = REAL(ans);
   SEXP dbl_a = R_NilValue;
   PROTECT_INDEX Idbl;
   PROTECT_WITH_INDEX(dbl_a, &Idbl); nprotect++;
-  if(narm) {
+  if (narm) {
     for (ssize_t j = 0; j < len0; ++j) {
       if (ISNAN(pans[j])) {
         pans[j] = 0;
-        den[j]++;
+        pden[j]++;
       }
     }
   }
@@ -436,7 +437,7 @@ SEXP pmeanR(SEXP na, SEXP args) {
     double *pa = REAL(dbl_a);
     if (narm) {
       for (ssize_t j = 0; j < len0; ++j) {
-        if(ISNAN(pa[j])) den[j]++;
+        if (ISNAN(pa[j])) pden[j]++;
         pans[j] = ISNAN(pa[j]) ? pans[j] : (pans[j] + pa[j]);
       }
     } else {
@@ -444,9 +445,9 @@ SEXP pmeanR(SEXP na, SEXP args) {
         pans[j] = (ISNAN(pans[j]) || ISNAN(pa[j])) ? NA_REAL : (pans[j] + pa[j]);
       }
     }
-    if(i==(n-1)) {
+    if (i==(n-1)) {
       for (ssize_t j = 0; j < len0; ++j) {
-        pans[j] = narm ? pans[j]/(n-den[j]) : pans[j]/n;
+        pans[j] = narm ? pans[j]/(n-pden[j]) : pans[j]/n;
       }
     }
   }

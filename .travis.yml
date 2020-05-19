@@ -9,7 +9,9 @@ branches:
     - "master"
 
 r:
+  - oldrel
   - release
+  - devel
 
 os:
   - linux

@@ -20,6 +20,8 @@
       
       \item Fix some \code{NA} edge cases for \code{pprod} and \code{psum} so theses function behave more
       like base \R function \code{prod} and \code{sum}.
+	  
+	  \item Fix installation errors for version of R (<3.5.0).
     }
   }
 }

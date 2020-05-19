@@ -1,10 +1,14 @@
 #include <R.h>
-#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include <Rversion.h>
+#if !defined(R_VERSION) || R_VERSION < R_Version(3, 5, 0)
+  #define USE_RINTERNALS
+  #define DATAPTR_RO(x) ((const void *)DATAPTR(x))
+#endif
+#include <Rinternals.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-
 #ifdef _OPENMP
   #include<omp.h>
   #define omp_enabled true
