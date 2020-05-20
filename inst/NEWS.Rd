@@ -18,10 +18,10 @@
       \item Fix Solaris Unicode warnings for NEWS file. Benchmarks have been moved from the NEWS file to 
       each function Rd file.
       
-      \item Fix some \code{NA} edge cases for \code{pprod} and \code{psum} so theses function behave more
+      \item Fix some \code{NA} edge cases for \code{pprod} and \code{psum} so these functions behave more
       like base \R function \code{prod} and \code{sum}.
 	  
-	  \item Fix installation errors for version of R (<3.5.0).
+      \item Fix installation errors for version of R (<3.5.0).
     }
   }
 }
