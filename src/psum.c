@@ -445,10 +445,14 @@ SEXP pmeanR(SEXP na, SEXP args) {
         pans[j] = (ISNAN(pans[j]) || ISNAN(pa[j])) ? NA_REAL : (pans[j] + pa[j]);
       }
     }
-    if (i==(n-1)) {
-      for (ssize_t j = 0; j < len0; ++j) {
-        pans[j] = narm ? pans[j]/(n-pden[j]) : pans[j]/n;
-      }
+  }
+  if (narm) {
+    for (ssize_t j = 0; j < len0; ++j) {
+      pans[j] = n==pden[j] ? R_NaN : pans[j]/(n-pden[j]);
+    }
+  } else {
+    for (ssize_t j = 0; j < len0; ++j) {
+      pans[j] = pans[j]/n;
     }
   }
   UNPROTECT(nprotect);
