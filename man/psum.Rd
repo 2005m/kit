@@ -56,7 +56,7 @@ pany(x, y, z, na.rm = TRUE)
 # Benchmarks
 # ----------
 # n = 1e8L
-# x = rnorm(n)
+# x = rnorm(n) # 763 Mb
 # y = rnorm(n)
 # z = rnorm(n)
 # 
@@ -70,7 +70,7 @@ pany(x, y, z, na.rm = TRUE)
 # kit  0.52 0.52 0.65   0.55 0.83 0.84     5
 # base 2.16 2.27 2.34   2.35 2.43 2.49     5
 #
-# x = sample(c(TRUE, FALSE, NA), n, TRUE)
+# x = sample(c(TRUE, FALSE, NA), n, TRUE) # 382 Mb
 # y = sample(c(TRUE, FALSE, NA), n, TRUE)
 # z = sample(c(TRUE, FALSE, NA), n, TRUE)
 # 
@@ -79,4 +79,8 @@ pany(x, y, z, na.rm = TRUE)
 #   base=sapply(1:n, function(i) any(x[i],y[i],z[i],na.rm=TRUE)),
 #   times = 5L
 # )
+# Unit: Second
+# expr    min     lq   mean   median     uq    max neval
+# kit    1.07   1.09   1.15     1.10   1.23   1.23     5
+# base 111.31 112.02 112.78   112.97 113.55 114.03     5
 }
