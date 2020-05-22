@@ -1,13 +1,14 @@
 #include "kit.h"
 
 static const R_CallMethodDef CallEntries[] = {
+  {"CcountNAR",    (DL_FUNC) &countNAR,    -1},
   {"CfposR",       (DL_FUNC) &fposR,       -1},
   {"CiifR",        (DL_FUNC) &iifR,        -1},
   {"CnifR",        (DL_FUNC) &nifR,        -1},
   {"CompEnabledR", (DL_FUNC) &ompEnabledR, -1},
   {"CpanyR",       (DL_FUNC) &panyR,       -1},
   {"CpallR",       (DL_FUNC) &pallR,       -1},
-  {"CpmeanR",      (DL_FUNC) &pmeanR,     -1},
+  {"CpmeanR",      (DL_FUNC) &pmeanR,      -1},
   {"CpprodR",      (DL_FUNC) &pprodR,      -1},
   {"CpsumR",       (DL_FUNC) &psumR,       -1},
   {"CsetlevelsR",  (DL_FUNC) &setlevelsR,  -1},
@@ -21,6 +22,7 @@ void R_init_kit(DllInfo *dll)
 {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+  R_RegisterCCallable("kit", "CcountNAR",    (DL_FUNC) &countNAR);
   R_RegisterCCallable("kit", "CfposR",       (DL_FUNC) &fposR);
   R_RegisterCCallable("kit", "CiifR",        (DL_FUNC) &iifR);
   R_RegisterCCallable("kit", "CnifR",        (DL_FUNC) &nifR);

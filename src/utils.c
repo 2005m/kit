@@ -66,7 +66,7 @@ SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent) {
   return ans;
 }
 
-SEXP removeNA(SEXP x) {
+/*SEXP removeNA(SEXP x) {
   const R_xlen_t len_x = xlength(x);
   SEXPTYPE tx = UTYPEOF(x);
   R_xlen_t nb = countNA(x);
@@ -135,9 +135,9 @@ SEXP removeNA(SEXP x) {
   }
   UNPROTECT(1);
   return ans;
-}
+}*/
 
-R_xlen_t countNA(SEXP x) {
+SEXP countNAR(SEXP x) {
   const R_xlen_t len_x = xlength(x);
   SEXPTYPE tx = UTYPEOF(x);
   R_xlen_t cnt = 0;
@@ -185,10 +185,10 @@ R_xlen_t countNA(SEXP x) {
   default:
     error("Type %s is not supported.", type2char(tx));
   }
-  return cnt;
+  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger(cnt);
 }
 
-Rboolean hasNA(SEXP x) {
+/*Rboolean hasNA(SEXP x) {
   const R_xlen_t len_x = xlength(x);
   SEXPTYPE tx = UTYPEOF(x);
   Rboolean na = FALSE;
@@ -242,7 +242,7 @@ Rboolean hasNA(SEXP x) {
     error("Type %s is not supported.", type2char(tx));
   }
   return na;
-}
+}*/
 
 SEXP uniquePR(SEXP x) {
   const R_xlen_t xlen=xlength(x);
