@@ -8,15 +8,16 @@ A simple function to count the number of NA.
   countNA(x)
 }
 \arguments{
-  \item{x}{ A vector.}
+  \item{x}{ A vector or list.}
 }
 \value{
-Return the number of \code{NA} value. 
+For a vector it will return the total number of \code{NA} value. For a list, \code{countNA} will return a list with the number of \code{NA} in each item of the list. This is a major difference with \code{sum(is.na(x))} which will return the aggregated number of \code{NA}.
 }
 \author{Morgan Jacob}
 \examples{
 x = c(1, 3, NA, 5)
 countNA(x)
+countNA(as.list(x))
 
 # Benchmarks
 # ----------

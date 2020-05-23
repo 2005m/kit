@@ -1,9 +1,9 @@
 00e9fcf4388f00b1ce1e5a035c99b24e *cleanup
 d1a18afec85eef22621eecee70b96ba3 *configure
 7a6d0c4fc525c3c08de6e4b540759b7a *DESCRIPTION
-90b8e85cffb6d982cfc0f28eb6c96241 *inst/NEWS.Rd
+013526b9666d04f3ffc152ad256fdea9 *inst/NEWS.Rd
 7f3c323c9e1d55ca0f6f2cb3b63475d8 *LICENSE
-42260ab34a8d4673a785028553e89463 *man/countNA.Rd
+755848a6b044c6321f0db78ab798ad62 *man/countNA.Rd
 05d7db1df5f7fcff0451cca69e882275 *man/fpos.Rd
 c495d3470c465d685c0a6afc3052447d *man/iif.Rd
 b98c5f5615a97e3bf9578ea556f812bf *man/nif.Rd
@@ -23,5 +23,5 @@ cde2535a36d0ee0e2c04232c0593da84 *src/Makevars.in
 f5b7341e38ee5d60bf4d2780939a77a2 *src/nif.c
 a7424fddf77f2557b40e29cebfdc9848 *src/psum.c
 7c240b3f1878037dcdd4c7bd1734193f *src/topn.c
-4f38adc779555d600a941f083b1136d3 *src/utils.c
+8bf0fb9cf2e55c9c942709ff8222d639 *src/utils.c
 a2666bd9c9c0f677b884b54fee84e252 *src/vswitch.c

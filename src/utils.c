@@ -142,6 +142,7 @@ SEXP countNAR(SEXP x) {
   SEXPTYPE tx = UTYPEOF(x);
   R_xlen_t cnt = 0;
   switch(tx) {
+  case NILSXP: break;
   case LGLSXP: {
     const int *restrict px = LOGICAL(x);
     for (ssize_t i=0; i<len_x; ++i) {
@@ -181,6 +182,15 @@ SEXP countNAR(SEXP x) {
         cnt++;
       }
     }
+  } break;
+  case VECSXP: {
+    const SEXP *restrict px = SEXPPTR_RO(x);
+	SEXP ans = PROTECT(allocVector(VECSXP, len_x));
+    for (ssize_t i=0; i<len_x; ++i) {
+      SET_VECTOR_ELT(ans, i, countNAR(px[i]));
+    }
+	UNPROTECT(1);
+	return ans;
   } break;
   default:
     error("Type %s is not supported.", type2char(tx));

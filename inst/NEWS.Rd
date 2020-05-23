@@ -12,8 +12,8 @@
       \code{psum} and \code{pprod}. These functions respectively apply base \R functions \code{mean}, \code{all} 
       and \code{any} element-wise. For more details, benchmarks and help, please see \code{?kit::pmean}.
 
-	  \item Function \code{\strong{countNA}(x)}, implemented in C, to simply count the number of NA. 
-	  For more details, please see \code{?kit::countNA}.
+	  \item Function \code{\strong{countNA}(x)}, implemented in C, to simply count the number of NA in a vector 
+	  or in a list. For more details, please see \code{?kit::countNA}.
     }
   }
   \subsection{Bug Fixes}{
