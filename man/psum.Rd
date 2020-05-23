@@ -57,7 +57,7 @@ pany(x, y, z, na.rm = FALSE)
 pany(x, y, z, na.rm = TRUE)
 
 # Example 6: pcount
-pcount(x, y, z, value = 3)
+pcount(x, y, z, value = TRUE)
 
 # Benchmarks
 # ----------
