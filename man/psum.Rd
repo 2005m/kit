@@ -4,6 +4,7 @@
 \alias{pall}
 \alias{pany}
 \alias{pmean}
+\alias{pcount}
 \title{ Sum, Product, Mean and more}
 \description{
 Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works for integer, double and complex types. These functions do not recycle vectors. \code{pany} and \code{pall} are derived from base functions \code{all} and \code{any}. Note that \code{pmean} only works with integer and double types.
@@ -14,10 +15,12 @@ Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works
   pall(..., na.rm=FALSE)
   pany(..., na.rm=FALSE)
   pmean(..., na.rm=FALSE)
+  pcount(..., value)
 }
 \arguments{
   \item{...}{ Numeric arguments of type integer, double complex. Logical vector for \code{pall} and \code{pany}.}
   \item{na.rm}{ A logical indicating whether missing values should be removed. Default value is \code{FALSE}.}
+  \item{value}{ A non \code{NULL} value of length 1. \code{pcount} will count how many times it occurs.}
 }
 \value{
 Return the sum, product or mean of all numeric arguments. The value returned will be of the type of the highest argument types (integer < double < complex). For \code{pall} and \code{pany}, a logical vector is returned.
@@ -52,6 +55,9 @@ pall(x, y, z, na.rm = TRUE)
 # Example 5: pany
 pany(x, y, z, na.rm = FALSE)
 pany(x, y, z, na.rm = TRUE)
+
+# Example 6: pcount
+pcount(x, y, z, value = 3)
 
 # Benchmarks
 # ----------

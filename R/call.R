@@ -1,11 +1,13 @@
 # Function calls
 
+count     = function(x, value) .Call(CcountR, x, value)
 countNA   = function(x) .Call(CcountNAR, x)
 fpos      = function(needle, haystack, all=TRUE, overlap=TRUE) .Call(CfposR, needle, haystack, all, overlap)
 iif       = function(test, yes, no, na=NULL, tprom=FALSE, nThread=getOption("kit.nThread")) .Call(CiifR, test, yes, no, na, tprom, nThread)
 nif       = function(..., default=NULL) .Call(CnifR, default, parent.frame(), TRUE, as.list(substitute(...())))
 pany      = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, list(...))
 pall      = function(..., na.rm=FALSE) .Call(CpallR, na.rm, list(...))
+pcount    = function(..., value) .Call(CpcountR, value, list(...))
 pmean     = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, list(...))
 pprod     = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, list(...))
 psum      = function(..., na.rm=FALSE) .Call(CpsumR, na.rm, list(...))

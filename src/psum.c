@@ -437,7 +437,9 @@ SEXP pmeanR(SEXP na, SEXP args) {
     double *pa = REAL(dbl_a);
     if (narm) {
       for (ssize_t j = 0; j < len0; ++j) {
-        if (ISNAN(pa[j])) pden[j]++;
+        if (ISNAN(pa[j])) {
+          pden[j]++;
+        }
         pans[j] = ISNAN(pa[j]) ? pans[j] : (pans[j] + pa[j]);
       }
     } else {
@@ -456,5 +458,101 @@ SEXP pmeanR(SEXP na, SEXP args) {
     }
   }
   UNPROTECT(nprotect);
+  return ans;
+}
+
+SEXP pcountR(SEXP x, SEXP args) {
+  if (xlength(x) != 1 || isNull(x)) {
+    error("Argument 'value' must be non NULL and length 1.");
+  }
+  const int n=length(args);
+  if (n < 1) {
+    error("Please supply at least 1 argument. (%d argument supplied)", n);
+  }
+  const SEXP args0 = PTR_ETL(args, 0);
+  SEXPTYPE anstype = UTYPEOF(args0);
+  const R_xlen_t len0 = xlength(args0);
+  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP && anstype != STRSXP) {
+    error("Argument %d is of type %s. Only logical, integer, double, complex and"
+          " character types are supported.", 1, type2char(anstype));
+  }
+  SEXPTYPE tx = UTYPEOF(x);
+  if (anstype != tx) {
+    error("Type of 'value' (%s) is different than type of Argument %d (%s). "
+          "Please make sure both have the same type.", type2char(tx), 1, type2char(anstype));
+  }
+  for (int i = 1; i < n; ++i) {
+    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
+    R_xlen_t len1 = xlength(PTR_ETL(args, i));
+    if (type != anstype) {
+      error("Type of argument %d is %s but argument %d is of type %s. "
+            "Please make sure both have the same type.", i+1, type2char(type), 1, type2char(anstype));
+    }
+    if (len1 != len0) {
+      error("Argument %d is of length %zu but argument %d is of length %zu. "
+      "If you wish to 'recycle' your argument, please use rep() to make this intent "
+      "clear to the readers of your code.", i+1, len1, 1, len0);
+    }
+  }
+  SEXP ans = PROTECT(allocVector(REALSXP, len0)); // maybe try a malloc like in nif
+  double *restrict pans = REAL(ans);
+  memset(pans, 0, len0*sizeof(double));
+  switch(anstype) {
+  case LGLSXP: {
+    const int px = LOGICAL(x)[0];
+    for (int i = 0; i < n; ++i) {
+      int *pa = LOGICAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == px) {
+          pans[j]++;
+        }
+      }
+    }
+  } break;
+  case INTSXP: {
+    const int px = INTEGER(x)[0];
+    for (int i = 0; i < n; ++i) {
+      int *pa = INTEGER(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == px) {
+          pans[j]++;
+        }
+      }
+    }
+  } break;
+  case REALSXP: {
+    const double px = REAL(x)[0];
+    for (int i = 0; i < n; ++i) {
+      double *pa = REAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == px) {
+          pans[j]++;
+        }
+      }
+    }
+  } break;
+  case CPLXSXP: {
+    const Rcomplex px = COMPLEX(x)[0];
+    for (int i = 0; i < n; ++i) {
+      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (EQUAL_CPLX(pa[j], px)) {
+          pans[j]++;
+        }
+      }
+    }
+  } break;
+  case STRSXP: {
+    for (int i = 0; i < n; ++i) {
+      const SEXP pa = PTR_ETL(args, i);// clean this
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (RCHAR(pa, j)== RCHAR(x, 0)) {
+          pans[j]++;
+        }
+      }
+    }
+  } break;
+  }
+  UNPROTECT(1);
   return ans;
 }

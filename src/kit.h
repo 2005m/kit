@@ -33,6 +33,7 @@
 #define EQUAL_CPLX(x, y) (((x.r) == (y.r)) && ((x.i) == (y.i)))
 #define RCHAR(x, y) CHAR(STRING_ELT(x, y))
 
+extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
 extern SEXP fposR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
@@ -40,6 +41,7 @@ extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
 extern SEXP ompEnabledR();
 extern SEXP pallR(SEXP na, SEXP args);
 extern SEXP panyR(SEXP na, SEXP args);
+extern SEXP pcountR(SEXP x, SEXP args);
 extern SEXP pmeanR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);

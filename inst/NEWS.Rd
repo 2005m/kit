@@ -7,13 +7,14 @@
 \section{version 0.0.2 (2020-05-22)}{
   \subsection{New Features}{
     \itemize{
-      \item Function \code{\strong{pmean}(..., na.rm=FALSE)}, \code{\strong{pall}(..., na.rm=FALSE)} and
-      \code{\strong{pany}(..., na.rm=FALSE)}, implemented in C, are similar to already available function 
-      \code{psum} and \code{pprod}. These functions respectively apply base \R functions \code{mean}, \code{all} 
-      and \code{any} element-wise. For more details, benchmarks and help, please see \code{?kit::pmean}.
+      \item Function \code{\strong{count}(x, value)}, implemented in C, to simply count the number of times 
+      an element \code{value} occurs in a vector or in a list \code{x}. For more details, please see \code{?kit::count}.
 
-	  \item Function \code{\strong{countNA}(x)}, implemented in C, to simply count the number of NA in a vector 
-	  or in a list. For more details, please see \code{?kit::countNA}.
+      \item Function \code{\strong{pmean}(..., na.rm=FALSE)}, \code{\strong{pall}(..., na.rm=FALSE)}, 
+      \code{\strong{pany}(..., na.rm=FALSE)} and \code{\strong{pcount}(..., value)}, implemented in C, 
+      are similar to already available function \code{psum} and \code{pprod}. These functions respectively 
+      apply base \R functions \code{mean}, \code{all} and \code{any} element-wise. For more details, 
+      benchmarks and help, please see \code{?kit::pmean}.
     }
   }
   \subsection{Bug Fixes}{
