@@ -494,64 +494,129 @@ SEXP pcountR(SEXP x, SEXP args) {
       "clear to the readers of your code.", i+1, len1, 1, len0);
     }
   }
-  SEXP ans = PROTECT(allocVector(REALSXP, len0)); // maybe try a malloc like in nif
-  double *restrict pans = REAL(ans);
-  memset(pans, 0, len0*sizeof(double));
-  switch(anstype) {
-  case LGLSXP: {
-    const int px = LOGICAL(x)[0];
-    for (int i = 0; i < n; ++i) {
-      int *pa = LOGICAL(PTR_ETL(args, i));
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (pa[j] == px) {
-          pans[j]++;
+  SEXP ans;
+  if (len0 > INT_MAX) {
+    ans = PROTECT(allocVector(REALSXP, len0));
+    double *restrict pans = REAL(ans);
+    memset(pans, 0, len0*sizeof(double));
+    switch(anstype) {
+    case LGLSXP: {
+      const int px = LOGICAL(x)[0];
+      for (int i = 0; i < n; ++i) {
+        int *pa = LOGICAL(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
         }
       }
-    }
-  } break;
-  case INTSXP: {
-    const int px = INTEGER(x)[0];
-    for (int i = 0; i < n; ++i) {
-      int *pa = INTEGER(PTR_ETL(args, i));
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (pa[j] == px) {
-          pans[j]++;
+    } break;
+    case INTSXP: {
+      const int px = INTEGER(x)[0];
+      for (int i = 0; i < n; ++i) {
+        int *pa = INTEGER(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
         }
       }
-    }
-  } break;
-  case REALSXP: {
-    const double px = REAL(x)[0];
-    for (int i = 0; i < n; ++i) {
-      double *pa = REAL(PTR_ETL(args, i));
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (pa[j] == px) {
-          pans[j]++;
+    } break;
+    case REALSXP: {
+      const double px = REAL(x)[0];
+      for (int i = 0; i < n; ++i) {
+        double *pa = REAL(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
         }
       }
-    }
-  } break;
-  case CPLXSXP: {
-    const Rcomplex px = COMPLEX(x)[0];
-    for (int i = 0; i < n; ++i) {
-      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (EQUAL_CPLX(pa[j], px)) {
-          pans[j]++;
+    } break;
+    case CPLXSXP: {
+      const Rcomplex px = COMPLEX(x)[0];
+      for (int i = 0; i < n; ++i) {
+        Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (EQUAL_CPLX(pa[j], px)) {
+            pans[j]++;
+          }
         }
       }
-    }
-  } break;
-  case STRSXP: {
-    for (int i = 0; i < n; ++i) {
-      const SEXP pa = PTR_ETL(args, i);// clean this
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (RCHAR(pa, j)== RCHAR(x, 0)) {
-          pans[j]++;
+    } break;
+    case STRSXP: {
+      const char* px = RCHAR(x, 0);
+      for (int i = 0; i < n; ++i) {
+        const SEXP pa = PTR_ETL(args, i);
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (RCHAR(pa, j) == px) {
+            pans[j]++;
+          }
         }
       }
+    } break;
     }
-  } break;
+  } else {
+    ans = PROTECT(allocVector(INTSXP, len0));
+    int *restrict pans = INTEGER(ans);
+    memset(pans, 0, len0*sizeof(int));
+    switch(anstype) {
+    case LGLSXP: {
+      const int px = LOGICAL(x)[0];
+      for (int i = 0; i < n; ++i) {
+        int *pa = LOGICAL(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
+        }
+      }
+    } break;
+    case INTSXP: {
+      const int px = INTEGER(x)[0];
+      for (int i = 0; i < n; ++i) {
+        int *pa = INTEGER(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
+        }
+      }
+    } break;
+    case REALSXP: {
+      const double px = REAL(x)[0];
+      for (int i = 0; i < n; ++i) {
+        double *pa = REAL(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (pa[j] == px) {
+            pans[j]++;
+          }
+        }
+      }
+    } break;
+    case CPLXSXP: {
+      const Rcomplex px = COMPLEX(x)[0];
+      for (int i = 0; i < n; ++i) {
+        Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (EQUAL_CPLX(pa[j], px)) {
+            pans[j]++;
+          }
+        }
+      }
+    } break;
+    case STRSXP: {
+      const char* px = RCHAR(x, 0);
+      for (int i = 0; i < n; ++i) {
+        const SEXP pa = PTR_ETL(args, i);
+        for (ssize_t j = 0; j < len0; ++j) {
+          if (RCHAR(pa, j) == px) {
+            pans[j]++;
+          }
+        }
+      }
+    } break;
+    }
   }
   UNPROTECT(1);
   return ans;

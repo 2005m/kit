@@ -153,7 +153,7 @@ SEXP countR(SEXP x, SEXP y) {
   case NILSXP: break;
   case LGLSXP: {
     const int *restrict px = LOGICAL(x);
-	const int py = LOGICAL(y)[0];
+    const int py = LOGICAL(y)[0];
     for (ssize_t i=0; i<len_x; ++i) {
       if (px[i]== py) {
         cnt++;
@@ -163,7 +163,7 @@ SEXP countR(SEXP x, SEXP y) {
   case INTSXP: {
     const int *restrict px = INTEGER(x);
     const int py = INTEGER(y)[0];
-	for (ssize_t i=0; i<len_x; ++i) {
+    for (ssize_t i=0; i<len_x; ++i) {
       if (px[i]== py) {
         cnt++;
       }
@@ -171,7 +171,7 @@ SEXP countR(SEXP x, SEXP y) {
   } break;
   case REALSXP: {
     const double *restrict px = REAL(x);
-	const double py = REAL(y)[0];
+    const double py = REAL(y)[0];
     for (ssize_t i=0; i<len_x; ++i) {
       if (px[i]== py) {
         cnt++;
@@ -180,7 +180,7 @@ SEXP countR(SEXP x, SEXP y) {
   } break;
   case CPLXSXP: {
     const Rcomplex *restrict px = COMPLEX(x);
-	const Rcomplex py = COMPLEX(y)[0];
+    const Rcomplex py = COMPLEX(y)[0];
     for (ssize_t i=0; i<len_x; ++i) {
       if (EQUAL_CPLX(px[i], py)) {
         cnt++;
@@ -188,8 +188,9 @@ SEXP countR(SEXP x, SEXP y) {
     }
   } break;
   case STRSXP: {
+    const char* py = RCHAR(y, 0);
     for (ssize_t i=0; i<len_x; ++i) {
-      if (RCHAR(x, i)== RCHAR(y, 0)) { //correct this
+      if (RCHAR(x, i) == py) {
         cnt++;
       }
     }

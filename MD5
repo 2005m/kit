@@ -7,7 +7,7 @@ bc4101d200c573f4fdd74c3cc8c6b9b2 *man/count.Rd
 05d7db1df5f7fcff0451cca69e882275 *man/fpos.Rd
 c495d3470c465d685c0a6afc3052447d *man/iif.Rd
 b98c5f5615a97e3bf9578ea556f812bf *man/nif.Rd
-533b62bd20df2ae508c1f4354ef6ac1d *man/psum.Rd
+8ab5eb8f3d53173409797ce9cd04a4c0 *man/psum.Rd
 a8f88fa29539089c7013cbd7ffec5f75 *man/setlevels.Rd
 8e3284d163f8e7e15313d478cbd659e6 *man/topn.Rd
 e926b9000dfefbfdd1821bbc63860c05 *man/vswitch.Rd
@@ -21,7 +21,7 @@ a05721a7173ad57df49cf76f356d9c84 *src/kit.h
 cde2535a36d0ee0e2c04232c0593da84 *src/Makevars.in
 47af37b6e045426e44e511fce458c6fe *src/Makevars.win
 f5b7341e38ee5d60bf4d2780939a77a2 *src/nif.c
-650ff68bfcb07bfa4f43586c93ef8167 *src/psum.c
+cc58de6419983feff0f88e4db82ef442 *src/psum.c
 7c240b3f1878037dcdd4c7bd1734193f *src/topn.c
-de948ac836880b310c391625d376dc00 *src/utils.c
+46be70d05eaccf13ef16a1bf654ef819 *src/utils.c
 a2666bd9c9c0f677b884b54fee84e252 *src/vswitch.c
