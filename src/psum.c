@@ -314,7 +314,7 @@ SEXP pallR(SEXP na, SEXP args) {
     int *pa = LOGICAL(PTR_ETL(args, i));
     if (narm) {
       for (ssize_t j = 0; j < len0; ++j) {
-        pans[j] = pans[j]==NA_LOGICAL ? (pa[j]==NA_LOGICAL ? 1 : pa[j]) : (pa[j]==NA_LOGICAL ? pans[j] : ((pans[j] != 1 || pa[j] != 1) ? 0 : 1));
+        pans[j] = pans[j]==0 ? pans[j] :(pa[j]==NA_LOGICAL ? 1 : pa[j]);
       }
     } else {
       for (ssize_t j = 0; j < len0; ++j) {
