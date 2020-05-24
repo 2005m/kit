@@ -40,7 +40,8 @@ fpos(small_matrix, big_matrix, all = FALSE)
 # return non overlapping occurences
 fpos(small_matrix, big_matrix, overlap = FALSE)
 
-# Benchmark
+# Benchmarks
+# ----------
 # x = matrix(1:5, nrow=1e4, ncol=5e3) # 191Mb
 # microbenchmark::microbenchmark(
 #  fpos=kit::fpos(1L, x),

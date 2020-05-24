@@ -1,3 +1,3 @@
 useDynLib(kit, .registration = TRUE)
 
-export(fpos, iif, nif, pprod, psum, setlevels, topn, vswitch)
+export(count, countNA, fpos, iif, nif, pall, pany, pcount, pmean, pprod, psum, setlevels, topn, vswitch)

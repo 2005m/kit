@@ -33,7 +33,8 @@ order(x, decreasing=TRUE)[1:6]
 x[topn(x, 6L, decreasing=FALSE)]
 sort(x)[1:6]
 
-# Benchmark
+# Benchmarks
+# ----------
 # x = rnorm(1e7) # 76Mb
 # microbenchmark::microbenchmark(
 #   topn=kit::topn(x, 6L),
