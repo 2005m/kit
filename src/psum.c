@@ -100,7 +100,7 @@ SEXP psumR(SEXP na, SEXP args) {
         }
       } else {
         for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] = (ISNAN(pans[j]) || ISNAN(pa[j])) ? NA_REAL : (pans[j] + pa[j]);
+          pans[j] += pa[j];
         }
       }
     }
@@ -133,8 +133,8 @@ SEXP psumR(SEXP na, SEXP args) {
         }
       } else {
         for (ssize_t j = 0; j < len0; ++j) {
-          pans[j].r = ISNAN_COMPLEX(pans[j]) ? NA_REAL : (pans[j].r + pa[j].r);
-          pans[j].i = ISNAN_COMPLEX(pans[j]) ? NA_REAL : (pans[j].i + pa[j].i);
+          pans[j].r += pa[j].r;
+          pans[j].i += pa[j].i;
         }
       }
     }
@@ -226,7 +226,7 @@ SEXP pprodR(SEXP na, SEXP args) {
         }
       } else {
         for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] = (ISNAN(pans[j]) || ISNAN(pa[j])) ? NA_REAL : (pans[j] * pa[j]);
+          pans[j] *= pa[j];
         }
       }
     }
@@ -259,8 +259,8 @@ SEXP pprodR(SEXP na, SEXP args) {
         }
       } else {
         for (ssize_t j = 0; j < len0; ++j) {
-          pans[j].r = (ISNAN_COMPLEX(pans[j]) || ISNAN_COMPLEX(pa[j])) ? NA_REAL : (pans[j].r * pa[j].r - pans[j].i * pa[j].i);
-          pans[j].i = (ISNAN_COMPLEX(pans[j]) || ISNAN_COMPLEX(pa[j])) ? NA_REAL : (pans[j].r * pa[j].i + pans[j].i * pa[j].r);
+          pans[j].r = pans[j].r * pa[j].r - pans[j].i * pa[j].i;
+          pans[j].i = pans[j].r * pa[j].i + pans[j].i * pa[j].r;
         }
       }
     }
@@ -414,7 +414,7 @@ SEXP pmeanR(SEXP na, SEXP args) {
   const bool narm = asLogical(na);
   SEXP den = PROTECT(allocVector(REALSXP, len0));
   double *restrict pden = REAL(den);
-  memset(pden, 0, len0*sizeof(double));
+  memset(pden, 0, (unsigned)len0*sizeof(double));
   double *restrict pans = REAL(ans);
   SEXP dbl_a = R_NilValue;
   PROTECT_INDEX Idbl;
@@ -444,7 +444,7 @@ SEXP pmeanR(SEXP na, SEXP args) {
       }
     } else {
       for (ssize_t j = 0; j < len0; ++j) {
-        pans[j] = (ISNAN(pans[j]) || ISNAN(pa[j])) ? NA_REAL : (pans[j] + pa[j]);
+        pans[j] += pa[j];
       }
     }
   }
@@ -472,7 +472,8 @@ SEXP pcountR(SEXP x, SEXP args) {
   const SEXP args0 = PTR_ETL(args, 0);
   SEXPTYPE anstype = UTYPEOF(args0);
   const R_xlen_t len0 = xlength(args0);
-  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP && anstype != STRSXP) {
+  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP &&
+      anstype != CPLXSXP && anstype != STRSXP) {
     error("Argument %d is of type %s. Only logical, integer, double, complex and"
           " character types are supported.", 1, type2char(anstype));
   }
@@ -481,12 +482,42 @@ SEXP pcountR(SEXP x, SEXP args) {
     error("Type of 'value' (%s) is different than type of Argument %d (%s). "
           "Please make sure both have the same type.", type2char(tx), 1, type2char(anstype));
   }
+  SEXP classx = PROTECT(getAttrib(x, R_ClassSymbol));
+  if(!R_compute_identical(PROTECT(getAttrib(args0, R_ClassSymbol)), classx, 0)) {
+    error("Class of 'value' is different than class of Argument %d. "
+            "Please make sure both have the same class.", 1);
+  }
+  UNPROTECT(1);
+  int nprotect = 0;
+  const bool xf = isFactor(x);
+  SEXP levelsx;
+  if (xf) {
+    levelsx = PROTECT(getAttrib(x, R_LevelsSymbol)); nprotect++;
+    if (!R_compute_identical(levelsx, PROTECT(getAttrib(args0, R_LevelsSymbol)), 0)) {
+      error("Levels of 'value' are different than levels of Argument %d. "
+              "Please make sure both have the same levels.", 1);
+    }
+    UNPROTECT(1);
+  }
   for (int i = 1; i < n; ++i) {
     SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
     if (type != anstype) {
       error("Type of argument %d is %s but argument %d is of type %s. "
-            "Please make sure both have the same type.", i+1, type2char(type), 1, type2char(anstype));
+            "Please make sure both have the same type.", i+1,
+            type2char(type), 1, type2char(anstype));
+    }
+    if(!R_compute_identical(PROTECT(getAttrib(PTR_ETL(args, i), R_ClassSymbol)), classx, 0)) {
+      error("Class of 'value' is different than class of Argument %d. "
+              "Please make sure both have the same class.", i+1);
+    }
+    UNPROTECT(1);
+    if (xf) {
+      if (!R_compute_identical(levelsx, PROTECT(getAttrib(PTR_ETL(args, i), R_LevelsSymbol)), 0)) {
+        error("Levels of 'value' are different than levels of Argument %d. "
+                "Please make sure both have the same levels.", i + 1);
+      }
+      UNPROTECT(1);
     }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
@@ -494,11 +525,12 @@ SEXP pcountR(SEXP x, SEXP args) {
       "clear to the readers of your code.", i+1, len1, 1, len0);
     }
   }
+  UNPROTECT(1 + nprotect);
   SEXP ans;
   if (len0 > INT_MAX) {
     ans = PROTECT(allocVector(REALSXP, len0));
     double *restrict pans = REAL(ans);
-    memset(pans, 0, len0*sizeof(double));
+    memset(pans, 0, (unsigned)len0*sizeof(double));
     switch(anstype) {
     case LGLSXP: {
       const int px = LOGICAL(x)[0];
@@ -559,7 +591,7 @@ SEXP pcountR(SEXP x, SEXP args) {
   } else {
     ans = PROTECT(allocVector(INTSXP, len0));
     int *restrict pans = INTEGER(ans);
-    memset(pans, 0, len0*sizeof(int));
+    memset(pans, 0, (unsigned)len0*sizeof(int));
     switch(anstype) {
     case LGLSXP: {
       const int px = LOGICAL(x)[0];

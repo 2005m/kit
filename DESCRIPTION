@@ -1,8 +1,8 @@
 Package: kit
 Type: Package
 Title: Data Manipulation Functions Implemented in C
-Version: 0.0.2
-Date: 2020-05-03
+Version: 0.0.3
+Date: 2020-06-21
 Authors@R: c(person("Morgan", "Jacob", role = c("aut", "cre", "cph"), email = "morgan.emailbox@gmail.com"))
 Author: Morgan Jacob [aut, cre, cph]
 Maintainer: Morgan Jacob <morgan.emailbox@gmail.com>
