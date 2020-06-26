@@ -32,9 +32,23 @@
 #define ISNAN_COMPLEX(x) (ISNAN(x.r) || ISNAN(x.i))
 #define EQUAL_CPLX(x, y) (((x.r) == (y.r)) && ((x.i) == (y.i)))
 #define RCHAR(x, y) CHAR(STRING_ELT(x, y))
+#define SEXP_F ScalarLogical(FALSE)
+#define SEXP_T ScalarLogical(TRUE)
+#define HASH(key, K)  (3141592653U * (unsigned int)(key) >> (32 - (K)))
+#define N_ISNAN(x, y) (!ISNAN(x) && !ISNAN(y))
+#define B_IsNA(x, y)  (R_IsNA(x) && R_IsNA(y))
+#define B_IsNaN(x, y) (R_IsNaN(x) && R_IsNaN(y))
+#define B_ISNAN(x, y) (ISNAN(x) && ISNAN(y))
+#define C_IsNA(x)     (R_IsNA(x.r) || R_IsNA(x.i))
+#define C_IsNaN(x)    (R_IsNaN(x.r) || R_IsNaN(x.i))
+#define C_ISNAN(x, y) (B_ISNAN(x, y) || (N_ISNAN(x, y) && x == y))
+#define REQUAL(x, y)  (N_ISNAN(x, y) ? (x == y) : (B_IsNA(x, y) || B_IsNaN(x, y)))
+#define CEQUAL(x, y) ((N_ISNAN(x.r, x.i) && N_ISNAN(y.r, y.i)) ? (x.r == y.r && x.i == y.i) : (C_IsNA(x) ? C_IsNA(y) : (C_IsNA(y) ? 0 : (C_ISNAN(x.r, y.r) && C_ISNAN(x.i, y.i)))))
+#define STR_DF mkString("data.frame")
 
 extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
+extern SEXP dupR(SEXP x, SEXP uniq, SEXP ridx, SEXP pos);
 extern SEXP fposR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
 extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
@@ -46,9 +60,8 @@ extern SEXP pmeanR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);
 extern SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent);
+extern SEXP subSetRow(SEXP df, SEXP rws);
 extern SEXP topnR(SEXP vec, SEXP n, SEXP dec);
-extern SEXP uniquePR(SEXP x);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
 
-//Rboolean hasNA(SEXP x);
-//SEXP removeNA(SEXP x);
+union uno { double d; unsigned int u[2]; };

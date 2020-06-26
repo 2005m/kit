@@ -4,6 +4,25 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.3 (2020-06-21)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Functions \code{\strong{fduplicated}(x, idx=FALSE)} and \code{\strong{funique}(x, idx=FALSE)},
+      implemented in C, are comparable to \code{base} \R functions \code{duplicated} and \code{unique}.
+      For more details, please see \code{?kit::funique}.
+
+      \item Functions \code{psum} and \code{pprod} have now better performance for type double and complex.
+    }
+  }
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Function \code{count(x, y)} now checks that \code{x} and \code{y} have the same class and levels. So does \code{pcount}.
+
+      \item Function \code{pmean} was not callable at C level because of a typo. This is now fixed.
+    }
+  }
+}
+
 \section{version 0.0.2 (2020-05-22)}{
   \subsection{New Features}{
     \itemize{

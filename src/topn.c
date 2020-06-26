@@ -84,7 +84,7 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec) {
       }
     } break;
     case REALSXP: {
-      ssize_t i, j, idx = 0;
+      int i, j, idx = 0;
       const double *restrict pvec = REAL(vec);
       double min_value = pvec[0];
       for (i = 0; i < len0; ++i) {
@@ -166,7 +166,7 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec) {
       }
     } break;
     case REALSXP: {
-      ssize_t i, j, idx = 0;
+      int i, j, idx = 0;
       const double *restrict pvec = REAL(vec);
       double min_value = pvec[0];
       for (i = 0; i < len0; ++i) {

@@ -66,77 +66,6 @@ SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent) {
   return ans;
 }
 
-/*SEXP removeNA(SEXP x) {
-  const R_xlen_t len_x = xlength(x);
-  SEXPTYPE tx = UTYPEOF(x);
-  R_xlen_t nb = countNA(x);
-  if (nb == 0) {
-    return x;
-  }
-  SEXP ans = PROTECT(allocVector(tx, len_x - (unsigned)nb));
-  size_t j=0;
-  switch(tx) {
-  case LGLSXP: {
-    const int *restrict px = LOGICAL(x);
-    int *restrict pans = LOGICAL(ans);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i]== NA_LOGICAL) {
-        continue;
-      } else {
-        pans[j++]=px[i];
-      }
-    }
-  } break;
-  case INTSXP: {
-    const int *restrict px = INTEGER(x);
-    int *restrict pans = INTEGER(ans);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i]== NA_INTEGER) {
-        continue;
-      } else {
-        pans[j++]=px[i];
-      }
-    }
-  } break;
-  case REALSXP: {
-    const double *restrict px = REAL(x);
-    double *restrict pans = REAL(ans);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (ISNAN(px[i])) {
-        continue;
-      } else {
-        pans[j++]=px[i];
-      }
-    }
-  } break;
-  case CPLXSXP: {
-    const Rcomplex *restrict px = COMPLEX(x);
-    Rcomplex *restrict pans = COMPLEX(ans);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (ISNAN_COMPLEX(px[i])) {
-        continue;
-      } else {
-        pans[j++]=px[i];
-      }
-    }
-  } break;
-  case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i] == NA_STRING) {
-        continue;
-      } else {
-        SET_STRING_ELT(ans, (signed)j++, px[i]);
-      }
-    }
-  } break;
-  default:
-    error("Type %s is not supported.", type2char(tx));
-  }
-  UNPROTECT(1);
-  return ans;
-}*/
-
 SEXP countR(SEXP x, SEXP y) {
   const R_xlen_t len_x = xlength(x);
   const R_xlen_t len_y = xlength(y);
@@ -148,9 +77,18 @@ SEXP countR(SEXP x, SEXP y) {
   if (tx != ty) {
     error("Type of 'value' (%s) is different than type of 'x' (%s). Please make sure both have the same type.", type2char(ty), type2char(tx));
   }
+  if(!R_compute_identical(PROTECT(getAttrib(x, R_ClassSymbol)), PROTECT(getAttrib(y, R_ClassSymbol)), 0)) {
+    error("'x' has different class than 'y'. Please make sure that both arguments have the same class.");
+  }
+  UNPROTECT(2);
+  if (isFactor(x)) {
+    if (!R_compute_identical(PROTECT(getAttrib(x, R_LevelsSymbol)), PROTECT(getAttrib(y, R_LevelsSymbol)), 0)) {
+      error("'x' and 'y' are both type factor but their levels are different.");
+    }
+    UNPROTECT(2);
+  }
   R_xlen_t cnt = 0;
   switch(tx) {
-  case NILSXP: break;
   case LGLSXP: {
     const int *restrict px = LOGICAL(x);
     const int py = LOGICAL(y)[0];
@@ -198,7 +136,7 @@ SEXP countR(SEXP x, SEXP y) {
   default:
     error("Type %s is not supported.", type2char(tx));
   }
-  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger(cnt);
+  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger((int)cnt);
 }
 
 SEXP countNAR(SEXP x) {
@@ -259,102 +197,81 @@ SEXP countNAR(SEXP x) {
   default:
     error("Type %s is not supported.", type2char(tx));
   }
-  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger(cnt);
+  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger((int)cnt);
 }
 
-/*Rboolean hasNA(SEXP x) {
-  const R_xlen_t len_x = xlength(x);
-  SEXPTYPE tx = UTYPEOF(x);
-  Rboolean na = FALSE;
-  switch(tx) {
-  case LGLSXP: {
-    const int *restrict px = LOGICAL(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i]== NA_LOGICAL) {
-        na = TRUE;
-        break;
+SEXP subSetRow(SEXP df, SEXP rws) {
+  const SEXP *restrict pdf = SEXPPTR_RO(df);
+  const int *restrict prws = INTEGER(rws);
+  const R_xlen_t len_df = xlength(df);
+  const R_xlen_t len_rws = xlength(rws);
+  SEXP dfo = PROTECT(allocVector(VECSXP, len_df));
+  classgets(dfo, STR_DF);
+  setAttrib(dfo, R_NamesSymbol, PROTECT(getAttrib(df, R_NamesSymbol)));
+  SEXP rownam = PROTECT(allocVector(INTSXP, 2));
+  INTEGER(rownam)[0] = NA_INTEGER;
+  INTEGER(rownam)[1] = -(int)len_rws;
+  setAttrib(dfo, R_RowNamesSymbol, rownam);
+  for (R_xlen_t i = 0; i < len_df; ++i) {
+    switch(UTYPEOF(pdf[i])) {
+    case LGLSXP : {
+      const int *restrict ptmp = LOGICAL(pdf[i]);
+      SEXP TYPECOL = PROTECT(allocVector(LGLSXP, len_rws));
+      int *restrict pc = LOGICAL(TYPECOL);
+      for (R_xlen_t j = 0; j < len_rws; ++j) {
+        pc[j] = ptmp[prws[j]];
       }
-    }
-  } break;
-  case INTSXP: {
-    const int *restrict px = INTEGER(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i]== NA_INTEGER) {
-        na = TRUE;
-        break;
+      SET_VECTOR_ELT(dfo, i, TYPECOL);
+      UNPROTECT(1);
+    } break;
+    case INTSXP : {
+      const int *restrict ptmp = INTEGER(pdf[i]);
+      SEXP TYPECOL = PROTECT(allocVector(INTSXP, len_rws));
+      int *restrict pc = INTEGER(TYPECOL);
+      for (R_xlen_t j = 0; j < len_rws; ++j) {
+        pc[j] = ptmp[prws[j]];
       }
-    }
-  } break;
-  case REALSXP: {
-    const double *restrict px = REAL(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (ISNAN(px[i])) {
-        na = TRUE;
-        break;
+      if (isFactor(pdf[i])) {
+        copyMostAttrib(pdf[i], TYPECOL);
       }
-    }
-  } break;
-  case CPLXSXP: {
-    const Rcomplex *restrict px = COMPLEX(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (ISNAN_COMPLEX(px[i])) {
-        na = TRUE;
-        break;
+      SET_VECTOR_ELT(dfo, i, TYPECOL);
+      UNPROTECT(1);
+    } break;
+    case REALSXP : {
+      const double *restrict ptmp = REAL(pdf[i]);
+      SEXP TYPECOL = PROTECT(allocVector(REALSXP, len_rws));
+      double *restrict pc = REAL(TYPECOL);
+      for (R_xlen_t j = 0; j < len_rws; ++j) {
+        pc[j] = ptmp[prws[j]];
       }
-    }
-  } break;
-  case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
-    for (ssize_t i=0; i<len_x; ++i) {
-      if (px[i] == NA_STRING) {
-        na = TRUE;
-        break;
+      copyMostAttrib(pdf[i], TYPECOL);
+      SET_VECTOR_ELT(dfo, i, TYPECOL);
+      UNPROTECT(1);
+    } break;
+    case CPLXSXP : {
+      const Rcomplex *restrict ptmp = COMPLEX(pdf[i]);
+      SEXP TYPECOL = PROTECT(allocVector(CPLXSXP, len_rws));
+      Rcomplex *restrict pc = COMPLEX(TYPECOL);
+      for (R_xlen_t j = 0; j < len_rws; ++j) {
+        pc[j] = ptmp[prws[j]];
       }
-    }
-  } break;
-  default:
-    error("Type %s is not supported.", type2char(tx));
-  }
-  return na;
-}*/
-
-SEXP uniquePR(SEXP x) {
-  const R_xlen_t xlen=xlength(x);
-  const SEXP lg=PROTECT(duplicated(x, FALSE));
-  const int *restrict plg=LOGICAL(lg);
-  R_xlen_t k=0;
-  const bool isLong = xlen > INT_MAX;
-  SEXP pos, ans=R_NilValue;
-  if (isLong) {
-    pos = PROTECT(allocVector(REALSXP, xlen));
-    double *restrict p=REAL(pos);
-    for (R_xlen_t i=0; i<xlen; ++i) {
-      if (plg[i]==0) {
-        p[k++]=i+1;
+      SET_VECTOR_ELT(dfo, i, TYPECOL);
+      UNPROTECT(1);
+    } break;
+    case STRSXP : {
+      const SEXP *restrict ptmp = STRING_PTR(pdf[i]);
+      SEXP TYPECOL = PROTECT(allocVector(STRSXP, len_rws));
+      SEXP *restrict pc = STRING_PTR(TYPECOL);
+      for (R_xlen_t j = 0; j < len_rws; ++j) {
+        pc[j] = ptmp[prws[j]];
       }
+      SET_VECTOR_ELT(dfo, i, TYPECOL);
+      UNPROTECT(1);
+    } break;
+    default:
+      error("Type %s is not supported.", type2char(UTYPEOF(pdf[i]))); // add Raw type
     }
-    if(k==xlen) {
-      UNPROTECT(2);
-      return pos;
-    }
-    ans = PROTECT(allocVector(REALSXP, k));
-    memcpy(REAL(ans), p, (unsigned)k*sizeof(double));
-  } else {
-    pos = PROTECT(allocVector(INTSXP, xlen));
-    int *restrict p=INTEGER(pos);
-    for (int i=0; i<xlen; ++i) {
-      if (plg[i]==0) {
-        p[k++]=i+1;
-      }
-    }
-    if(k==xlen) {
-      UNPROTECT(2);
-      return pos;
-    }
-    ans = PROTECT(allocVector(INTSXP, k));
-    memcpy(INTEGER(ans), p, (unsigned)k*sizeof(int));
   }
   UNPROTECT(3);
-  return ans;
+  return dfo;
 }
-  
