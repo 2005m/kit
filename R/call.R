@@ -17,6 +17,6 @@ setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Ca
 topn        = function(vec, n=6L, decreasing=TRUE) .Call(CtopnR, vec, n, decreasing)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread")) .Call(CvswitchR, x, values, outputs, default, nThread)
 
-.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.3 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
+.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.4 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath)
