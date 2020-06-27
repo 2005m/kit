@@ -4,10 +4,18 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.4 (2020-07-26)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Functions 
+    }
+  }
+}
+
 \section{version 0.0.3 (2020-06-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Functions \code{\strong{fduplicated}(x, idx=FALSE)} and \code{\strong{funique}(x, idx=FALSE)},
+      \item Functions \code{\strong{fduplicated}(x)} and \code{\strong{funique}(x, idx)},
       implemented in C, are comparable to \code{base} \R functions \code{duplicated} and \code{unique}.
       For more details, please see \code{?kit::funique}.
 
