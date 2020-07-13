@@ -136,7 +136,7 @@ SEXP countR(SEXP x, SEXP y) {
   default:
     error("Type %s is not supported.", type2char(tx));
   }
-  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger((int)cnt);
+  return cnt > INT_MAX ? ScalarReal((double)cnt) : ScalarInteger((int)cnt);
 }
 
 SEXP countNAR(SEXP x) {
@@ -197,10 +197,10 @@ SEXP countNAR(SEXP x) {
   default:
     error("Type %s is not supported.", type2char(tx));
   }
-  return cnt > INT_MAX ? ScalarReal(cnt) : ScalarInteger((int)cnt);
+  return cnt > INT_MAX ? ScalarReal((double)cnt) : ScalarInteger((int)cnt);
 }
 
-SEXP subSetRow(SEXP df, SEXP rws) {
+SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
   const SEXP *restrict pdf = SEXPPTR_RO(df);
   const int *restrict prws = INTEGER(rws);
   const R_xlen_t len_df = xlength(df);
@@ -231,9 +231,7 @@ SEXP subSetRow(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
-      if (isFactor(pdf[i])) {
-        copyMostAttrib(pdf[i], TYPECOL);
-      }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
@@ -269,9 +267,473 @@ SEXP subSetRow(SEXP df, SEXP rws) {
       UNPROTECT(1);
     } break;
     default:
-      error("Type %s is not supported.", type2char(UTYPEOF(pdf[i]))); // add Raw type
+      error("Type %s is not supported.", type2char(UTYPEOF(pdf[i]))); // add Raw type ?
     }
   }
   UNPROTECT(3);
   return dfo;
 }
+
+SEXP subSetRowMatrix(SEXP mat, SEXP rws) {
+  const int *restrict prws = INTEGER(rws);
+  const int col_mat = ncols(mat);
+  const int row_mat = nrows(mat);
+  const int len_rws = length(rws);
+  SEXP mato;
+  switch(UTYPEOF(mat)) {
+  case LGLSXP : {
+    mato = PROTECT(allocMatrix(LGLSXP, len_rws, col_mat));
+    const int *restrict pmat = LOGICAL(mat);
+    int *restrict pmato = LOGICAL(mato);
+    for (int i = 0; i < col_mat; ++i) {
+      for (int j = 0; j < len_rws; ++j) {
+        pmato[j+len_rws*i] = pmat[prws[j]+row_mat*i];
+      }
+    }
+  } break;
+  case INTSXP : {
+    mato = PROTECT(allocMatrix(INTSXP, len_rws, col_mat));
+    const int *restrict pmat = INTEGER(mat);
+    int *restrict pmato = INTEGER(mato);
+    for (int i = 0; i < col_mat; ++i) {
+      for (int j = 0; j < len_rws; ++j) {
+        pmato[j+len_rws*i] = pmat[prws[j]+row_mat*i];
+      }
+    }
+  } break;
+  case REALSXP : {
+    mato = PROTECT(allocMatrix(REALSXP, len_rws, col_mat));
+    const double *restrict pmat = REAL(mat);
+    double *restrict pmato = REAL(mato);
+    for (int i = 0; i < col_mat; ++i) {
+      for (int j = 0; j < len_rws; ++j) {
+        pmato[j+len_rws*i] = pmat[prws[j]+row_mat*i];
+      }
+    }
+  } break;
+  case CPLXSXP : {
+    mato = PROTECT(allocMatrix(CPLXSXP, len_rws, col_mat));
+    const Rcomplex *restrict pmat = COMPLEX(mat);
+    Rcomplex *restrict pmato = COMPLEX(mato);
+    for (int i = 0; i < col_mat; ++i) {
+      for (int j = 0; j < len_rws; ++j) {
+        pmato[j+len_rws*i] = pmat[prws[j]+row_mat*i];
+      }
+    }
+  } break;
+  case STRSXP : {
+    mato = PROTECT(allocMatrix(STRSXP, len_rws, col_mat));
+    const SEXP *restrict pmat = STRING_PTR(mat);
+    for (int i = 0; i < col_mat; ++i) {
+      for (int j = 0; j < len_rws; ++j) {
+        SET_STRING_ELT(mato, j+len_rws*i, pmat[prws[j]+row_mat*i]);
+      }
+    }
+  } break;
+  default:
+    error("Type %s is not supported.", type2char(UTYPEOF(mat))); // add Raw type ?
+  }
+  UNPROTECT(1);
+  return mato;
+}
+
+// No checks in this functions
+SEXP subSetColDataFrame(SEXP df, SEXP str) {
+  SEXP nm = PROTECT(getAttrib(df, R_NamesSymbol));
+  int i = 0;
+  for (; i < length(nm); ++i)
+    if (STRING_ELT(nm, i) == STRING_ELT(str, 0))
+      break;
+  
+  UNPROTECT(1);
+  return VECTOR_ELT(df, i);
+}
+
+// No checks in this functions (subset just one column)
+SEXP subSetColMatrix(SEXP x, R_xlen_t idx) {
+  const R_xlen_t len_i = nrows(x);
+  SEXPTYPE xt = UTYPEOF(x);
+  SEXP ans = PROTECT(allocVector(xt, len_i));
+  const R_xlen_t pidx = idx * len_i;
+  switch(xt) {
+  case LGLSXP : {
+    memcpy(LOGICAL(ans), LOGICAL(x)+pidx, (unsigned)len_i*sizeof(Rboolean));
+  } break;
+  case INTSXP : {
+    memcpy(INTEGER(ans), INTEGER(x)+pidx, (unsigned)len_i*sizeof(int));
+  } break;
+  case REALSXP : {
+    memcpy(REAL(ans), REAL(x)+pidx, (unsigned)len_i*sizeof(double));
+  } break;
+  case CPLXSXP : {
+    memcpy(COMPLEX(ans), COMPLEX(x)+pidx, (unsigned)len_i*sizeof(Rcomplex));
+  } break;
+  case STRSXP : {
+    const SEXP *restrict px = STRING_PTR(x);
+	for (R_xlen_t i = 0; i < len_i; ++i) {
+      SET_STRING_ELT(ans, i, px[i + pidx]);
+	}
+  } break;
+  default:
+    error("Matrix of type %s are not supported.", type2char(xt));
+  }
+  UNPROTECT(1);
+  return ans;
+}
+
+// This function does not do any check
+SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
+  const R_xlen_t len_df = xlength(df);
+  const R_xlen_t len_col = xlength(mcol);
+  SEXP dfo = PROTECT(allocVector(VECSXP, len_df + 1));
+  for (int i = 0; i < len_df; ++i) {
+    SET_VECTOR_ELT(dfo, i, VECTOR_ELT(df, i));
+  }
+  SET_VECTOR_ELT(dfo, len_df, mcol);
+  classgets(dfo, STR_DF);
+  SEXP nam = PROTECT(allocVector(STRSXP, len_df + 1));
+  SEXP oldnam = PROTECT(getAttrib(df, R_NamesSymbol));
+  for (int i = 0; i < len_df; ++i) {
+    SET_STRING_ELT(nam, i, STRING_ELT(oldnam, i));
+  }
+  SET_STRING_ELT(nam, len_df, coln);
+  namesgets(dfo, nam);
+  SEXP rownam = PROTECT(allocVector(INTSXP, 2));
+  INTEGER(rownam)[0] = NA_INTEGER;
+  INTEGER(rownam)[1] = -(int)len_col;
+  setAttrib(dfo, R_RowNamesSymbol, rownam);
+  UNPROTECT(4);
+  return dfo;
+}
+
+SEXP countOccurR(SEXP x) { // can be improved for factors
+  if (isFrame(x)) {
+    SEXP ans = PROTECT(countOccurDataFrameR(x));
+    UNPROTECT(1);
+    return ans;
+  }
+  const R_xlen_t n = xlength(x);
+  const SEXPTYPE tx = UTYPEOF(x);
+  int K;
+  size_t M;
+  if (tx == INTSXP || tx == STRSXP || tx == REALSXP || tx == CPLXSXP ) {
+    if(n >= 1073741824) {
+      error("Length of 'x' is too large. (Long vector not supported yet)");
+    }
+    const size_t n2 = 2U * (size_t) n;
+    M = 256;
+    K = 8;
+    while (M < n2) {
+      M *= 2;
+      K++;
+    }
+  } else if (tx == LGLSXP) {
+    M = 4;
+    K = 2;
+  } else {
+    error("Type %s is not supported.", type2char(tx));
+  }
+  R_xlen_t count = 0;
+  int *h = (int*)calloc(M, sizeof(int));
+  SEXP ans_l = PROTECT(allocVector(LGLSXP, n));
+  SEXP ans_ct = PROTECT(allocVector(INTSXP, n));
+  int *restrict pans_l = LOGICAL(ans_l);
+  int *restrict pans_ct = INTEGER(ans_ct);
+  SEXP ans_f = PROTECT(allocVector(VECSXP, 2));
+  switch (tx) {
+  case LGLSXP: {
+    const int *restrict px = LOGICAL(x);
+    size_t id = 0;
+    for (int i = 0; i < n; ++i) {
+      id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
+      while (h[id]) {
+        if (px[h[id]-1]==px[i]) {
+          pans_l[i] = 1;
+          pans_ct[h[id]-1]++;
+          goto lbl;
+        }
+        id++; id %= M;
+      }
+      h[id] = (int) i + 1;
+      pans_l[i] = 0;
+      pans_ct[i] = 1;
+      count++;
+      lbl:;
+    }
+    SET_VECTOR_ELT(ans_f, 0, PROTECT(allocVector(tx, count)));
+    SET_VECTOR_ELT(ans_f, 1, PROTECT(allocVector(INTSXP, count)));
+    R_xlen_t ct = 0;
+    int *restrict py = LOGICAL(PTR_ETL(ans_f, 0));
+    int *restrict pw = INTEGER(PTR_ETL(ans_f, 1));
+    for (int i = 0; ct < count; ++i) {
+      if (pans_l[i] == 0) {
+        pw[ct] = pans_ct[i];
+        py[ct++] = px[i];
+      }
+    }
+  } break;
+  case INTSXP: { // think about factor and levels number
+    const int *restrict px = INTEGER(x);
+    size_t id = 0;
+    for (int i = 0; i < n; ++i) {
+      id = (px[i] == NA_INTEGER) ? 0 : HASH(px[i], K);
+      while (h[id]) {
+        if (px[h[id]-1]==px[i]) {
+          pans_l[i] = 1;
+          pans_ct[h[id]-1]++;
+          goto ibl;
+        }
+        id++; id %= M;
+      }
+      h[id] = (int) i + 1;
+      pans_l[i] = 0;
+      pans_ct[i] = 1;
+      count++;
+      ibl:;
+    }
+    SET_VECTOR_ELT(ans_f, 0, PROTECT(allocVector(tx, count)));
+    SET_VECTOR_ELT(ans_f, 1, PROTECT(allocVector(INTSXP, count)));
+    R_xlen_t ct = 0;
+    int *restrict py = INTEGER(PTR_ETL(ans_f, 0));
+    int *restrict pw = INTEGER(PTR_ETL(ans_f, 1));
+    for (int i = 0; ct < count; ++i) {
+      if (pans_l[i] == 0) {
+        pw[ct] = pans_ct[i];
+        py[ct++] = px[i];
+      }
+    }
+  } break;
+  case REALSXP: {
+    const double *restrict px = REAL(x);
+    size_t id = 0;
+    union uno tpv;
+    for (int i = 0; i < n; ++i) {
+      tpv.d = R_IsNA(px[i]) ? NA_REAL : (R_IsNaN(px[i]) ? R_NaN :px[i]);
+      id = HASH(tpv.u[0] + tpv.u[1], K);
+      while (h[id]) {
+        if (REQUAL(px[h[id] - 1], px[i])) {
+          pans_l[i] = 1;
+          pans_ct[h[id]-1]++;
+          goto rbl;
+        }
+        id++; id %= M;
+      }
+      h[id] = (int) i + 1;
+      pans_l[i] = 0;
+      pans_ct[i] = 1;
+      count++;
+      rbl:;
+    }
+    SET_VECTOR_ELT(ans_f, 0, PROTECT(allocVector(tx, count)));
+    SET_VECTOR_ELT(ans_f, 1, PROTECT(allocVector(INTSXP, count)));
+    R_xlen_t ct = 0;
+    double *restrict py = REAL(PTR_ETL(ans_f, 0));
+    int *restrict pw = INTEGER(PTR_ETL(ans_f, 1));
+    for (int i = 0; ct < count; ++i) {
+      if (pans_l[i] == 0) {
+        pw[ct] = pans_ct[i];
+        py[ct++] = px[i];
+      }
+    }
+  } break;
+  case CPLXSXP: {
+    const Rcomplex *restrict px = COMPLEX(x);
+    size_t id = 0;
+    unsigned int u;
+    union uno tpv;
+    Rcomplex tmp;
+    for (int i = 0; i < n; ++i) {
+      tmp.r = (px[i].r == 0.0) ? 0.0 : px[i].r;
+      tmp.i = (px[i].i == 0.0) ? 0.0 : px[i].i;
+      if (C_IsNA(tmp)) {
+        tmp.r = tmp.i = NA_REAL;
+      } else if (C_IsNaN(tmp)) {
+        tmp.r = tmp.i = R_NaN;
+      }
+      tpv.d = tmp.r;
+      u = tpv.u[0] ^ tpv.u[1];
+      tpv.d = tmp.i;
+      u ^= tpv.u[0] ^ tpv.u[1];
+      id = HASH(u, K);
+      while (h[id]) {
+        if (CEQUAL(px[h[id]-1],px[i])) {
+          pans_l[i] = 1;
+          pans_ct[h[id]-1]++;
+          goto cbl;
+        }
+        id++; id %= M;
+      }
+      h[id] = (int) i + 1;
+      pans_l[i] = 0;
+      pans_ct[i] = 1;
+      count++;
+      cbl:;
+    }
+    SET_VECTOR_ELT(ans_f, 0, PROTECT(allocVector(tx, count)));
+    SET_VECTOR_ELT(ans_f, 1, PROTECT(allocVector(INTSXP, count)));
+    R_xlen_t ct = 0;
+    Rcomplex *restrict py = COMPLEX(PTR_ETL(ans_f, 0));
+    int *restrict pw = INTEGER(PTR_ETL(ans_f, 1));
+    for (int i = 0; ct < count; ++i) {
+      if (pans_l[i] == 0) {
+        pw[ct] = pans_ct[i];
+        py[ct++] = px[i];
+      }
+    }
+  } break;
+  case STRSXP: {
+    const SEXP *restrict px = STRING_PTR(x);
+    size_t id = 0;
+    for (int i = 0; i < n; ++i) {
+      id = HASH(((intptr_t) px[i] & 0xffffffff) ^ 0, K);
+      while (h[id]) {
+        if (px[h[id]-1]==px[i]) {
+          pans_l[i] = 1;
+          pans_ct[h[id]-1]++;
+          goto sbl;
+        }
+        id++; id %= M;
+      }
+      h[id] = (int) i + 1;
+      pans_l[i] = 0;
+      pans_ct[i] = 1;
+      count++;
+      sbl:;
+    }
+    SET_VECTOR_ELT(ans_f, 0, PROTECT(allocVector(tx, count)));
+    SET_VECTOR_ELT(ans_f, 1, PROTECT(allocVector(INTSXP, count)));
+    R_xlen_t ct = 0;
+    int *restrict pw = INTEGER(PTR_ETL(ans_f, 1));
+    SEXP p0 = PTR_ETL(ans_f, 0);
+    for (int i = 0; ct < count; ++i) {
+      if (pans_l[i] == 0) {
+        pw[ct] = pans_ct[i];
+        SET_STRING_ELT(p0, ct++, px[i]);
+      }
+    }
+  } break;
+  }
+  free(h);
+  copyMostAttrib(x, PTR_ETL(ans_f, 0));
+  classgets(ans_f, STR_DF);
+  SEXP nam = PROTECT(allocVector(STRSXP, 2));
+  SET_STRING_ELT(nam, 0, mkChar("Variable"));
+  SET_STRING_ELT(nam, 1, mkChar("Count"));
+  namesgets(ans_f, nam);
+  SEXP rownam = PROTECT(allocVector(INTSXP, 2));
+  INTEGER(rownam)[0] = NA_INTEGER;
+  INTEGER(rownam)[1] = -(int)count;
+  setAttrib(ans_f, R_RowNamesSymbol, rownam);
+  UNPROTECT(7);
+  return ans_f;
+}
+
+SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash algo)
+  const SEXP *restrict px = SEXPPTR_RO(x);
+  const R_xlen_t len_x = xlength(x);
+  const R_xlen_t len_i = xlength(px[0]);
+  SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
+  for (R_xlen_t i = 0; i < len_x; ++i) {
+    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i]))), (unsigned)len_i*sizeof(int));
+  }
+  UNPROTECT((int)len_x);
+  const size_t n2 = 2U * (size_t) len_i;
+  size_t M = 256;
+  int K = 8;
+  while (M < n2) {
+    M *= 2;
+    K++;
+  }
+  R_xlen_t count = 0;
+  int *h = (int*)calloc(M, sizeof(int));
+  SEXP ans_l = PROTECT(allocVector(LGLSXP, len_i));
+  SEXP ans_ct = PROTECT(allocVector(INTSXP, len_i));
+  int *restrict pans_l = LOGICAL(ans_l);
+  int *restrict pans_ct = INTEGER(ans_ct);
+  const int *restrict v = INTEGER(mlv);
+  size_t id = 0;
+  for (R_xlen_t i = 0; i < len_i; ++i) {
+    R_xlen_t key = 0;
+    for (R_xlen_t j = 0; j < len_x; ++j) {
+      key += (j+1) * v[i+j*len_i];
+    }
+    id = HASH(key, K);
+    while (h[id]) {
+      for (R_xlen_t j = 0; j < len_x; ++j) {
+        if (v[h[id]-1+j*len_i] != v[i+j*len_i]) {
+          goto label1;
+        }
+      }
+      pans_l[i] = 1;
+      pans_ct[h[id]-1]++;
+      goto label2;
+      label1:;
+      id++; id %= M;
+    }
+    h[id] = (int) i + 1;
+    pans_l[i] = 0;
+    pans_ct[i] = 1;
+    count++;
+    label2:;
+  }
+  free(h);
+  SEXP indx = PROTECT(allocVector(INTSXP, count));
+  SEXP cntr = PROTECT(allocVector(INTSXP, count));
+  R_xlen_t ct = 0;
+  int *restrict py = INTEGER(indx);
+  int *restrict pw = INTEGER(cntr);
+  for (int i = 0; ct < count; ++i) {
+    if (pans_l[i] == 0) {
+      pw[ct] = pans_ct[i];
+      py[ct++] = i;
+    }
+  }
+  SEXP output = PROTECT(addColToDataFrame(PROTECT(subSetRowDataFrame(x, indx)),cntr, mkChar("Count")));
+  UNPROTECT(7);
+  return output;
+}
+
+/*SEXP applyIf (SEXP x, SEXP idx, SEXP val, SEXP fun, SEXP na) {
+  const int *restrict pidx = INTEGER(idx);
+  const int pval = asInteger(val);
+  const R_xlen_t len = xlength(x);
+  SEXP y = R_NilValue;
+  R_xlen_t ct = 0;
+  for (R_xlen_t i = 0; i < len; ++i) {
+    if (pidx[i] == pval) {
+      ct++;
+    }
+  }
+  switch(UTYPEOF(x)) {
+  case INTSXP: {
+    const int *restrict px = INTEGER(x);
+    y = PROTECT(allocVector(INTSXP, ct));
+    int *restrict py = INTEGER(y);
+    for (R_xlen_t i = 0, j = 0; i < ct; ++j) {
+      if (pidx[j] == pval) {
+        py[i++] = px[j];
+      }
+    }
+  } break;
+  case REALSXP: {
+    const double *restrict px = REAL(x);
+    y = PROTECT(allocVector(REALSXP, ct));
+    double *restrict py = REAL(y);
+    for (R_xlen_t i = 0, j = 0; i < ct; ++j) {
+      if (pidx[j] == pval) {
+        py[i++] = px[j];
+      }
+    }
+  } break;
+  }
+  SEXP s, t;
+  PROTECT(t = s = allocList(3));
+  SET_TYPEOF(t, LANGSXP);
+  SETCAR(t, fun); t = CDR(t);
+  SETCAR(t, y); t = CDR(t);
+  SETCAR(t, na);
+  SET_TAG(t, install("na.rm"));
+  SEXP ans = PROTECT(eval(s, R_GlobalEnv));
+  UNPROTECT(3);
+  return ans;
+}*/

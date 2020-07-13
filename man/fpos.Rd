@@ -14,7 +14,7 @@ The function \code{fpos} returns the locations (row and column index) where a sm
   \item{overlap}{ A logical value to indicate whether to allow the small matrix occurences to overlap or not. Default value is \code{TRUE}.}
 }
 \value{
-A two columns matrix that contains the position or index where the small matrix (needle) can be found in the larger matrix. The first column refers to rows and the second to columns.
+A two columns matrix that contains the position or index where the small matrix (needle) can be found in the larger matrix. The first column refers to rows and the second to columns. In case both the needle and haystack are vectors, a vector is returned.
 }
 \author{Morgan Jacob}
 \examples{

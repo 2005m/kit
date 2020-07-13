@@ -2,6 +2,7 @@
 
 static const R_CallMethodDef CallEntries[] = {
   {"CcountNAR",    (DL_FUNC) &countNAR,    -1},
+  {"CcountOccurR", (DL_FUNC) &countOccurR, -1},
   {"CcountR",      (DL_FUNC) &countR,      -1},
   {"CdupR",        (DL_FUNC) &dupR,        -1},
   {"CfposR",       (DL_FUNC) &fposR,       -1},
@@ -16,7 +17,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"CpsumR",       (DL_FUNC) &psumR,       -1},
   {"CsetlevelsR",  (DL_FUNC) &setlevelsR,  -1},
   {"CtopnR",       (DL_FUNC) &topnR,       -1},
-  {"CvswitchR",    (DL_FUNC) &vswitchR,    -1},
+  {"CvswitchR",    (DL_FUNC) &vswitchR,    -1},  
   {NULL,           NULL,                   -1}
 };
 
@@ -24,6 +25,7 @@ void R_init_kit(DllInfo *dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_RegisterCCallable("kit", "CcountNAR",    (DL_FUNC) &countNAR);
+  R_RegisterCCallable("kit", "CcountOccurR", (DL_FUNC) &countOccurR);
   R_RegisterCCallable("kit", "CcountR",      (DL_FUNC) &countR);
   R_RegisterCCallable("kit", "CdupR",        (DL_FUNC) &dupR);
   R_RegisterCCallable("kit", "CfposR",       (DL_FUNC) &fposR);

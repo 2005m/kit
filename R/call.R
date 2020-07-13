@@ -1,10 +1,10 @@
 # Function calls
-
 count       = function(x, value) .Call(CcountR, x, value)
 countNA     = function(x) .Call(CcountNAR, x)
-fduplicated = function(x) .Call(CdupR, x, FALSE, FALSE, FALSE)
+countOccur  = function(x) .Call(CcountOccurR, x)
+fduplicated = function(x) .Call(CdupR, x, FALSE)
 fpos        = function(needle, haystack, all=TRUE, overlap=TRUE) .Call(CfposR, needle, haystack, all, overlap)
-funique     = function(x) .Call(CdupR, x, TRUE, FALSE, FALSE)
+funique     = function(x) .Call(CdupR, x, TRUE)
 iif         = function(test, yes, no, na=NULL, tprom=FALSE, nThread=getOption("kit.nThread")) .Call(CiifR, test, yes, no, na, tprom, nThread)
 nif         = function(..., default=NULL) .Call(CnifR, default, parent.frame(), TRUE, as.list(substitute(...())))
 pany        = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, list(...))
