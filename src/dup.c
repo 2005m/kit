@@ -70,7 +70,7 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq) { // move to matrix if possible
   for (R_xlen_t i = 0; i < len_i; ++i) {
     R_xlen_t key = 0;
     for (R_xlen_t j = 0; j < len_x; ++j) {
-	  key ^=  HASH(v[i+j*len_i],K)*97;
+      key ^=  HASH(v[i+j*len_i],K)*97;
     }
     id = HASH(key, K);
     while (h[id]) {
@@ -132,9 +132,9 @@ SEXP dupMatrixR(SEXP x, SEXP uniq) {
     for (R_xlen_t i = 0; i < len_i; ++i) {
       id = 0;
       for (R_xlen_t j = 0; j < len_x; ++j) {
-		id ^= ((unsigned)(j+1) * ((px[i+j*len_i] == NA_LOGICAL) ? 2U : (size_t) px[i+j*len_i]))*97;
+        id ^= ((unsigned)(j+1) * ((px[i+j*len_i] == NA_LOGICAL) ? 2U : (size_t) px[i+j*len_i]))*97;
       }
-	  id = HASH(id, K);
+      id = HASH(id, K);
       while (h[id]) {
         for (R_xlen_t j = 0; j < len_x; ++j) {
           if (px[h[id]-1+j*len_i] != px[i+j*len_i]) {
@@ -156,7 +156,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq) {
     for (R_xlen_t i = 0; i < len_i; ++i) {
       R_xlen_t key = 0;
       for (R_xlen_t j = 0; j < len_x; ++j) {
-		key ^= HASH(((px[i+j*len_i] == NA_INTEGER) ? 0 : px[i+j*len_i]),K)*97;
+        key ^= HASH(((px[i+j*len_i] == NA_INTEGER) ? 0 : px[i+j*len_i]),K)*97;
       }
       id = HASH(key, K);
       while (h[id]) {
@@ -181,8 +181,8 @@ SEXP dupMatrixR(SEXP x, SEXP uniq) {
     for (R_xlen_t i = 0; i < len_i; ++i) {
       R_xlen_t key = 0;
       for (R_xlen_t j = 0; j < len_x; ++j) {
-		tpv.d = px[i+j*len_i];
-		key ^= HASH(tpv.u[0] + tpv.u[1],K)*97;
+        tpv.d = px[i+j*len_i];
+        key ^= HASH(tpv.u[0] + tpv.u[1],K)*97;
       }
       tpv.d = key;
       id = HASH(tpv.u[0] + tpv.u[1], K);
@@ -221,7 +221,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq) {
         u = tpv.u[0] ^ tpv.u[1];
         tpv.d = tmp.i;
         u ^= tpv.u[0] ^ tpv.u[1];
-		key ^= HASH(u, K)*97;
+        key ^= HASH(u, K)*97;
       }
       id = HASH(key, K);
       while (h[id]) {
@@ -245,7 +245,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq) {
     for (R_xlen_t i = 0; i < len_i; ++i) {
       R_xlen_t key = 0;
       for (R_xlen_t j = 0; j < len_x; ++j) {
-		key ^= HASH(((intptr_t) px[i+j*len_i] & 0xffffffff) ^ 0,K)*97;
+        key ^= HASH(((intptr_t) px[i+j*len_i] & 0xffffffff) ^ 0,K)*97;
       }
       id = HASH(key, K);
       while (h[id]) {
@@ -333,7 +333,7 @@ SEXP dupVecR(SEXP x, SEXP uniq) {
       count++;
       lbl:;
     }
-	free(h);
+    free(h);
     if (asLogical(uniq)) {
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
@@ -364,7 +364,7 @@ SEXP dupVecR(SEXP x, SEXP uniq) {
       count++;
       ibl:;
     }
-	free(h);
+    free(h);
     if (asLogical(uniq)) {
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
@@ -398,7 +398,7 @@ SEXP dupVecR(SEXP x, SEXP uniq) {
       count++;
       rbl:;
     }
-	free(h);
+    free(h);
     if (asLogical(uniq)) {
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
@@ -444,7 +444,7 @@ SEXP dupVecR(SEXP x, SEXP uniq) {
       count++;
       cbl:;
     }
-	free(h);
+    free(h);
     if (asLogical(uniq)) {
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
@@ -475,7 +475,7 @@ SEXP dupVecR(SEXP x, SEXP uniq) {
       count++;
       sbl:;
     }
-	free(h);
+    free(h);
     if (asLogical(uniq)) {
       SEXP indx = PROTECT(allocVector(tx, count));
       R_xlen_t ct = 0;
@@ -689,7 +689,7 @@ SEXP dupDataFrameIndexR(SEXP x) { // move to matrix if possible
   for (int i = 0; i < len_i; ++i) {
     R_xlen_t key = 0;
     for (int j = 0; j < len_x; ++j) {
-	  key ^=  HASH(v[i+j*len_i],K)*97;
+      key ^=  HASH(v[i+j*len_i],K)*97;
     }
     id = HASH(key, K);
     while (h[id]) {
@@ -1271,7 +1271,7 @@ SEXP dupDataFrameIndexCountR(SEXP x) { // move to matrix if possible
   for (R_xlen_t i = 0; i < len_i; ++i) {
     R_xlen_t key = 0;
     for (R_xlen_t j = 0; j < len_x; ++j) {
-	  key ^=  HASH(v[i+j*len_i],K)*97;
+      key ^=  HASH(v[i+j*len_i],K)*97;
     }
     id = HASH(key, K);
     while (h[id]) {
@@ -1380,7 +1380,7 @@ SEXP groupEltVectR(SEXP x) {
         id++; id %= M;
       }
       h[id] = (int) i + 1;
-	  pans_i[i] = count;
+      pans_i[i] = count;
       pans_ct[i] = 1;
       count++;
       ibl:;
@@ -1483,7 +1483,7 @@ SEXP groupEltVectR(SEXP x) {
     ps[i] = pw[i-1] + ps[i-1];
   }
   for (R_xlen_t i = 0; i < n; ++i) {
-	pans[ps[pans_i[i]]++] = i + 1;
+    pans[ps[pans_i[i]]++] = i + 1;
   }
   free(h);
   free(pans_l);
@@ -1523,7 +1523,7 @@ SEXP groupEltDataFrameR(SEXP x) { // move to matrix if possible
   for (R_xlen_t i = 0; i < len_i; ++i) {
     R_xlen_t key = 0;
     for (R_xlen_t j = 0; j < len_x; ++j) {
-	  key ^=  HASH(v[i+j*len_i],K)*97;
+      key ^=  HASH(v[i+j*len_i],K)*97;
     }
     id = HASH(key, K);
     while (h[id]) {
@@ -1562,7 +1562,7 @@ SEXP groupEltDataFrameR(SEXP x) { // move to matrix if possible
     ps[i] = pw[i-1] + ps[i-1];
   }
   for (R_xlen_t i = 0; i < len_i; ++i) {
-	pans[ps[pans_i[i]]++] = i + 1;
+    pans[ps[pans_i[i]]++] = i + 1;
   }
   free(h);
   free(pans_l);

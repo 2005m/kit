@@ -13,6 +13,10 @@
 
       \item Functions \code{funique} and \code{fduplicated} now support matrices. Additionally, these
       two functions should also have better performance compare to previous release.
+
+      \item Functions \code{topn} has an additional argument \code{hasna=TRUE} to indicates whether
+      data contains \code{NA} value or not. If the data does not contain \code{NA} values, the function
+      should be faster.
     }
   }
   \subsection{Bug Fixes}{
@@ -20,6 +24,9 @@
       \item Function \code{fpos} was not properly handling \code{NaN} and \code{NA} for complex and
       double. This should now be fixed. The function has also been changed in case the 'needle' and
       'haysatck' are vectors so that a vector is returned.
+
+      Functions \code{funique} and \code{fduplicated} were not properly handling data containing
+      \code{POSIX} data. This has now been fixed.
     }
   }
 }

@@ -370,9 +370,9 @@ SEXP subSetColMatrix(SEXP x, R_xlen_t idx) {
   } break;
   case STRSXP : {
     const SEXP *restrict px = STRING_PTR(x);
-	for (R_xlen_t i = 0; i < len_i; ++i) {
+    for (R_xlen_t i = 0; i < len_i; ++i) {
       SET_STRING_ELT(ans, i, px[i + pidx]);
-	}
+    }
   } break;
   default:
     error("Matrix of type %s are not supported.", type2char(xt));
@@ -411,6 +411,9 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
     SEXP ans = PROTECT(countOccurDataFrameR(x));
     UNPROTECT(1);
     return ans;
+  }
+  if (isArray(x)) {
+    error("Array are not yet supported.");
   }
   const R_xlen_t n = xlength(x);
   const SEXPTYPE tx = UTYPEOF(x);
@@ -655,7 +658,7 @@ SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash a
   for (R_xlen_t i = 0; i < len_i; ++i) {
     R_xlen_t key = 0;
     for (R_xlen_t j = 0; j < len_x; ++j) {
-      key += (j+1) * v[i+j*len_i];
+      key ^=  HASH(v[i+j*len_i],K)*97;
     }
     id = HASH(key, K);
     while (h[id]) {

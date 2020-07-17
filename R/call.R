@@ -14,9 +14,9 @@ pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, list(...))
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, list(...))
 psum        = function(..., na.rm=FALSE) .Call(CpsumR, na.rm, list(...))
 setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Call(CsetlevelsR, x, old, new, skip_absent))
-topn        = function(vec, n=6L, decreasing=TRUE) .Call(CtopnR, vec, n, decreasing)
+topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE) .Call(CtopnR, vec, n, decreasing, hasna)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread")) .Call(CvswitchR, x, values, outputs, default, nThread)
 
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.4 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
-.onLoad     = function(libname, pkgname) options("kit.nThread"=1L)
-.onUnload   = function(libpath) library.dynam.unload("kit", libpath)
+.onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
+.onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov

@@ -17,7 +17,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"CpsumR",       (DL_FUNC) &psumR,       -1},
   {"CsetlevelsR",  (DL_FUNC) &setlevelsR,  -1},
   {"CtopnR",       (DL_FUNC) &topnR,       -1},
-  {"CvswitchR",    (DL_FUNC) &vswitchR,    -1},  
+  {"CvswitchR",    (DL_FUNC) &vswitchR,    -1},
   {NULL,           NULL,                   -1}
 };
 
