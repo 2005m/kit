@@ -9,7 +9,7 @@
     \itemize{
       \item Function \code{\strong{countOccur}(x)}, implemented in C, is comparable to \code{base}
       \R function \code{table}. It returns a \code{data.frame} and is between 3 to 50 times faster.
-      For more details, please see \code{?kit::countOccur}
+      For more details, please see \code{?kit::countOccur}.
 
       \item Functions \code{funique} and \code{fduplicated} now support matrices. Additionally, these
       two functions should also have better performance compare to previous release.
@@ -19,13 +19,20 @@
       should be faster.
     }
   }
+  \subsection{C-Level Facilities}{
+    \itemize{
+      \item A few C functions have been added to subset \code{data.frame} and \code{matrix} as well as
+	  do other operations. These functions are not exported or visible to the user but might become
+	  available and callable at C level in the future.
+    }
+  }
   \subsection{Bug Fixes}{
     \itemize{
       \item Function \code{fpos} was not properly handling \code{NaN} and \code{NA} for complex and
       double. This should now be fixed. The function has also been changed in case the 'needle' and
       'haysatck' are vectors so that a vector is returned.
 
-      Functions \code{funique} and \code{fduplicated} were not properly handling data containing
+      \item Functions \code{funique} and \code{fduplicated} were not properly handling data containing
       \code{POSIX} data. This has now been fixed.
     }
   }

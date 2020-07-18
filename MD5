@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
 949dc29ce03f33e16b4f50b9e7058415 *DESCRIPTION
-641c18c3cae4aad34151fd930845b014 *inst/NEWS.Rd
+0162dfb5f086efeddb4f085a84e87ec1 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
 d143e1321d840bb810d9648e54e22c9c *man/fpos.Rd
@@ -26,4 +26,4 @@ d2f4fdbd388ae96944e5de4e7c8fb138 *src/psum.c
 91d603f722355667800428c1a6c03d34 *src/topn.c
 df8c4274f76c92c1c77b95a7ead81938 *src/utils.c
 cf0cc91ddf63af7a879bece18687f096 *src/vswitch.c
-36b7a3bbb4beea6634815525da2d199e *tests/test_kit.R
+ce344091bca9437c29a25df3b5568545 *tests/test_kit.R
