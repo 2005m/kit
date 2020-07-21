@@ -4,7 +4,7 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.4 (2020-07-26)}{
+\section{version 0.0.4 (2020-07-21)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{countOccur}(x)}, implemented in C, is comparable to \code{base}

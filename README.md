@@ -1,5 +1,5 @@
 # kit
-R Package: Basic functions implemented in C and missing from base R
+R Package: Basic functions implemented in C (and for some missing from base R)
 
 [![CRAN](https://cranchecks.info/badges/flavor/devel/kit)](https://cran.r-project.org/web/checks/check_results_kit.html)
 [![License: GPL v3](https://img.shields.io/github/license/2005m/kit)](https://www.gnu.org/licenses/gpl-3.0)
