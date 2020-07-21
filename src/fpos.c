@@ -19,14 +19,39 @@
 #include "kit.h"
 
 SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
+  SEXP ans = R_NilValue;
+  int nprotect = 0;
+  if (isS4(hsk) || isS4(ndle)) {
+    error("S4 class objects are not supported.");
+  }
+  if (isFrame(ndle) || isFrame(hsk)) {
+    error("Please note that data.frame(s) are not supported.");
+  }
+  if (!R_compute_identical(PROTECT(GetArrayDimnames(ndle)), R_NilValue, 0)) {
+    error("Arrays are not supported for argument 'needle'.");
+  }
+  UNPROTECT(1);
+  if (!R_compute_identical(PROTECT(GetArrayDimnames(hsk)), R_NilValue, 0)) {
+    error("Arrays are not supported for argument 'haystack'.");
+  }
+  UNPROTECT(1);
+  if (isMatrix(ndle) || isMatrix(hsk)) {
+    ans = PROTECT(fposMatR(ndle, hsk, all, overlap));
+    nprotect++;
+  } else if (isVector(ndle) && isVector(hsk)) {
+    ans = PROTECT(fposVectR(ndle, hsk, all, overlap));
+    nprotect++;
+  }
+  UNPROTECT(nprotect);
+  return ans;
+}
+
+SEXP fposMatR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
   if (!IS_BOOL(all)) {
     error("Argument 'all' must be TRUE or FALSE and length 1.");
   }
   if (!IS_BOOL(overlap)) {
     error("Argument 'overlap' must be TRUE or FALSE and length 1.");
-  }
-  if (isS4(hsk) || isS4(ndle)) {
-    error("S4 class objects are not supported.");
   }
   SEXPTYPE thsk = UTYPEOF(hsk);
   SEXPTYPE tndle = UTYPEOF(ndle);
@@ -68,8 +93,8 @@ SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
   SEXP row = PROTECT(allocVector(INTSXP, sz)); nprotect++;
   int *restrict pcol = INTEGER(col);
   int *restrict prow = INTEGER(row);
-  const int pall = !LOGICAL(all)[0];
-  const int poverlap = !LOGICAL(overlap)[0];
+  const int pall = !asLogical(all);
+  const int poverlap = !asLogical(overlap);
   switch(thsk) {
   case LGLSXP: {
     const int *restrict int_h = LOGICAL(hsk);
@@ -157,8 +182,7 @@ SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
           pos_h = (i+p) * n  + j;
           pos_n = p * k;
           for (q = 0; q < k; ++q) {
-            if (dbl_h[pos_h + q] != dbl_n[pos_n + q] &&
-                (!(ISNAN(dbl_h[pos_h + q]) || ISNAN(dbl_n[pos_n + q])))) {
+            if (!REQUAL(dbl_h[pos_h + q], dbl_n[pos_n + q])) {
               id = 0;
               break;
             }
@@ -194,8 +218,7 @@ SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
           pos_h = (i+p) * n  + j;
           pos_n = p * k;
           for (q = 0; q < k; ++q) {
-            if ((cpl_h[pos_h + q].r != cpl_n[pos_n + q].r || cpl_h[pos_h + q].i != cpl_n[pos_n + q].i) &&
-                (!(ISNAN_COMPLEX(cpl_h[pos_h + q])  || ISNAN_COMPLEX(cpl_n[pos_n + q])) )) {
+            if (!CEQUAL(cpl_h[pos_h + q], cpl_n[pos_n + q])) {
               id = 0;
               break;
             }
@@ -261,6 +284,168 @@ SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
   SEXP ans = PROTECT(allocMatrix(INTSXP, x, 2)); nprotect++;
   memcpy(INTEGER(ans), prow, (unsigned)x*sizeof(int));
   memcpy(INTEGER(ans)+x, pcol, (unsigned)x*sizeof(int));
+  UNPROTECT(nprotect);
+  return ans;
+}
+
+SEXP fposVectR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
+  if (!IS_BOOL(all)) {
+    error("Argument 'all' must be TRUE or FALSE and length 1.");
+  }
+  if (!IS_BOOL(overlap)) {
+    error("Argument 'overlap' must be TRUE or FALSE and length 1.");
+  }
+  SEXPTYPE thsk = UTYPEOF(hsk);
+  SEXPTYPE tndle = UTYPEOF(ndle);
+  if (thsk != INTSXP && thsk != REALSXP && thsk != LGLSXP &&
+      thsk != CPLXSXP && thsk != STRSXP) {
+    error("Type %s for 'haystack' is not supported.", type2char(thsk));
+  }
+  if (tndle != INTSXP && tndle != REALSXP && tndle != LGLSXP &&
+      tndle != CPLXSXP && tndle != STRSXP) {
+    error("Type %s for 'needle' is not supported.", type2char(tndle));
+  }
+  const R_xlen_t n = xlength(hsk);
+  const R_xlen_t k = xlength(ndle);
+  if (k > n) {
+    error("The 'needle' vector length is greater than the 'haystack' vector length.");
+  }
+  int nprotect = 0;
+  if (thsk != tndle) {
+    if (tndle == INTSXP && thsk == REALSXP) {
+      ndle = PROTECT(coerceVector(ndle, thsk)); nprotect++;
+      tndle = thsk;
+    } else if (tndle == REALSXP && thsk == INTSXP) {
+      hsk = PROTECT(coerceVector(hsk, tndle)); nprotect++;
+      thsk = tndle;
+    } else {
+      error("Haystack type (%s) and needle type (%s) are different."
+              " Please make sure that they have the same type.",
+              type2char(thsk), type2char(tndle));
+    }
+  }
+  const R_xlen_t lim_x = n - k + 1;
+  R_xlen_t ti = 0, x = 0;
+  SEXP row = PROTECT(allocVector(INTSXP, lim_x)); nprotect++;
+  int *restrict prow = INTEGER(row);
+  const int pall = !asLogical(all);
+  const int poverlap = !asLogical(overlap);
+  switch(thsk) {
+  case LGLSXP: {
+    const int *restrict int_h = LOGICAL(hsk);
+    const int *restrict int_n = LOGICAL(ndle);
+    for (int i = 0; i < lim_x; ++i) {
+      if (i < ti) {
+        continue;
+      }
+      for (int j = 0; j < k; ++j) {
+        if (int_h[i+j] != int_n[j]) {
+          goto lbl;
+        }
+      }
+      prow[x++] = i + 1;
+      if (pall) {
+        break;
+      }
+      if (poverlap) {
+        ti = i + k;
+      }
+      lbl:;
+    }
+  } break;
+  case INTSXP: {
+    const int *restrict int_h = INTEGER(hsk);
+    const int *restrict int_n = INTEGER(ndle);
+    for (int i = 0; i < lim_x; ++i) {
+      if (i < ti) {
+        continue;
+      }
+      for (int j = 0; j < k; ++j) {
+        if (int_h[i+j] != int_n[j]) {
+          goto lbi;
+        }
+      }
+      prow[x++] = i + 1;
+      if (pall) {
+        break;
+      }
+      if (poverlap) {
+        ti = i + k;
+      }
+      lbi:;
+    }
+  } break;
+  case REALSXP: {
+    const double *restrict dbl_h = REAL(hsk);
+    const double *restrict dbl_n = REAL(ndle);
+    for (int i = 0; i < lim_x; ++i) {
+      if (i < ti) {
+        continue;
+      }
+      for (int j = 0; j < k; ++j) {
+        if (!REQUAL(dbl_h[i+j], dbl_n[j])) {
+          goto lbr;
+        }
+      }
+      prow[x++] = i + 1;
+      if (pall) {
+        break;
+      }
+      if (poverlap) {
+        ti = i + k;
+      }
+      lbr:;
+    }
+  } break;
+  case CPLXSXP: {
+    const Rcomplex *restrict cpl_h = COMPLEX(hsk);
+    const Rcomplex *restrict cpl_n = COMPLEX(ndle);
+    for (int i = 0; i < lim_x; ++i) {
+      if (i < ti) {
+        continue;
+      }
+      for (int j = 0; j < k; ++j) {
+        if (!CEQUAL(cpl_h[i+j], cpl_n[j])) {
+          goto lbc;
+        }
+      }
+      prow[x++] = i + 1;
+      if (pall) {
+        break;
+      }
+      if (poverlap) {
+        ti = i + k;
+      }
+      lbc:;
+    }
+  } break;
+  case STRSXP: {
+    for (int i = 0; i < lim_x; ++i) {
+      if (i < ti) {
+        continue;
+      }
+      for (int j = 0; j < k; ++j) {
+        if (RCHAR(hsk, i+j) != RCHAR(ndle, j)) {
+          goto lbs;
+        }
+      }
+      prow[x++] = i + 1;
+      if (pall) {
+        break;
+      }
+      if (poverlap) {
+        ti = i + k;
+      }
+      lbs:;
+    }
+  } break;
+  }
+  if (x == 0) {
+    UNPROTECT(nprotect);
+    return R_NilValue;
+  }
+  SEXP ans = PROTECT(allocVector(INTSXP, x)); nprotect++;
+  memcpy(INTEGER(ans), prow, (unsigned)x*sizeof(int));
   UNPROTECT(nprotect);
   return ans;
 }

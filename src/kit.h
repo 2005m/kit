@@ -46,10 +46,26 @@
 #define CEQUAL(x, y) ((N_ISNAN(x.r, x.i) && N_ISNAN(y.r, y.i)) ? (x.r == y.r && x.i == y.i) : (C_IsNA(x) ? C_IsNA(y) : (C_IsNA(y) ? 0 : (C_ISNAN(x.r, y.r) && C_ISNAN(x.i, y.i)))))
 #define STR_DF mkString("data.frame")
 
+extern SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln);
 extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
-extern SEXP dupR(SEXP x, SEXP uniq, SEXP ridx, SEXP pos);
+extern SEXP countOccurR(SEXP x);
+extern SEXP countOccurDataFrameR(SEXP x);
+extern SEXP dupR(SEXP x, SEXP uniq);
+extern SEXP dupVecR(SEXP x, SEXP uniq);
+extern SEXP dupVecIndexR(SEXP x);
+extern SEXP dupVecIndexOnlyR(SEXP x);
+extern SEXP dupVecIndexCountR(SEXP x);
+extern SEXP dupDataFrameR(SEXP x, SEXP uniq);
+extern SEXP dupDataFrameIndexR(SEXP x);
+extern SEXP dupDataFrameIndexCountR(SEXP x);
+extern SEXP dupMatrixR(SEXP x, SEXP uniq);
+extern SEXP dupMatrixIndexR(SEXP x);
 extern SEXP fposR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
+extern SEXP fposMatR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
+extern SEXP fposVectR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap);
+extern SEXP groupEltVectR(SEXP x);
+extern SEXP groupEltDataFrameR(SEXP x);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
 extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
 extern SEXP ompEnabledR();
@@ -60,8 +76,11 @@ extern SEXP pmeanR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);
 extern SEXP setlevelsR(SEXP x, SEXP old_lvl, SEXP new_lvl, SEXP skip_absent);
-extern SEXP subSetRow(SEXP df, SEXP rws);
-extern SEXP topnR(SEXP vec, SEXP n, SEXP dec);
+extern SEXP subSetColDataFrame(SEXP df, SEXP str);
+extern SEXP subSetColMatrix(SEXP x, R_xlen_t idx);
+extern SEXP subSetRowDataFrame(SEXP df, SEXP rws);
+extern SEXP subSetRowMatrix(SEXP mat, SEXP rws);
+extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
 
 union uno { double d; unsigned int u[2]; };

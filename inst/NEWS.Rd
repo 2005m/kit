@@ -4,10 +4,44 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.4 (2020-07-21)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{countOccur}(x)}, implemented in C, is comparable to \code{base}
+      \R function \code{table}. It returns a \code{data.frame} and is between 3 to 50 times faster.
+      For more details, please see \code{?kit::countOccur}.
+
+      \item Functions \code{funique} and \code{fduplicated} now support matrices. Additionally, these
+      two functions should also have better performance compare to previous release.
+
+      \item Functions \code{topn} has an additional argument \code{hasna=TRUE} to indicates whether
+      data contains \code{NA} value or not. If the data does not contain \code{NA} values, the function
+      should be faster.
+    }
+  }
+  \subsection{C-Level Facilities}{
+    \itemize{
+      \item A few C functions have been added to subset \code{data.frame} and \code{matrix} as well as
+	  do other operations. These functions are not exported or visible to the user but might become
+	  available and callable at C level in the future.
+    }
+  }
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Function \code{fpos} was not properly handling \code{NaN} and \code{NA} for complex and
+      double. This should now be fixed. The function has also been changed in case the 'needle' and
+      'haysatck' are vectors so that a vector is returned.
+
+      \item Functions \code{funique} and \code{fduplicated} were not properly handling data containing
+      \code{POSIX} data. This has now been fixed.
+    }
+  }
+}
+
 \section{version 0.0.3 (2020-06-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Functions \code{\strong{fduplicated}(x, idx=FALSE)} and \code{\strong{funique}(x, idx=FALSE)},
+      \item Functions \code{\strong{fduplicated}(x)} and \code{\strong{funique}(x)},
       implemented in C, are comparable to \code{base} \R functions \code{duplicated} and \code{unique}.
       For more details, please see \code{?kit::funique}.
 
@@ -16,7 +50,8 @@
   }
   \subsection{Bug Fixes}{
     \itemize{
-      \item Function \code{count(x, y)} now checks that \code{x} and \code{y} have the same class and levels. So does \code{pcount}.
+      \item Function \code{count(x, y)} now checks that \code{x} and \code{y} have the same class and
+      levels. So does \code{pcount}.
 
       \item Function \code{pmean} was not callable at C level because of a typo. This is now fixed.
     }
@@ -27,7 +62,8 @@
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{count}(x, value)}, implemented in C, to simply count the number of times 
-      an element \code{value} occurs in a vector or in a list \code{x}. For more details, please see \code{?kit::count}.
+      an element \code{value} occurs in a vector or in a list \code{x}. For more details, please see
+      \code{?kit::count}.
 
       \item Function \code{\strong{pmean}(..., na.rm=FALSE)}, \code{\strong{pall}(..., na.rm=FALSE)}, 
       \code{\strong{pany}(..., na.rm=FALSE)} and \code{\strong{pcount}(..., value)}, implemented in C, 
