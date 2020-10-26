@@ -4,10 +4,6 @@ sudo: required
 cache: packages
 warnings_are_errors: true
 
-branches:
-  only:
-    - "master"
-
 r:
   - oldrel
   - release
