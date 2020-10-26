@@ -84,3 +84,5 @@ extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
 
 union uno { double d; unsigned int u[2]; };
+bool isMixEnc(SEXP x);
+SEXP enc2UTF8(SEXP x);
