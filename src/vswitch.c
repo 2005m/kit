@@ -19,6 +19,9 @@
 #include "kit.h"
 
 SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP chkenc) {
+  if (!IS_BOOL(chkenc)) {
+    error("Argument 'checkEnc' must be TRUE or FALSE and length 1.");
+  }
   if (isS4(x)) {
     error("S4 class objects for argument 'x' are not supported.");
   }

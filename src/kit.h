@@ -81,7 +81,7 @@ extern SEXP subSetColMatrix(SEXP x, R_xlen_t idx);
 extern SEXP subSetRowDataFrame(SEXP df, SEXP rws);
 extern SEXP subSetRowMatrix(SEXP mat, SEXP rws);
 extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna);
-extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
+extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP chkenc);
 
 union uno { double d; unsigned int u[2]; };
 bool isMixEnc(SEXP x);
