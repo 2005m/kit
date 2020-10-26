@@ -1,5 +1,5 @@
 language: r
-dist: xenial
+dist: bionic
 sudo: required
 cache: packages
 warnings_are_errors: true
