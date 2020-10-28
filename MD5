@@ -15,12 +15,12 @@ e926b9000dfefbfdd1821bbc63860c05 *man/vswitch.Rd
 4f1556c6350a31ee12af65be0a53edba *NAMESPACE
 522c4d45bccfc82222b41412545200cb *R/call.R
 41c5cf97409a34bda2f88c1f653c6172 *README.md
-ea44045217f01c5e0a9bcf5e48f83d12 *src/dup.c
-720a801c02cf3eb1a8d4c61930b0d3d7 *src/dupLen.c
+1a5c24008a5bb813fba87b875d21bd30 *src/dup.c
+ab323f703f131b5a2a1e068314b5a8ee *src/dupLen.c
 e1ed4f737c3f31102408f248a5468a8a *src/fpos.c
 f4f87b1fb26b5cafdd6e563ce881f381 *src/iif.c
 18bb9b31a2f37668b8dddbfcf4d7e4a3 *src/init.c
-dd2e37b3ab9ee3aa8418ba597f000aa6 *src/kit.h
+59371ba99cababd4079b867b9fcd389e *src/kit.h
 cde2535a36d0ee0e2c04232c0593da84 *src/Makevars.in
 47af37b6e045426e44e511fce458c6fe *src/Makevars.win
 64d267089b2e33decdd47d6e93f91ad8 *src/psum.c

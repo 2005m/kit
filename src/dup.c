@@ -56,13 +56,13 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq) { // move to matrix if possible
       break;
     }
   }
+  const bool buniq = asLogical(uniq);
   if (allT) {
-    SEXP output = PROTECT(subSetRowDataFrame(x, PROTECT(dupMatrixR(PROTECT(dfToMatrix(x)), ScalarLogical(TRUE), TRUE))));
-    UNPROTECT(3);
+    SEXP output = buniq ? PROTECT(subSetRowDataFrame(x, PROTECT(dupMatrixR(PROTECT(dfToMatrix(x)), uniq, TRUE)))) : PROTECT(dupMatrixR(PROTECT(dfToMatrix(x)), uniq, FALSE));
+    UNPROTECT(buniq ? 3 : 2);
     return output;
   }
   const R_xlen_t len_i = xlength(px[0]);
-  const bool buniq = asLogical(uniq);
   SEXP ans = buniq ? R_NilValue: PROTECT(allocVector(LGLSXP, len_i));
   SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
   for (R_xlen_t i = 0; i < len_x; ++i) {
