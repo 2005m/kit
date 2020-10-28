@@ -43,8 +43,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
   const bool pchkenc = asLogical(chkenc);
   const bool nonna = !isNull(na);
   const bool nalen = (len_na==1);
-  if (!len_values || !len_x) {
-    error("Argument 'x' and 'values' connot be zero-length vector.");
+  if (len_values == 0) {
+    error("Argument'values' cannot be zero-length vector.");
   }
   if (len_values != len_outputs) {
     error("Length of 'values' and 'outputs' are different. Please make sure they are the same.");
