@@ -23,6 +23,10 @@
   #define OMP_PARALLEL_FOR(n)
 #endif
 
+#if !defined SSIZE_MAX
+  #define SSIZE_MAX LLONG_MAX
+#endif
+
 #define UTYPEOF(x) ((unsigned)TYPEOF(x))
 #define IS_BOOL(x) (LENGTH(x)==1 && TYPEOF(x)==LGLSXP && LOGICAL(x)[0]!=NA_LOGICAL)
 #define IS_VALID_TYPE(x) ((x) == LGLSXP || (x)==INTSXP || (x)==REALSXP || (x)==CPLXSXP || (x)==STRSXP || (x)==VECSXP)
@@ -83,5 +87,3 @@ extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads);
 
 union uno { double d; unsigned int u[2]; };
-bool isMixEnc(SEXP x);
-SEXP enc2UTF8(SEXP x);
