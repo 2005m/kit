@@ -1,8 +1,12 @@
 language: r
-dist: bionic
+dist: xenial
 sudo: required
 cache: packages
 warnings_are_errors: true
+
+branches:
+  only:
+    - "master"
 
 r:
   - oldrel
@@ -13,7 +17,6 @@ r:
   - 3.4
   - 3.3
   - 3.2
-  - 3.1
 
 os:
   - linux
