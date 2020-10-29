@@ -4,6 +4,30 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.5 (2020-11-21)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{uniqLen(x)}} is equivalent to base R \code{length(unique(x))} and
+      \code{uniqueN} in package \CRANpkg{data.table}. Function \code{uniqLen}, implemented in C, supports
+      vectors, \code{data.frame} and \code{matrix}. It should be faster than these functions. For more
+      details and benchmark please see \code{?kit::uniqLen}.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item Small algorithmic improvement for functions \code{\strong{fduplicated}}, \code{\strong{funique}}
+      and \code{\strong{countOccur}} for \code{vectors}, \code{data.frame} and \code{matrix}.
+    }
+  }
+  \subsection{C-Level Facilities}{
+    \itemize{
+      \item Function \code{\strong{nif}} has been split into two distinctive functions at C level,
+      one has its arguments evaluated in a lazy way and is for R users and the other one (nifInternalR)
+      is not lazy and is intended for usage at C level.
+    }
+  }
+}
+
 \section{version 0.0.4 (2020-07-21)}{
   \subsection{New Features}{
     \itemize{
