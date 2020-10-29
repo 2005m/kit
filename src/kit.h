@@ -23,6 +23,10 @@
   #define OMP_PARALLEL_FOR(n)
 #endif
 
+#if !defined SSIZE_MAX
+  #define SSIZE_MAX LLONG_MAX
+#endif
+
 #define UTYPEOF(x) ((unsigned)TYPEOF(x))
 #define IS_BOOL(x) (LENGTH(x)==1 && TYPEOF(x)==LGLSXP && LOGICAL(x)[0]!=NA_LOGICAL)
 #define IS_VALID_TYPE(x) ((x) == LGLSXP || (x)==INTSXP || (x)==REALSXP || (x)==CPLXSXP || (x)==STRSXP || (x)==VECSXP)
@@ -51,23 +55,22 @@ extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
 extern SEXP countOccurR(SEXP x);
 extern SEXP countOccurDataFrameR(SEXP x);
+extern SEXP dfToMatrix(SEXP df);
 extern SEXP dupR(SEXP x, SEXP uniq);
 extern SEXP dupVecR(SEXP x, SEXP uniq);
-extern SEXP dupVecIndexR(SEXP x);
 extern SEXP dupVecIndexOnlyR(SEXP x);
-extern SEXP dupVecIndexCountR(SEXP x);
 extern SEXP dupDataFrameR(SEXP x, SEXP uniq);
-extern SEXP dupDataFrameIndexR(SEXP x);
-extern SEXP dupDataFrameIndexCountR(SEXP x);
-extern SEXP dupMatrixR(SEXP x, SEXP uniq);
-extern SEXP dupMatrixIndexR(SEXP x);
+extern SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx);
+extern SEXP dupLenR(SEXP x);
+extern SEXP dupLenDataFrameR(SEXP x);
+extern SEXP dupLenMatrixR(SEXP x);
+extern SEXP dupLenVecR(SEXP x);
 extern SEXP fposR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP fposMatR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP fposVectR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap);
-extern SEXP groupEltVectR(SEXP x);
-extern SEXP groupEltDataFrameR(SEXP x);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
-extern SEXP nifR(SEXP na, SEXP rho, SEXP md, SEXP args);
+extern SEXP nifR(SEXP na, SEXP rho, SEXP args);
+extern SEXP nifInternalR(SEXP na, SEXP rho, SEXP args);
 extern SEXP ompEnabledR();
 extern SEXP pallR(SEXP na, SEXP args);
 extern SEXP panyR(SEXP na, SEXP args);
