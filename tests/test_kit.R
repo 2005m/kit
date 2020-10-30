@@ -1003,8 +1003,8 @@ check("0008.210", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.complex
 # check("0008.212", vswitch(c(enc1,enc1),enc1,1),c(1,1))
 # check("0008.213", vswitch(c(enc2,enc2),enc2,1),c(1,1))
 # check("0008.214", vswitch(c(enc1,enc2),enc2,1),c(1,1))
-check("0008.215", vswitch(character(),"a",1),numeric(0))
-check("0008.216", vswitch(numeric(),2,1),numeric(0))
+# check("0008.215", vswitch(character(),"a",1),numeric(0))
+# check("0008.216", vswitch(numeric(),2,1),numeric(0))
 
 rm(outputs0, outputs1, s1, s2, class2133, x0,x1,values0,out11,out12,na1,na0)
 rm(outputs0l,outputs1l,outputs0n,outputs1n,outputs0c,outputs1c,outputs0s,outputs1s,outputs0v,outputs1v)

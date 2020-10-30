@@ -10,13 +10,13 @@ branches:
 
 r:
   - release
-  - oldrel
-  - devel
-  - 3.6
-  - 3.5
-  - 3.4
-  - 3.3
-  - 3.2
+  #- oldrel
+  #- devel
+  #- 3.6
+  #- 3.5
+  #- 3.4
+  #- 3.3
+  #- 3.2
 
 os:
   - linux
