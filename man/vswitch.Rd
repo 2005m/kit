@@ -5,7 +5,9 @@
   \code{vswitch} is a vectorised version of \code{base} function \code{switch}. This function can also be seen as a particular case of function \code{nif}, as shown in examples below, and should also be faster.
 }
 \usage{
-  vswitch(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"))
+    vswitch(x, values, outputs, default=NULL,
+            nThread=getOption("kit.nThread"),
+            checkEnc=TRUE)
 }
 \arguments{
   \item{x}{A vector or list.}
@@ -13,6 +15,7 @@
   \item{outputs}{A list or vector with the outputs to return for every matching values. Each item of the list must be of length 1 or length of \code{x}. Note that if all list items are of length 1 then it might be simpler to use a vector.}
   \item{default}{Values to return is no match. Must be a vector or list of length 1 or same length as \code{x}. Also, \code{default} must have the same type, class and aatributes as items from \code{outputs}.}
   \item{nThread}{ A integer for the number of threads to use with \emph{openmp}. Default value is \code{getOption("kit.nThread")}.}
+  \item{checkEnc}{ A logical value whether or not to check if \code{x} and \code{values} have comparable and consistant encoding. Default is \code{TRUE}.}
 }
 \value{
   A vector or list of the same length as \code{x} with values from \code{outputs} items and from \code{default} if missing.

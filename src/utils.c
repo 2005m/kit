@@ -811,3 +811,27 @@ SEXP dfToMatrix(SEXP df) {
   UNPROTECT(1);
   return mlv;
 }
+
+bool isMixEnc(SEXP x) {
+  const R_xlen_t len = xlength(x);
+  SEXP *px = STRING_PTR(x);
+  const cetype_t ces = getCharCE(px[0]);
+  for (R_xlen_t i = 1; i < len; ++i)
+    if(getCharCE(px[i]) != ces)
+      return true;
+  return false;
+}
+
+SEXP enc2UTF8(SEXP x) {
+  SEXP *px = STRING_PTR(x);
+  const R_xlen_t len = xlength(x);
+  if (getCharCE(px[0]) != CE_UTF8) {
+    SEXP ans = PROTECT(allocVector(STRSXP, len));
+    for (R_xlen_t i = 0; i < len; ++i) {
+      SET_STRING_ELT(ans, i, mkCharCE(translateCharUTF8(px[i]), CE_UTF8));
+    }
+    UNPROTECT(1);
+    return ans;
+  }
+  return x;
+}

@@ -16,7 +16,7 @@ psum        = function(..., na.rm=FALSE) .Call(CpsumR, na.rm, list(...))
 setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Call(CsetlevelsR, x, old, new, skip_absent))
 topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE) .Call(CtopnR, vec, n, decreasing, hasna)
 uniqLen     = function(x) .Call(CdupLenR, x)
-vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread")) .Call(CvswitchR, x, values, outputs, default, nThread)
+vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
 
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.5 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
