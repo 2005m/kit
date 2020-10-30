@@ -9,8 +9,8 @@ branches:
     - "master"
 
 r:
-  - oldrel
   - release
+  - oldrel
   - devel
   - 3.6
   - 3.5
@@ -25,4 +25,4 @@ r_packages:
   - covr
 
 after_success: 
-  - Rscript -e 'covr::codecov()'
+  - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
