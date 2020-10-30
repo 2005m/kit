@@ -7,10 +7,14 @@
 \section{version 0.0.5 (2020-11-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Function \code{\strong{uniqLen(x)}} is equivalent to base R \code{length(unique(x))} and
+      \item Function \code{\strong{uniqLen}(x)} is equivalent to base R \code{length(unique(x))} and
       \code{uniqueN} in package \CRANpkg{data.table}. Function \code{uniqLen}, implemented in C, supports
       vectors, \code{data.frame} and \code{matrix}. It should be faster than these functions. For more
       details and benchmark please see \code{?kit::uniqLen}.
+      
+      \item Function \code{\strong{switch}} now supports mixed encoding and gains an additional argument 
+      \code{checkEnc=TRUE}. Thanks to Xianying Tan (@shrektan) for the request and review 
+      \href{https://github.com/2005m/kit/pull/7}{PR#7}.
     }
   }
   \subsection{Notes}{
@@ -35,10 +39,10 @@
       \R function \code{table}. It returns a \code{data.frame} and is between 3 to 50 times faster.
       For more details, please see \code{?kit::countOccur}.
 
-      \item Functions \code{funique} and \code{fduplicated} now support matrices. Additionally, these
-      two functions should also have better performance compare to previous release.
+      \item Functions \code{\strong{funique}} and \code{\strong{fduplicated}} now support matrices.
+      Additionally, these two functions should also have better performance compare to previous release.
 
-      \item Functions \code{topn} has an additional argument \code{hasna=TRUE} to indicates whether
+      \item Functions \code{\strong{topn}} has an additional argument \code{hasna=TRUE} to indicates whether
       data contains \code{NA} value or not. If the data does not contain \code{NA} values, the function
       should be faster.
     }
@@ -52,12 +56,12 @@
   }
   \subsection{Bug Fixes}{
     \itemize{
-      \item Function \code{fpos} was not properly handling \code{NaN} and \code{NA} for complex and
-      double. This should now be fixed. The function has also been changed in case the 'needle' and
+      \item Function \code{\strong{fpos}} was not properly handling \code{NaN} and \code{NA} for complex 
+      and double. This should now be fixed. The function has also been changed in case the 'needle' and
       'haysatck' are vectors so that a vector is returned.
 
-      \item Functions \code{funique} and \code{fduplicated} were not properly handling data containing
-      \code{POSIX} data. This has now been fixed.
+      \item Functions \code{\strong{funique}} and \code{\strong{fduplicated}} were not properly handling
+      data containing \code{POSIX} data. This has now been fixed.
     }
   }
 }
@@ -65,19 +69,20 @@
 \section{version 0.0.3 (2020-06-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Functions \code{\strong{fduplicated}(x)} and \code{\strong{funique}(x)},
-      implemented in C, are comparable to \code{base} \R functions \code{duplicated} and \code{unique}.
-      For more details, please see \code{?kit::funique}.
+      \item Functions \code{\strong{fduplicated}(x)} and \code{\strong{funique}(x)}, implemented in C, 
+      are comparable to \code{base} \R functions \code{duplicated} and \code{unique}. For more details, 
+      please see \code{?kit::funique}.
 
-      \item Functions \code{psum} and \code{pprod} have now better performance for type double and complex.
+      \item Functions \code{\strong{psum}} and \code{\strong{pprod}} have now better performance for 
+      type double and complex.
     }
   }
   \subsection{Bug Fixes}{
     \itemize{
-      \item Function \code{count(x, y)} now checks that \code{x} and \code{y} have the same class and
+      \item Function \code{\strong{count}(x, y)} now checks that \code{x} and \code{y} have the same class and
       levels. So does \code{pcount}.
 
-      \item Function \code{pmean} was not callable at C level because of a typo. This is now fixed.
+      \item Function \code{\strong{pmean}} was not callable at C level because of a typo. This is now fixed.
     }
   }
 }
@@ -91,9 +96,9 @@
 
       \item Function \code{\strong{pmean}(..., na.rm=FALSE)}, \code{\strong{pall}(..., na.rm=FALSE)}, 
       \code{\strong{pany}(..., na.rm=FALSE)} and \code{\strong{pcount}(..., value)}, implemented in C, 
-      are similar to already available function \code{psum} and \code{pprod}. These functions respectively 
-      apply base \R functions \code{mean}, \code{all} and \code{any} element-wise. For more details, 
-      benchmarks and help, please see \code{?kit::pmean}.
+      are similar to already available function \code{\strong{psum}} and \code{\strong{pprod}}. These 
+      functions respectively apply base \R functions \code{mean}, \code{all} and \code{any} element-wise. 
+      For more details, benchmarks and help, please see \code{?kit::pmean}.
     }
   }
   \subsection{Bug Fixes}{
@@ -101,8 +106,8 @@
       \item Fix Solaris Unicode warnings for NEWS file. Benchmarks have been moved from the NEWS file to 
       each function Rd file.
       
-      \item Fix some \code{NA} edge cases for \code{pprod} and \code{psum} so these functions behave more
-      like base \R function \code{prod} and \code{sum}.
+      \item Fix some \code{NA} edge cases for \code{\strong{pprod}} and \code{\strong{psum}} so these 
+      functions behave more like base \R function \code{prod} and \code{sum}.
 
       \item Fix installation errors for version of R (<3.5.0).
     }
