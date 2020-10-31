@@ -15,8 +15,8 @@ dc9e6e1fbeb0c05694f566970bc57b10 *man/vswitch.Rd
 8b041db1ae628bd8241f5e57db318669 *NAMESPACE
 993fb0fcb67daa7df018344f795635c6 *R/call.R
 fa0ca12018176564236efd16b8d8e9d8 *README.md
-80b300c6200dc8c1f0078ea4c8baf9de *src/dup.c
-720a801c02cf3eb1a8d4c61930b0d3d7 *src/dupLen.c
+9c2779934039f6de5758068f78084327 *src/dup.c
+f6e01fe007c5384668165c0efcc159ff *src/dupLen.c
 84230b3325b0d1b661e4688f9aac670a *src/fpos.c
 d800a56f0076c3d2aa747ee02653f0d2 *src/iif.c
 e7f79b9871ca0c5b93d652713982e7ec *src/init.c
@@ -25,7 +25,7 @@ e7f79b9871ca0c5b93d652713982e7ec *src/init.c
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 d2f4fdbd388ae96944e5de4e7c8fb138 *src/psum.c
 91d603f722355667800428c1a6c03d34 *src/topn.c
-edf1d9bce4c98177e35e4a96a9f12355 *src/utils.c
+7594787e656e81a952602afa1711405b *src/utils.c
 403cced156980d4dab25d16d67dadb61 *src/vswitch.c
-37ad3556afef22985b14a490a3b0ea27 *tests/test_kit.R
-1366b64153b864c09c731e88c5d21f65 *tests/test_kit.Rout.save
+c197e3aab79d9d8902cf1f43a234ffda *tests/test_kit.R
+5cb347ede99a3fb9b75f3d14257ea9cf *tests/test_kit.Rout.save

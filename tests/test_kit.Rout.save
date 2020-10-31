@@ -31,24 +31,25 @@ Type 'q()' to quit R.
 +   for (len in c("warning","error")) {
 +     output = opt[[len]]; input = get(len)
 +     if (length(input) != length(output)) {
-+       cat("Check",test,"failed.\n"); return()
++       cat("Check",test,"failed.\n"); return(invisible(FALSE))
 +     } else {
 +       for (i in seq_along(input)) {
 +         if(!(length(grep(input[i], output[i], fixed=TRUE)) ||
 +              length(
 +                tryCatch(grep(input[i], output[i], ignore.case=FALSE), error=function(err) NULL)))
 +              ) {
-+           cat("Check",test,"failed.\n"); return()
++           cat("Check",test,"failed.\n"); return(invisible(FALSE))
 +         }
 +       }
 +     }
 +   }
 +   if (length(error) == 0) {
-+     if (identical(x,y)) return()
++     if (identical(x,y)) return(invisible(TRUE))
 +     if (is.atomic(x) && is.atomic(y) && isTRUE(all.equal(x,y,check.names=!isTRUE(y))) &&
-+         typeof(x)==typeof(y)) return()
++         typeof(x)==typeof(y)) return(invisible(TRUE))
 +     cat("Check",test,"failed.\n")
 +   }
++   return(invisible(FALSE))
 + }
 > 
 > library(kit); unloadNamespace("kit")
@@ -88,246 +89,129 @@ Attaching kit 0.0.5 (OPENMP enabled using 1 thread)
 > s1 = class2134(x=20191231)
 > 
 > check("0001.001", topn(x0, 1L, decreasing=FALSE), order(x0)[1:1])
-NULL
 > check("0001.002", topn(x0, 2L, decreasing=FALSE), order(x0)[1:2])
-NULL
 > check("0001.003", topn(x0, 3L, decreasing=FALSE), order(x0)[1:3])
-NULL
 > check("0001.004", topn(x0, 4L, decreasing=FALSE), order(x0)[1:4])
-NULL
 > check("0001.005", topn(x0, 5L, decreasing=FALSE), order(x0)[1:5])
-NULL
 > check("0001.006", topn(x0, 6L, decreasing=FALSE), order(x0)[1:6])
-NULL
 > check("0001.007", topn(x0, 7L, decreasing=FALSE), order(x0)[1:7])
-NULL
 > check("0001.008", topn(x0, 8L, decreasing=FALSE), order(x0)[1:8])
-NULL
 > check("0001.009", topn(x0, 9L, decreasing=FALSE), order(x0)[1:9])
-NULL
 > check("0001.010", topn(x0, 10L, decreasing=FALSE), order(x0)[1:10])
-NULL
 > check("0001.011", topn(x0, 11L, decreasing=FALSE), order(x0)[1:11])
-NULL
 > check("0001.012", topn(x0, 12L, decreasing=FALSE), order(x0)[1:12])
-NULL
 > check("0001.013", topn(x0, 13L, decreasing=FALSE), order(x0)[1:13])
-NULL
 > check("0001.014", topn(x1, 1L, decreasing=FALSE), order(x1)[1:1])
-NULL
 > check("0001.015", topn(x1, 2L, decreasing=FALSE), order(x1)[1:2])
-NULL
 > check("0001.016", topn(x1, 3L, decreasing=FALSE), order(x1)[1:3])
-NULL
 > check("0001.017", topn(x1, 4L, decreasing=FALSE), order(x1)[1:4])
-NULL
 > check("0001.018", topn(x1, 5L, decreasing=FALSE), order(x1)[1:5])
-NULL
 > check("0001.019", topn(x1, 6L, decreasing=FALSE), order(x1)[1:6])
-NULL
 > check("0001.020", topn(x1, 7L, decreasing=FALSE), order(x1)[1:7])
-NULL
 > check("0001.021", topn(x1, 8L, decreasing=FALSE), order(x1)[1:8])
-NULL
 > check("0001.022", topn(x1, 9L, decreasing=FALSE), order(x1)[1:9])
-NULL
 > check("0001.023", topn(x1, 10L, decreasing=FALSE), order(x1)[1:10])
-NULL
 > check("0001.024", topn(x1, 11L, decreasing=FALSE), order(x1)[1:11])
-NULL
 > check("0001.025", topn(x1, 12L, decreasing=FALSE), order(x1)[1:12])
-NULL
 > check("0001.026", topn(x1, 13L, decreasing=FALSE), order(x1)[1:13])
-NULL
 > check("0001.027", topn(x2, 1L, decreasing=FALSE), order(x2)[1:1])
-NULL
 > check("0001.028", topn(x2, 2L, decreasing=FALSE), order(x2)[1:2])
-NULL
 > check("0001.029", topn(x2, 3L, decreasing=FALSE), order(x2)[1:3])
-NULL
 > check("0001.030", topn(x3, 1L, decreasing=FALSE), order(x3)[1:1])
-NULL
 > check("0001.031", topn(x3, 2L, decreasing=FALSE), order(x3)[1:2])
-NULL
 > check("0001.032", topn(x3, 3L, decreasing=FALSE), order(x3)[1:3])
-NULL
 > check("0001.033", topn(x0, 1L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:1])
-NULL
 > check("0001.034", topn(x0, 2L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:2])
-NULL
 > check("0001.035", topn(x0, 3L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:3])
-NULL
 > check("0001.036", topn(x0, 4L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:4])
-NULL
 > check("0001.037", topn(x0, 5L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:5])
-NULL
 > check("0001.038", topn(x0, 6L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:6])
-NULL
 > check("0001.039", topn(x0, 7L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:7])
-NULL
 > check("0001.040", topn(x0, 8L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:8])
-NULL
 > check("0001.041", topn(x0, 9L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:9])
-NULL
 > check("0001.042", topn(x0, 10L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:10])
-NULL
 > check("0001.043", topn(x0, 11L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:11])
-NULL
 > check("0001.044", topn(x0, 12L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:12])
-NULL
 > check("0001.045", topn(x0, 13L, decreasing=TRUE), order(x0, decreasing=TRUE)[1:13])
-NULL
 > check("0001.046", topn(x1, 1L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:1])
-NULL
 > check("0001.047", topn(x1, 2L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:2])
-NULL
 > check("0001.048", topn(x1, 3L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:3])
-NULL
 > check("0001.049", topn(x1, 4L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:4])
-NULL
 > check("0001.050", topn(x1, 5L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:5])
-NULL
 > check("0001.051", topn(x1, 6L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:6])
-NULL
 > check("0001.052", topn(x1, 7L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:7])
-NULL
 > check("0001.053", topn(x1, 8L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:8])
-NULL
 > check("0001.054", topn(x1, 9L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:9])
-NULL
 > check("0001.055", topn(x1, 10L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:10])
-NULL
 > check("0001.056", topn(x1, 11L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:11])
-NULL
 > check("0001.057", topn(x1, 12L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:12])
-NULL
 > check("0001.058", topn(x1, 13L, decreasing=TRUE), order(x1, decreasing=TRUE)[1:13])
-NULL
 > check("0001.060", topn(x2, 1L, decreasing=TRUE), order(x2, decreasing=TRUE)[1:1])
-NULL
 > check("0001.061", topn(x2, 2L, decreasing=TRUE), order(x2, decreasing=TRUE)[1:2])
-NULL
 > check("0001.062", topn(x2, 3L, decreasing=TRUE), order(x2, decreasing=TRUE)[1:3])
-NULL
 > check("0001.063", topn(x3, 1L, decreasing=TRUE), order(x3, decreasing=TRUE)[1:1])
-NULL
 > check("0001.064", topn(x3, 2L, decreasing=TRUE), order(x3, decreasing=TRUE)[1:2])
-NULL
 > check("0001.065", topn(x3, 3L, decreasing=TRUE), order(x3, decreasing=TRUE)[1:3])
-NULL
 > check("0001.066", topn(x0, -1L), error = "Please enter a positive integer larger or equal to 1.")
 > check("0001.067", topn(x0, 1001L), error = "Function 'topn' is not built for large value of 'n'. The algorithm is made for small values. Please prefer the 'order' function if you want to proceed with such large value.")
 > check("0001.068", topn(x0, 100L,decreasing = FALSE), order(x0)[1:13], warning = "'n' is larger than length of 'vec'. 'n' will be set to length of 'vec'.")
-NULL
 > check("0001.069", topn(x0, 10L, decreasing = NA), error = "Argument 'decreasing' must be TRUE or FALSE and length 1.")
 > check("0001.070", topn(s1, 10L, decreasing = NA), error = "S4 class objects are not supported.")
 > check("0001.071", topn(x4, 2L), error = "Type raw is not supported.")
 > check("0001.072", topn(x4, 2L, decreasing = TRUE), error = "Type raw is not supported.")
 > check("0001.073", topn(x4, 2L, decreasing=FALSE), error = "Type raw is not supported.")
 > check("0001.074", topn(x5, 1L, decreasing=FALSE,hasna=FALSE), order(x5)[1:1])
-NULL
 > check("0001.075", topn(x5, 2L, decreasing=FALSE,hasna=FALSE), order(x5)[1:2])
-NULL
 > check("0001.076", topn(x5, 3L, decreasing=FALSE,hasna=FALSE), order(x5)[1:3])
-NULL
 > check("0001.077", topn(x5, 4L, decreasing=FALSE,hasna=FALSE), order(x5)[1:4])
-NULL
 > check("0001.078", topn(x5, 5L, decreasing=FALSE,hasna=FALSE), order(x5)[1:5])
-NULL
 > check("0001.079", topn(x5, 6L, decreasing=FALSE,hasna=FALSE), order(x5)[1:6])
-NULL
 > check("0001.080", topn(x5, 7L, decreasing=FALSE,hasna=FALSE), order(x5)[1:7])
-NULL
 > check("0001.081", topn(x5, 8L, decreasing=FALSE,hasna=FALSE), order(x5)[1:8])
-NULL
 > check("0001.082", topn(x5, 9L, decreasing=FALSE,hasna=FALSE), order(x5)[1:9])
-NULL
 > check("0001.083", topn(x5, 10L, decreasing=FALSE,hasna=FALSE), order(x5)[1:10])
-NULL
 > check("0001.084", topn(x5, 11L, decreasing=FALSE,hasna=FALSE), order(x5)[1:11])
-NULL
 > check("0001.085", topn(x5, 12L, decreasing=FALSE,hasna=FALSE), order(x5)[1:12])
-NULL
 > check("0001.086", topn(x5, 13L, decreasing=FALSE,hasna=FALSE), order(x5)[1:13])
-NULL
 > check("0001.087", topn(x5, 1L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:1])
-NULL
 > check("0001.088", topn(x5, 2L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:2])
-NULL
 > check("0001.089", topn(x5, 3L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:3])
-NULL
 > check("0001.090", topn(x5, 4L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:4])
-NULL
 > check("0001.091", topn(x5, 5L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:5])
-NULL
 > check("0001.092", topn(x5, 6L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:6])
-NULL
 > check("0001.093", topn(x5, 7L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:7])
-NULL
 > check("0001.094", topn(x5, 8L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:8])
-NULL
 > check("0001.095", topn(x5, 9L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:9])
-NULL
 > check("0001.096", topn(x5, 10L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:10])
-NULL
 > check("0001.097", topn(x5, 11L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:11])
-NULL
 > check("0001.098", topn(x5, 12L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:12])
-NULL
 > check("0001.099", topn(x5, 13L, decreasing=TRUE,hasna=FALSE), order(x5,decreasing = TRUE)[1:13])
-NULL
 > check("0001.100", topn(x6, 1L, decreasing=FALSE,hasna=FALSE), order(x6)[1:1])
-NULL
 > check("0001.101", topn(x6, 2L, decreasing=FALSE,hasna=FALSE), order(x6)[1:2])
-NULL
 > check("0001.102", topn(x6, 3L, decreasing=FALSE,hasna=FALSE), order(x6)[1:3])
-NULL
 > check("0001.103", topn(x6, 4L, decreasing=FALSE,hasna=FALSE), order(x6)[1:4])
-NULL
 > check("0001.104", topn(x6, 5L, decreasing=FALSE,hasna=FALSE), order(x6)[1:5])
-NULL
 > check("0001.105", topn(x6, 6L, decreasing=FALSE,hasna=FALSE), order(x6)[1:6])
-NULL
 > check("0001.106", topn(x6, 7L, decreasing=FALSE,hasna=FALSE), order(x6)[1:7])
-NULL
 > check("0001.107", topn(x6, 8L, decreasing=FALSE,hasna=FALSE), order(x6)[1:8])
-NULL
 > check("0001.108", topn(x6, 9L, decreasing=FALSE,hasna=FALSE), order(x6)[1:9])
-NULL
 > check("0001.109", topn(x6, 10L, decreasing=FALSE,hasna=FALSE), order(x6)[1:10])
-NULL
 > check("0001.110", topn(x6, 11L, decreasing=FALSE,hasna=FALSE), order(x6)[1:11])
-NULL
 > check("0001.111", topn(x6, 12L, decreasing=FALSE,hasna=FALSE), order(x6)[1:12])
-NULL
 > check("0001.112", topn(x6, 13L, decreasing=FALSE,hasna=FALSE), order(x6)[1:13])
-NULL
 > check("0001.113", topn(x6, 1L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:1])
-NULL
 > check("0001.114", topn(x6, 2L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:2])
-NULL
 > check("0001.115", topn(x6, 3L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:3])
-NULL
 > check("0001.116", topn(x6, 4L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:4])
-NULL
 > check("0001.117", topn(x6, 5L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:5])
-NULL
 > check("0001.118", topn(x6, 6L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:6])
-NULL
 > check("0001.119", topn(x6, 7L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:7])
-NULL
 > check("0001.120", topn(x6, 8L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:8])
-NULL
 > check("0001.121", topn(x6, 9L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:9])
-NULL
 > check("0001.122", topn(x6, 10L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:10])
-NULL
 > check("0001.123", topn(x6, 11L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:11])
-NULL
 > check("0001.124", topn(x6, 12L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:12])
-NULL
 > check("0001.125", topn(x6, 13L, decreasing=TRUE,hasna=FALSE), order(x6,decreasing = TRUE)[1:13])
-NULL
 > check("0001.126", topn(x4, 2L, decreasing = TRUE,hasna = FALSE), error = "Type raw is not supported.")
 > check("0001.127", topn(x4, 2L, decreasing=FALSE,hasna = FALSE), error = "Type raw is not supported.")
 > check("0001.128", topn(c(1,2,4,10,2,3), 2L, hasna=c(FALSE,TRUE)), error = "Argument 'hasna' must be TRUE or FALSE and length 1.")
@@ -348,21 +232,13 @@ NULL
 > date_vec = as.Date(14975:14979, origin = '1970-01-01')
 > 
 > check("0002.001", iif(test_vec, 1L, 0L), out_vec)
-NULL
 > check("0002.002", iif(test_vec, 1, 0), as.numeric(out_vec))
-NULL
 > check("0002.003", iif(test_vec, TRUE, FALSE), as.logical(out_vec))
-NULL
 > check("0002.004", iif(test_vec, "1", "0"), as.character(out_vec))
-NULL
 > check("0002.005", iif(test_vec_na, TRUE, NA), c(rep(TRUE,5L), rep(NA,7L)))
-NULL
 > check("0002.006", iif(test_vec, rep(1L,11L), rep(0L,11L)), out_vec)
-NULL
 > check("0002.007", iif(test_vec, rep(1L,11L), 0L), out_vec)
-NULL
 > check("0002.008", iif(test_vec, 1L, rep(0L,11L)), out_vec)
-NULL
 > check("0002.009", iif(test_vec, rep(1L,11L), rep(0L,10L)),      error="Length of 'no' is 10 but must be 1 or length of 'test' (11).")
 > check("0002.010", iif(test_vec, rep(1,10L), rep(0,11L)),        error="Length of 'yes' is 10 but must be 1 or length of 'test' (11).")
 > check("0002.011", iif(test_vec, rep(TRUE,10L), rep(FALSE,10L)), error="Length of 'yes' is 10 but must be 1 or length of 'test' (11).")
@@ -371,178 +247,99 @@ NULL
 > check("0002.014", iif(test_vec, list(1),list(2,4)),             error="Length of 'no' is 2 but must be 1 or length of 'test' (11).")
 > check("0002.015", iif(test_vec, list(1,3),list(2,4)),           error="Length of 'yes' is 2 but must be 1 or length of 'test' (11).")
 > check("0002.016", iif(test_vec, list(1), list(0)), as.list(as.numeric(out_vec)))
-NULL
 > check("0002.017", iif(test_vec, list(1), list(0)), as.list(as.numeric(out_vec)))
-NULL
 > check("0002.018", iif(date_vec == "2011-01-01", date_vec - 1L, date_vec), c(date_vec[1L] - 1L, date_vec[2:5]))
-NULL
 > check("0002.019", iif(c(TRUE,FALSE,TRUE,TRUE,FALSE), factor(letters[1:5]), factor("a", levels=letters[1:5])), factor(c("a","a","c","d","a"), levels=letters[1:5]))
-NULL
 > check("0002.020", iif(test_vec_na, 1L, 0L), out_vec_na)
-NULL
 > check("0002.021", iif(test_vec_na, rep(1L,12L), 0L), out_vec_na)
-NULL
 > check("0002.022", iif(test_vec_na, rep(1L,12L), rep(0L,12L)), out_vec_na)
-NULL
 > check("0002.023", iif(test_vec_na, 1L, rep(0L,12L)), out_vec_na)
-NULL
 > check("0002.024", iif(test_vec_na, 1, 0), as.numeric(out_vec_na))
-NULL
 > check("0002.025", iif(test_vec_na, rep(1,12L), 0), as.numeric(out_vec_na))
-NULL
 > check("0002.026", iif(test_vec_na, rep(1,12L), rep(0,12L)), as.numeric(out_vec_na))
-NULL
 > check("0002.027", iif(test_vec_na, 1, rep(0,12L)), as.numeric(out_vec_na))
-NULL
 > check("0002.028", iif(test_vec_na, TRUE, rep(FALSE,12L)), as.logical(out_vec_na))
-NULL
 > check("0002.029", iif(test_vec_na, rep(TRUE,12L), FALSE), as.logical(out_vec_na))
-NULL
 > check("0002.030", iif(test_vec_na, rep(TRUE,12L), rep(FALSE,12L)), as.logical(out_vec_na))
-NULL
 > check("0002.031", iif(test_vec_na, "1", rep("0",12L)), as.character(out_vec_na))
-NULL
 > check("0002.032", iif(test_vec_na, rep("1",12L), "0"), as.character(out_vec_na))
-NULL
 > check("0002.033", iif(test_vec_na, rep("1",12L), rep("0",12L)), as.character(out_vec_na))
-NULL
 > check("0002.034", iif(test_vec_na, "1", "0"), as.character(out_vec_na))
-NULL
 > check("0002.035", iif(test_vec, as.Date("2011-01-01"), FALSE), error="'yes' is of type double but 'no' is of type logical. Please")
 > check("0002.036", iif(test_vec_na, 1+0i, 0+0i), as.complex(out_vec_na))
-NULL
 > check("0002.037", iif(test_vec_na, rep(1+0i,12L), 0+0i), as.complex(out_vec_na))
-NULL
 > check("0002.038", iif(test_vec_na, rep(1+0i,12L), rep(0+0i,12L)), as.complex(out_vec_na))
-NULL
 > check("0002.039", iif(test_vec_na, 1+0i, rep(0+0i,12L)), as.complex(out_vec_na))
-NULL
 > check("0002.040", iif(test_vec, as.raw(0), as.raw(1)), error="Type raw is not supported.")
 > check("0002.041", iif(TRUE,1,as.Date("2019-07-07")),   error="'yes' has different class than 'no'. Please")
 > check("0002.042", iif(TRUE,1L,factor(letters[1])),     error="'yes' has different class than 'no'. Please")
 > check("0002.043", iif(TRUE, list(1:5), list(5:1)), list(1:5))
-NULL
 > check("0002.044", iif(as.logical(NA), list(1:5), list(5:1)), list(NULL))
-NULL
 > check("0002.045", iif(FALSE, list(1:5), list(5:1)), list(5:1))
-NULL
 > check("0002.048", iif(TRUE, list(data.frame(1:5)), list(data.frame(5:1))), list(data.frame(1:5)))
-NULL
 > check("0002.049", iif(FALSE, list(data.frame(1:5)), list(data.frame(5:1))), list(data.frame(5:1)))
-NULL
 > check("0002.050", iif(c(TRUE,FALSE), list(1:5,6:10), list(10:6,5:1)), list(1:5,5:1))
-NULL
 > check("0002.051", iif(c(NA,TRUE), list(1:5,6:10), list(10:6,5:1)), list(NULL,6:10))
-NULL
 > check("0002.052", iif(c(FALSE,TRUE), list(1:5,6:10), list(10:6,5:1)), list(10:6,6:10))
-NULL
 > check("0002.053", iif(c(NA,TRUE), list(1:5), list(10:6,5:1)), list(NULL,1:5))
-NULL
 > check("0002.054", iif(c(NA,TRUE), list(1:5,6:10), list(5:1)), list(NULL,6:10))
-NULL
 > check("0002.055", iif(c(FALSE,TRUE), list(TRUE), list(10:6,5:1)), list(10:6,TRUE))
-NULL
 > check("0002.056", iif(c(FALSE,TRUE), list(as.Date("2019-07-07")), list(10:6,5:1)), list(10:6,as.Date("2019-07-07")))
-NULL
 > check("0002.057", iif(c(FALSE,TRUE), list(factor(letters[1:5])), list(10:6,5:1)), list(10:6,factor(letters[1:5])))
-NULL
 > check("0002.058", iif(c(NA,FALSE), list(1:5), list(10:6,5:1)), list(NULL,5:1))
-NULL
 > check("0002.059", iif(c(NA,FALSE), list(1:5,6:10), list(5:1)), list(NULL,5:1))
-NULL
 > check("0002.060", iif(c(NA,FALSE), list(1:5), list(5:1)), list(NULL,5:1))
-NULL
 > check("0002.061", iif(c(TRUE,FALSE), list(1L), list(0L)), list(1L,0L))
-NULL
 > check("0002.062", iif(c(TRUE,FALSE), list(1L), list(0L)), list(1L,0L))
-NULL
 > check("0002.063", iif(c(TRUE,FALSE), factor(c("a","b")), factor(c("a","c"))), error="'yes' and 'no' are both type factor but their levels are different")
 > check("0002.064", iif(c(TRUE, TRUE, TRUE, FALSE, FALSE), factor(NA, levels=letters[1:5]), factor(letters[1:5])), factor(c(NA,NA,NA,"d","e"),levels=letters[1:5]))
-NULL
 > check("0002.065", iif(c(TRUE, TRUE, TRUE, FALSE, NA, FALSE), factor(NA, levels=letters[1:6]), factor(letters[1:6])), factor(c(NA,NA,NA,"d",NA,"f"),levels=letters[1:6]))
-NULL
 > check("0002.066", iif(c(TRUE, TRUE, TRUE, FALSE, NA, FALSE), factor(letters[1:6]), factor(NA, levels=letters[1:6])), factor(c("a","b","c",NA,NA,NA), levels=letters[1:6]))
-NULL
 > check("0002.067", iif(c(TRUE, NA, TRUE, FALSE, FALSE, FALSE), factor(NA), factor(NA)), factor(c(NA,NA,NA,NA,NA,NA)))
-NULL
 > check("0002.068", iif(c(a=TRUE,b=FALSE), list(m=1,n=2), list(x=11,y=12)), list(a=1, b=12))
-NULL
 > check("0002.069", iif(c(a=TRUE,b=FALSE), c(m=1,n=2), c(x=11,y=12)), c(a=1, b=12))
-NULL
 > check("0002.070", ifelse(c(a=TRUE,b=FALSE), c(1,2), c(11,12)), c(a=1, b=12))
-NULL
 > check("0002.071", iif(TRUE, s1, s2),      error = "S4 class objects are not supported.")
 > check("0002.072", iif(TRUE, 1, s2),       error = "S4 class objects are not supported.")
 > check("0002.073", iif(test_vec, 1L, 0,tprom = TRUE), as.numeric(out_vec))
-NULL
 > check("0002.074", iif(test_vec, 1L, raw(0),tprom = TRUE), error = "Type raw (argument 'no') is not supported.")
 > check("0002.075", iif(test_vec, raw(1), 0,tprom = TRUE), error = "Type raw (argument 'yes') is not supported.")
 > check("0002.076", iif(test_vec, 1L, 0, "NA", TRUE), error = "Type of 'na' (character) is higher than double (highest type of 'yes' and 'no'). Please make sure that it is at lower or the same.")
 > check("0002.077", iif(test_vec_na, 1, 0, NA, TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.078", iif(test_vec_na, rep(1L, 12L), rep(0, 12L), rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.079", iif(test_vec_na, rep(1, 12L), rep(0L, 12L), rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.080", iif(test_vec_na, 1, rep(0L, 12L), rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.081", iif(test_vec_na, 1, rep(0L, 12L), NA, TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.082", iif(test_vec_na, rep(1, 12L), 0L, rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.083", iif(test_vec_na, rep(1L, 12L), rep(0, 12L), rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.084", iif(c(TRUE, TRUE, TRUE, FALSE, NA, FALSE), factor(letters[1:6]), factor("a", levels=letters[1:6]), tprom = TRUE), factor(c("a","b","c","a",NA,"a"), levels=letters[1:6]))
-NULL
 > check("0002.085", iif(test_vec_na, 1, 0, rep(NA, 12L), TRUE), as.numeric(out_vec_na))
-NULL
 > check("0002.086", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), NA, TRUE), c(date_vec[1L] - 1L, date_vec[2:5], NA))
-NULL
 > check("0002.087", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), NA, FALSE), error = "'yes' is of type double but 'na' is of type logical. Please make sure that both arguments have the same type.")
 > check("0002.088", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), as.Date("2020-05-05"), TRUE), c(date_vec[1L] - 1L, date_vec[2:5], as.Date("2020-05-05")))
-NULL
 > check("0002.089", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), 3L, TRUE), c(date_vec[1L] - 1L, date_vec[2:5], as.Date(3L,origin = "1970-01-01")))
-NULL
 > check("0002.090", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), 3, TRUE), c(date_vec[1L] - 1L, date_vec[2:5], as.Date(3,origin = "1970-01-01")))
-NULL
 > check("0002.091", iif(c(date_vec == "2011-01-01", NA), c(date_vec - 1L, date_vec[1L]), c(date_vec, date_vec[1L]), 1L, TRUE), c(date_vec[1L] - 1L, date_vec[2:5], as.Date(1,origin = "1970-01-01")))
-NULL
 > check("0002.092", iif(test_vec_na, 1, 0, rep(NA, 12L), c(TRUE,FALSE)), error = "Argument 'tprom' must be either FALSE or TRUE and length 1.")
 > check("0002.093", iif(test_vec_na, 1, 0, rep(NA, 11L), TRUE), error = "Length of 'na' is 11 but must be 1 or length of 'test' (12).")
 > check("0002.094", iif(TRUE, as.Date("2020-04-14"), as.Date("2020-04-12"), 2), error = "'yes' has different class than 'na'. Please make sure that both arguments have the same class.")
 > check("0002.095", iif(TRUE, factor(c("a"),levels=c("a","b")), factor(c("b"),levels=c("a","b")), factor(c("c"),levels=c("a","c"))), error = "'yes' and 'na' are both type factor but their levels are different.")
 > check("0002.096", iif(c(TRUE, NA), list(1,2), list(3,4),list(5,6)), list(1,6))
-NULL
 > check("0002.097", iif(c(TRUE, NA, FALSE), as.Date("2020-04-14"), 18368, as.Date("2020-04-15"), TRUE), c(as.Date("2020-04-14"), as.Date("2020-04-15"), as.Date("2020-04-16")))
-NULL
 > check("0002.098", iif(c(TRUE, NA, FALSE), 18366, as.Date("2020-04-16"), as.Date("2020-04-15"), TRUE), c(18366, 18367, 18368))
-NULL
 > check("0002.099", iif(c(TRUE, NA, FALSE), as.Date("2020-04-14"), as.Date("2020-04-16"), 18367, TRUE), c(as.Date("2020-04-14"), as.Date("2020-04-15"), as.Date("2020-04-16")))
-NULL
 > check("0002.100", iif(c(TRUE, NA, FALSE), TRUE, FALSE, NA), c(TRUE, NA, FALSE))
-NULL
 > check("0002.101", iif(c(TRUE, NA, FALSE), rep(TRUE,3L), FALSE, NA), c(TRUE, NA, FALSE))
-NULL
 > check("0002.101", iif(c(TRUE, NA, FALSE), rep(TRUE,3L), rep(FALSE,3L), NA), c(TRUE, NA, FALSE))
-NULL
 > check("0002.102", iif(c(TRUE, NA, FALSE), TRUE, rep(FALSE,3L), NA), c(TRUE, NA, FALSE))
-NULL
 > check("0002.103", iif(c(TRUE, NA, FALSE), 1L, 0L, NA_integer_), c(1L, NA_integer_, 0L))
-NULL
 > check("0002.104", iif(c(TRUE, NA, FALSE), rep(1L,3L), 0L, NA_integer_), c(1L, NA_integer_, 0L))
-NULL
 > check("0002.105", iif(c(TRUE, NA, FALSE), rep(1L,3L), rep(0L,3L), NA_integer_), c(1L, NA_integer_, 0L))
-NULL
 > check("0002.106", iif(c(TRUE, NA, FALSE), 1L, rep(0L,3L), NA_integer_), c(1L, NA_integer_, 0L))
-NULL
 > check("0002.107", iif(c(TRUE, NA, FALSE), 1+0i, 0+0i, NA_complex_), c(1+0i, NA_complex_, 0+0i))
-NULL
 > check("0002.108", iif(c(TRUE, NA, FALSE), rep(1+0i,3L), 0+0i, NA_complex_), c(1+0i, NA_complex_, 0+0i))
-NULL
 > check("0002.109", iif(c(TRUE, NA, FALSE), rep(1+0i,3L), rep(0+0i,3L), NA_complex_), c(1+0i, NA_complex_, 0+0i))
-NULL
 > check("0002.110", iif(c(TRUE, NA, FALSE), 1+0i, rep(0+0i,3L), NA_complex_), c(1+0i, NA_complex_, 0+0i))
-NULL
 > 
 > rm(s1, s2, class2132, date_vec, out_vec, out_vec_na, test_vec, test_vec_na)
 > 
@@ -594,37 +391,21 @@ NULL
 > x = structure(rnorm(n), class = 'abc')
 > 
 > check("0003.001", nif(test_vec1, 1L, test_vec2, 0L), as.integer(out_vec))
-NULL
 > check("0003.002", nif(test_vec1, 1, test_vec2, 0), out_vec)
-NULL
 > check("0003.003", nif(test_vec1, "1", test_vec2, "0"), as.character(out_vec))
-NULL
 > check("0003.004", nif(test_vec1, TRUE, test_vec2, FALSE), as.logical(out_vec))
-NULL
 > check("0003.005", nif(test_vec1, 1+0i, test_vec2, 0+0i), as.complex(out_vec))
-NULL
 > check("0003.006", nif(test_vec1, list(1), test_vec2, list(0)), list(1,1,1,1,1, NULL, 0, 0, 0, 0, 0))
-NULL
 > check("0003.007", nif(test_vec1, as.Date("2019-10-11"), test_vec2, as.Date("2019-10-14")), c(rep(as.Date("2019-10-11"),5),NA,rep(as.Date("2019-10-14"),5)))
-NULL
 > check("0003.008", nif(test_vec1, factor("a", levels=letters[1:3]), test_vec2, factor("b", levels=letters[1:3])), factor(c(rep("a",5),NA,rep("b",5)), levels=letters[1:3]))
-NULL
 > check("0003.009", nif(test_vec1, 1L, test_vec2, 0L, default=2L), as.integer(out_vec_def))
-NULL
 > check("0003.010", nif(test_vec1, 1, test_vec2, 0,default=2), out_vec_def)
-NULL
 > check("0003.011", nif(test_vec1, "1", test_vec2, "0", default ="2"), as.character(out_vec_def))
-NULL
 > check("0003.012", nif(test_vec1, TRUE, test_vec2, FALSE, default=TRUE), as.logical(out_vec_def))
-NULL
 > check("0003.013", nif(test_vec1, 1+0i, test_vec2, 0+0i, default=2+0i), as.complex(out_vec_def))
-NULL
 > check("0003.014", nif(test_vec1, list(1), test_vec2, list(0),default=list(2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.015", nif(test_vec1, as.Date("2019-10-11"), test_vec2, as.Date("2019-10-14"),default=as.Date("2019-10-15")), c(rep(as.Date("2019-10-11"),5),as.Date("2019-10-15"),rep(as.Date("2019-10-14"),5)))
-NULL
 > check("0003.016", nif(test_vec1, factor("a", levels=letters[1:3]), test_vec2, factor("b", levels=letters[1:3]),default=factor("c", levels=letters[1:3])), factor(c(rep("a",5),"c",rep("b",5)), levels=letters[1:3]))
-NULL
 > check("0003.017", nif(test_vec1, as.raw(1), test_vec2, as.raw(0)), error="Type raw is not supported.")
 > check("0003.018", nif(test_vec1, factor("a", levels=letters[1]), test_vec2, factor("b", levels=letters[1:3])), error="Argument #2 and argument #4 are both factor but their levels are different.")
 > check("0003.019", nif(test_vec1, factor("a", levels=letters[1:2]), test_vec2, factor("b", levels=letters[1:2]),default=factor("c", levels=letters[1:3])), error="Resulting value and 'default' are both type factor but their levels are different.")
@@ -635,165 +416,89 @@ NULL
 > check("0003.024", nif(test_vec1, as.Date("2019-10-11"), test_vec2, as.Date("2019-10-14"),default="2019-10-15"), error="Resulting value is of type double but 'default' is of type character. Please make sure that both arguments have the same type.")
 > check("0003.025", nif(test_vec1, as.Date("2019-10-11"), test_vec2, as.Date("2019-10-14"),default=123), error="Resulting value has different class than 'default'. Please make sure that both arguments have the same class.")
 > check("0003.026", nif(test_vec1, 1L, test_vec2, 0L, default=rep(2L, 11)), as.integer(out_vec_def))
-NULL
 > check("0003.027", nif(test_vec1, 1L, test_vec2, rep(0L, 11), default=rep(2L, 11)), as.integer(out_vec_def))
-NULL
 > check("0003.028", nif(test_vec1, rep(1L,11L), test_vec2, rep(0L,11L)), as.integer(out_vec))
-NULL
 > check("0003.029", nif(test_vec1, rep(1,11L), test_vec2, rep(0,11L)), out_vec)
-NULL
 > check("0003.030", nif(test_vec1, rep("1",11L), test_vec2, rep("0",11L)), as.character(out_vec))
-NULL
 > check("0003.031", nif(test_vec1, rep(TRUE,11L), test_vec2, rep(FALSE,11L)), as.logical(out_vec))
-NULL
 > check("0003.032", nif(test_vec1, rep(1+0i,11L), test_vec2, rep(0+0i,11L)), as.complex(out_vec))
-NULL
 > check("0003.033", nif(test_vec1, rep(list(1),11L), test_vec2, rep(list(0),11L)), list(1,1,1,1,1, NULL, 0, 0, 0, 0, 0))
-NULL
 > check("0003.034", nif(test_vec1, rep(as.Date("2019-10-11"),11L), test_vec2, rep(as.Date("2019-10-14"),11L)), c(rep(as.Date("2019-10-11"),5),NA,rep(as.Date("2019-10-14"),5)))
-NULL
 > check("0003.035", nif(test_vec1, rep(factor("a", levels=letters[1:3]),11L), test_vec2, rep(factor("b", levels=letters[1:3]),11L)), factor(c(rep("a",5),NA,rep("b",5)), levels=letters[1:3]))
-NULL
 > check("0003.036", nif(test_vec_na1, 1L, test_vec_na2, 0L), as.integer(out_vec_na))
-NULL
 > check("0003.037", nif(test_vec_na1, 1, test_vec_na2, 0), out_vec_na)
-NULL
 > check("0003.038", nif(test_vec_na1, "1", test_vec_na2, "0"), as.character(out_vec_na))
-NULL
 > check("0003.039", nif(test_vec_na1, TRUE, test_vec_na2, FALSE), as.logical(out_vec_na))
-NULL
 > check("0003.040", nif(test_vec_na1, 1+0i, test_vec_na2, 0+0i), as.complex(out_vec_na))
-NULL
 > check("0003.041", nif(test_vec_na1, list(1), test_vec_na2, list(0)), list(1,1,1,1,1, NULL, 0, 0, 0, 0, 0,NULL))
-NULL
 > check("0003.042", nif(c(TRUE,TRUE,TRUE,FALSE,FALSE),factor(NA,levels=letters[1:5]),c(FALSE,FALSE,FALSE,TRUE,TRUE),factor(letters[1:5])),factor(c(NA,NA,NA,"d","e"),levels=letters[1:5]))
-NULL
 > check("0003.043", nif(c(TRUE,TRUE,TRUE,FALSE,NA,FALSE),factor(NA,levels=letters[1:6]),c(FALSE,FALSE,FALSE,TRUE,NA,TRUE),factor(letters[1:6])),factor(c(NA,NA,NA,"d",NA,"f"),levels=letters[1:6]))
-NULL
 > check("0003.044", nif(c(TRUE,TRUE,TRUE,FALSE,NA,FALSE),factor(letters[1:6]),c(FALSE,FALSE,FALSE,TRUE,NA,TRUE),factor(NA,levels = letters[1:6])),factor(c("a","b","c",NA,NA,NA),levels=letters[1:6]))
-NULL
 > check("0003.045", nif(c(TRUE,NA,TRUE,FALSE,FALSE,FALSE),factor(NA),c(TRUE,TRUE,TRUE,FALSE,NA,FALSE),factor(NA)),factor(c(NA,NA,NA,NA,NA,NA)))
-NULL
 > check("0003.046", nif(test_vec1, 1L, test_vec2, 0L, default=NA), error = "Resulting value is of type integer but 'default' is of type logical. Please make sure that both arguments have the same type.")
 > check("0003.047", nif(test_vec1, 1L, test_vec2, rep(0L, 11), default=NA), error = "Resulting value is of type integer but 'default' is of type logical. Please make sure that both arguments have the same type.")
 > check("0003.048", nif(TRUE, list(data.frame(1:5)), FALSE, list(data.frame(5:1))), list(data.frame(1:5)))
-NULL
 > check("0003.049", nif(FALSE, list(data.frame(1:5)), TRUE, list(data.frame(5:1))), list(data.frame(5:1)))
-NULL
 > check("0003.050", nif(1L,1L,TRUE,0L), error = "Argument #1 must be logical.")
 > check("0003.051", nif(TRUE,1L,5L,0L), 1L)
-NULL
 > check("0003.052", nif(test_vec1, 1L, test_vec2, 0L, test_vec3, 2L), as.integer(out_vec_def))
-NULL
 > check("0003.053", nif(test_vec1, 1, test_vec2, 0, test_vec3, 2), out_vec_def)
-NULL
 > check("0003.054", nif(test_vec1, "1", test_vec2, "0", test_vec3, "2"), as.character(out_vec_def))
-NULL
 > check("0003.055", nif(test_vec1, TRUE, test_vec2, FALSE, test_vec3, TRUE), as.logical(out_vec_def))
-NULL
 > check("0003.056", nif(test_vec1, 1+0i, test_vec2, 0+0i, test_vec3, 2+0i), as.complex(out_vec_def))
-NULL
 > check("0003.057", nif(test_vec1, list(1), test_vec2, list(0), test_vec3, list(2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.058", nif(test_vec1, as.Date("2019-10-11"), test_vec2, as.Date("2019-10-14"), test_vec3, as.Date("2019-10-15")), c(rep(as.Date("2019-10-11"),5),as.Date("2019-10-15"),rep(as.Date("2019-10-14"),5)))
-NULL
 > check("0003.059", nif(test_vec1, factor("a", levels=letters[1:3]), test_vec2, factor("b", levels=letters[1:3]), test_vec3, factor("c", levels=letters[1:3])), factor(c(rep("a",5),"c",rep("b",5)), levels=letters[1:3]))
-NULL
 > check("0003.060", nif(test_vec1, 1L), as.integer(out_vec_oc))
-NULL
 > check("0003.061", nif(test_vec1, 1), out_vec_oc)
-NULL
 > check("0003.062", nif(test_vec1, "1"), as.character(out_vec_oc))
-NULL
 > check("0003.063", nif(test_vec1, TRUE), as.logical(out_vec_oc))
-NULL
 > check("0003.064", nif(test_vec1, 1+0i), as.complex(out_vec_oc))
-NULL
 > check("0003.065", nif(test_vec1, list(1)), list(1,1,1,1,1, NULL, NULL, NULL, NULL, NULL, NULL))
-NULL
 > check("0003.066", nif(test_vec1, as.Date("2019-10-11")), c(rep(as.Date("2019-10-11"),5),rep(NA,6)))
-NULL
 > check("0003.067", nif(test_vec1, factor("a", levels=letters[1:3])), factor(c(rep("a",5),rep("NA",6)), levels=letters[1:3]))
-NULL
 > check("0003.068", nif(test_vec1, 1L, default = 1:2), error = "Length of 'default' must either be 1 or length of logical condition.")
 > check("0003.069", nif(test_vec1, 1L, test_vec_na1, 2L), error = "Argument #3 has a different length than argument #1. Please make sure all logical conditions have the same length.")
 > check("0003.070", nif(test_vec1, as.Date("2019-10-11"), test_vec2, 2), error = "Argument #4 has different class than argument #2, Please make sure all output values have the same class.")
 > check("0003.071", nif(test_vec1, 1L, test_vec2, 2:3), error = "Length of output value #4 must either be 1 or length of logical condition.")
 > check("0003.072", nif(TRUE, 1L, FALSE, stop("bang!")), 1L)
-NULL
 > check("0003.073", nif(test_vec1, 1L, test_vec2, 0:10), as.integer(c( 1, 1, 1, 1, 1, NA, 6, 7, 8, 9, 10)))
-NULL
 > check("0003.074", nif(test_vec1, 0:10, test_vec2, 0L), as.integer(c( 0, 1, 2, 3, 4, NA, 0, 0, 0, 0, 0)))
-NULL
 > check("0003.075", nif(test_vec1, 1, test_vec2, as.numeric(0:10)), as.numeric(c( 1, 1, 1, 1, 1, NA, 6, 7, 8, 9, 10)))
-NULL
 > check("0003.076", nif(test_vec1, as.numeric(0:10), test_vec2, 0), as.numeric(c( 0, 1, 2, 3, 4, NA, 0, 0, 0, 0, 0)))
-NULL
 > check("0003.077", nif(test_vec1, "1", test_vec2, as.character(0:10)), as.character(c( 1, 1, 1, 1, 1, NA, 6, 7, 8, 9, 10)))
-NULL
 > check("0003.078", nif(test_vec1, as.character(0:10), test_vec2, "0"), as.character(c( 0, 1, 2, 3, 4, NA, 0, 0, 0, 0, 0)))
-NULL
 > check("0003.079", nif(test_vec1, TRUE, test_vec2, rep(FALSE, 11L)), as.logical(out_vec))
-NULL
 > check("0003.080", nif(test_vec1, rep(TRUE, 11L), test_vec2, FALSE), as.logical(out_vec))
-NULL
 > check("0003.081", nif(test_vec1, 1+0i, test_vec2, rep(0+0i, 11L)), as.complex(out_vec))
-NULL
 > check("0003.082", nif(test_vec1, rep(1+0i, 11L), test_vec2, 0+0i), as.complex(out_vec))
-NULL
 > check("0003.083", nif(test_vec1, list(rep(1, 11L)), test_vec2, list(0)), list(rep(1, 11L),rep(1, 11L),rep(1, 11L),rep(1, 11L),rep(1, 11L), NULL, 0, 0, 0, 0, 0))
-NULL
 > check("0003.084", nif(test_vec1, list(1), test_vec2, list(rep(0,11L))), list(1,1,1,1,1, NULL, rep(0,11L), rep(0,11L), rep(0,11L), rep(0,11L), rep(0,11L)))
-NULL
 > check("0003.085", nif(test_vec1, list(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), test_vec2, list(0)), list(1,1,1,1,1, NULL, 0, 0, 0, 0, 0))
-NULL
 > check("0003.086", nif(test_vec1, list(1), test_vec2, list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)), list(1,1,1,1,1, NULL, 0, 0, 0, 0, 0))
-NULL
 > check("0003.087", nif(TRUE, s1, FALSE, s2), error = "S4 class objects are not supported.")
 > check("0003.088", nif(test_vec1, rep(1L, 11), test_vec2, 0L, default=rep(2L, 11)), as.integer(out_vec_def))
-NULL
 > check("0003.089", nif(test_vec1, 1, test_vec2, 0, default=rep(2, 11)), as.numeric(out_vec_def))
-NULL
 > check("0003.090", nif(test_vec1, rep(1, 11), test_vec2, rep(0, 11), default=rep(2, 11)), as.numeric(out_vec_def))
-NULL
 > check("0003.091", nif(test_vec1, 1, test_vec2, rep(0, 11), default=rep(2, 11)), as.numeric(out_vec_def))
-NULL
 > check("0003.092", nif(test_vec1, rep(1, 11), test_vec2, 0, default=rep(2, 11)), as.numeric(out_vec_def))
-NULL
 > check("0003.093", nif(test_vec1, 1+0i, test_vec2, 0+0i, default=rep(2+0i, 11)), as.complex(out_vec_def))
-NULL
 > check("0003.094", nif(test_vec1, rep(1+0i, 11), test_vec2, rep(0+0i, 11), default=rep(2+0i, 11)), as.complex(out_vec_def))
-NULL
 > check("0003.095", nif(test_vec1, 1+0i, test_vec2, rep(0+0i, 11), default=rep(2+0i, 11)), as.complex(out_vec_def))
-NULL
 > check("0003.096", nif(test_vec1, rep(1+0i, 11), test_vec2, 0+0i, default=rep(2+0i, 11)), as.complex(out_vec_def))
-NULL
 > check("0003.097", nif(test_vec1, "1", test_vec2, "0", default=rep("2", 11)), as.character(out_vec_def))
-NULL
 > check("0003.098", nif(test_vec1, rep("1", 11), test_vec2, rep("0", 11), default=rep("2", 11)), as.character(out_vec_def))
-NULL
 > check("0003.099", nif(test_vec1, "1", test_vec2, rep("0", 11), default=rep("2", 11)), as.character(out_vec_def))
-NULL
 > check("0003.100", nif(test_vec1, rep("1", 11), test_vec2, "0", default=rep("2", 11)), as.character(out_vec_def))
-NULL
 > check("0003.101", nif(test_vec1, TRUE, test_vec2, FALSE, default=rep(TRUE, 11)), as.logical(out_vec_def))
-NULL
 > check("0003.102", nif(test_vec1, rep(TRUE, 11), test_vec2, rep(FALSE, 11), default=rep(TRUE, 11)), as.logical(out_vec_def))
-NULL
 > check("0003.103", nif(test_vec1, TRUE, test_vec2, rep(FALSE, 11), default=rep(TRUE, 11)), as.logical(out_vec_def))
-NULL
 > check("0003.104", nif(test_vec1, rep(TRUE, 11), test_vec2, FALSE, default=rep(TRUE, 11)), as.logical(out_vec_def))
-NULL
 > check("0003.105", nif(test_vec1, list(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), test_vec2, list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),default=list(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.106", nif(test_vec1, list(1), test_vec2, list(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),default=list(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.107", nif(test_vec1, list(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), test_vec2, list(0),default=list(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.108", nif(test_vec1, list(1), test_vec2, list(0),default=list(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)), list(1,1,1,1,1, 2, 0, 0, 0, 0, 0))
-NULL
 > check("0003.109", V0, V4)
-NULL
 > check("0003.110", 
 +       nif(x <= -100, structure(x * 1.0, class = 'abc'),
 +           x <= -10, structure(x * 1.0, class = 'abc'),
@@ -803,7 +508,8 @@ NULL
 +           x >=  1000, structure(x * 1.0, class = 'abc')),
 +       structure(x, class = 'abc')
 + )
-NULL
+> check("0003.111", nif(c(TRUE,FALSE), 1, c(FALSE,TRUE), s2), error = "S4 class objects are not supported.")
+> 
 > 
 > rm(s1, s2, class2132, out_vec, out_vec_def, out_vec_na, out_vec_oc, test_vec1, test_vec2, test_vec3, test_vec_na1, test_vec_na2)
 > rm(V0,V1,V2,V3,V4)
@@ -869,106 +575,59 @@ NULL
 > s2 = class2133(x=20191230)
 > 
 > check("0004.001", fpos(mat_dbl_a[1:2,1:2], mat_dbl_a, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.002", fpos(mat_dbl_a[1:2,9:10], mat_dbl_a, FALSE), matrix(c(1L,9L),nrow = 1))
-NULL
 > check("0004.003", fpos(mat_dbl_a[19:20,1:2], mat_dbl_a, FALSE), matrix(c(19L,1L),nrow = 1))
-NULL
 > check("0004.004", fpos(mat_dbl_a[19:20,9:10], mat_dbl_a, FALSE), matrix(c(19L,9L),nrow = 1))
-NULL
 > check("0004.005", fpos(mat_int_a[1:2,1:2], mat_int_a, TRUE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.006", fpos(mat_int_a[1:2,9:10], mat_int_a, TRUE), matrix(c(1L,9L),nrow = 1))
-NULL
 > check("0004.007", fpos(mat_int_a[19:20,1:2], mat_int_a, TRUE), matrix(c(19L,1L),nrow = 1))
-NULL
 > check("0004.008", fpos(mat_int_a[19:20,9:10], mat_int_a, TRUE), matrix(c(19L,9L),nrow = 1))
-NULL
 > check("0004.009", fpos(mat_chr_a[1:2,1:2], mat_chr_a, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.010", fpos(mat_chr_a[1:2,9:10], mat_chr_a, FALSE), matrix(c(1L,9L),nrow = 1))
-NULL
 > check("0004.011", fpos(mat_chr_a[19:20,1:2], mat_chr_a, FALSE), matrix(c(19L,1L),nrow = 1))
-NULL
 > check("0004.012", fpos(mat_chr_a[19:20,9:10], mat_chr_a, FALSE), matrix(c(19L,9L),nrow = 1))
-NULL
 > check("0004.013", fpos(mat_lgl_a[2:3,4:5], mat_lgl_a, TRUE), matrix(c(2L,16L,6L,4L,4L,9L),nrow = 3))
-NULL
 > check("0004.014", fpos(mat_lgl_a[1:2,9:10], mat_lgl_a, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.015", fpos(mat_lgl_a[19:20,1:2], mat_lgl_a, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.016", fpos(mat_lgl_a[14:15,14:15], mat_lgl_a, TRUE), matrix(c(1L,15L,5L,14L,3L,3L,8L,14L),nrow = 4))
-NULL
 > check("0004.017", fpos(mat_lgl_a[19:20,9:10], mat_lgl_a, c(TRUE,FALSE)), error = "Argument 'all' must be TRUE or FALSE and length 1.")
 > check("0004.018", fpos(mat_lgl_a[19:20,9:10], c(1:5),TRUE), error = "One of the dimension of the small matrix is greater than the large matrix.")
 > check("0004.019", fpos(TRUE, mat_lgl_a[19:20,9:10], FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.020", fpos(mat_lgl_a, mat_lgl_a[19:20,9:10], TRUE), error = "One of the dimension of the small matrix is greater than the large matrix.")
 > check("0004.021", fpos(mat_raw_a[1:2,1:2], mat_raw_a, TRUE), error = "Type raw for 'haystack' is not supported.")
 > check("0004.022", fpos(mat_raw_a[1:2,1:2], mat_int_a, TRUE), error = "Type raw for 'needle' is not supported.")
 > check("0004.023", fpos(mat_dbl_b[1:2,1:2], mat_dbl_b, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.024", fpos(mat_int_b[1:2,1:2], mat_int_b, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.025", fpos(mat_chr_b[1:2,1:2], mat_chr_b, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.026", fpos(mat_lgl_b[1:2,1:2], mat_lgl_b, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.027", fpos(mat_cpl_b[1:2,1:2], mat_cpl_b, FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.028", fpos(mat_cpl_a[1:2,1:2], mat_cpl_a, TRUE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.029", fpos(mat_cpl_a[2:3,2:3], mat_cpl_a, TRUE), matrix(c(2L,2L),nrow = 1))
-NULL
 > check("0004.030", fpos(matrix(13), matrix(c(1:30),nrow = 5), TRUE), matrix(c(3L, 3L),nrow = 1))
-NULL
 > check("0004.031", fpos(matrix(c(19,24), nrow = 1), matrix(c(1:30),nrow = 5), TRUE), matrix(c(4L, 4L),nrow = 1))
-NULL
 > check("0004.032", fpos(mat_int_a[19:20,9:10], mat_lgl_a), error = "Haystack type (logical) and needle type (integer) are different. Please make sure that they have the same type.")
 > check("0004.033", fpos(mat_int_a[19:20,9:10], mat_dbl_a), matrix(c(19L,9L),nrow = 1))
-NULL
 > check("0004.034", fpos(mat_dbl_a[19:20,9:10], mat_int_a), matrix(c(19L,9L),nrow = 1))
-NULL
 > check("0004.035", fpos(small_matrix, big_matrix), matrix(c(2L,7L,2L,7L,2L,7L,2L,7L,1L,1L,2L,2L,3L,3L,4L,4L),nrow = 8))
-NULL
 > check("0004.036", fpos(small_matrix, big_matrix, all = FALSE), matrix(c(2L,1L),nrow = 1))
-NULL
 > check("0004.037", fpos(small_matrix, big_matrix, overlap = FALSE), matrix(c(2L,7L,2L,7L,1L,1L,3L,3L),nrow = 4))
-NULL
 > check("0004.038", fpos(small_matrix_d, big_matrix_d), matrix(c(2L,7L,2L,7L,2L,7L,2L,7L,1L,1L,2L,2L,3L,3L,4L,4L),nrow = 8))
-NULL
 > check("0004.039", fpos(small_matrix_d, big_matrix_d, all = FALSE), matrix(c(2L,1L),nrow = 1))
-NULL
 > check("0004.040", fpos(small_matrix_d, big_matrix_d, overlap = FALSE), matrix(c(2L,7L,2L,7L,1L,1L,3L,3L),nrow = 4))
-NULL
 > check("0004.041", head(fpos(small_matrix_l, big_matrix_l),6), matrix(c(1L,2L,3L,4L,5L,6L,1L,1L,1L,1L,1L,1L),nrow = 6))
-NULL
 > check("0004.042", fpos(small_matrix_l, big_matrix_l, all = FALSE), matrix(c(1L,1L),nrow = 1))
-NULL
 > check("0004.043", fpos(small_matrix_l, big_matrix_l, overlap = FALSE), matrix(c(1L,3L,5L,7L,9L,1L,3L,5L,7L,9L,1L,1L,1L,1L,1L,3L,3L,3L,3L,3L),nrow = 10))
-NULL
 > check("0004.044", fpos(small_matrix_cp, big_matrix_cp), matrix(c(2L,7L,2L,7L,2L,7L,2L,7L,1L,1L,2L,2L,3L,3L,4L,4L),nrow = 8))
-NULL
 > check("0004.045", fpos(small_matrix_cp, big_matrix_cp, all = FALSE), matrix(c(2L,1L),nrow = 1))
-NULL
 > check("0004.046", fpos(small_matrix_cp, big_matrix_cp, overlap = FALSE), matrix(c(2L,7L,2L,7L,1L,1L,3L,3L),nrow = 4))
-NULL
 > check("0004.047", fpos(small_matrix_ch, big_matrix_ch), matrix(c(2L,7L,2L,7L,2L,7L,2L,7L,1L,1L,2L,2L,3L,3L,4L,4L),nrow = 8))
-NULL
 > check("0004.048", fpos(small_matrix_ch, big_matrix_ch, all = FALSE), matrix(c(2L,1L),nrow = 1))
-NULL
 > check("0004.049", fpos(small_matrix_ch, big_matrix_ch, overlap = FALSE), matrix(c(2L,7L,2L,7L,1L,1L,3L,3L),nrow = 4))
-NULL
 > check("0004.050", fpos(small_matrix_ch, big_matrix_ch, overlap = c(TRUE,FALSE)), error = "Argument 'overlap' must be TRUE or FALSE and length 1.")
 > check("0004.051", fpos(TRUE, TRUE), 1L)
-NULL
 > check("0004.052", fpos(FALSE, TRUE), NULL)
-NULL
 > check("0004.053", fpos(NA, TRUE), NULL)
-NULL
 > check("0004.054", fpos(TRUE, matrix(c(FALSE, TRUE, TRUE, FALSE), nrow = 2)), matrix(c(2L,1L,1L,2L),nrow = 2))
-NULL
 > check("0004.055", fpos(s1, TRUE), error = "S4 class objects are not supported.")
 > check("0004.056", fpos(TRUE, s2), error = "S4 class objects are not supported.")
 > check("0004.057", fpos(TRUE, data.frame(c(1:10))), error = "Please note that data.frame(s) are not supported.")
@@ -981,71 +640,38 @@ NULL
 > check("0004.064", fpos(c(TRUE,FALSE),TRUE), error = "The 'needle' vector length is greater than the 'haystack' vector length.")
 > check("0004.065", fpos(1L,TRUE), error = "Haystack type (logical) and needle type (integer) are different. Please make sure that they have the same type.")
 > check("0004.066", fpos(mat_dbl_b[2,1:2],mat_dbl_b[2,]), 1L)
-NULL
 > check("0004.067", fpos(mat_chr_b[2,1:2],mat_chr_b[2,]), 1L)
-NULL
 > check("0004.068", fpos(mat_cpl_b[2,1:2],mat_cpl_b[2,]), 1L)
-NULL
 > check("0004.069", fpos(mat_int_b[2,1:2],mat_int_b[2,]), 1L)
-NULL
 > check("0004.070", fpos(mat_lgl_b[2,1:2],mat_lgl_b[2,]), 1L)
-NULL
 > check("0004.071", fpos(mat_dbl_b,mat_dbl_a), NULL)
-NULL
 > check("0004.072", fpos(mat_dbl_b[2,1:2],as.integer(mat_dbl_b[2,])), 1L)
-NULL
 > check("0004.073", fpos(as.integer(mat_dbl_b[2,1:2]),mat_dbl_b[2,]), 1L)
-NULL
 > check("0004.074", fpos(c(1L,2L), c(1L,2L,5L,1L,2L), all = TRUE, overlap = TRUE), c(1L,4L))
-NULL
 > check("0004.075", fpos(c(1L,1L), c(1L,1L,1L,1L,1L), all = TRUE, overlap = TRUE),c(1L,2L,3L,4L))
-NULL
 > check("0004.076", fpos(c(1L,1L), c(1L,1L,1L,1L,1L), all = FALSE, overlap = TRUE),c(1L))
-NULL
 > check("0004.077", fpos(c(1L,1L), c(1L,1L,1L,1L,1L), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.078", fpos(c(1L,NA_integer_), c(1L,NA_integer_,1L,NA_integer_,1L), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.079", fpos(c(1,2), c(1L,2L,5L,1L,2L), all = TRUE, overlap = TRUE), c(1L,4L))
-NULL
 > check("0004.080", fpos(c(1,1), c(1L,1L,1L,1L,1L), all = TRUE, overlap = TRUE),c(1L,2L,3L,4L))
-NULL
 > check("0004.081", fpos(c(1,1), c(1L,1L,1L,1L,1L), all = FALSE, overlap = TRUE),c(1L))
-NULL
 > check("0004.082", fpos(c(1,1), c(1L,1L,1L,1L,1L), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.083", fpos(c(1,NA_real_), c(1L,NA_integer_,1L,NA_integer_,1L), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.084", fpos(as.complex(c(1L,2L)), as.complex(c(1L,2L,5L,1L,2L)), all = TRUE, overlap = TRUE), c(1L,4L))
-NULL
 > check("0004.085", fpos(as.complex(c(1L,1L)), as.complex(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = TRUE),c(1L,2L,3L,4L))
-NULL
 > check("0004.086", fpos(as.complex(c(1L,1L)), as.complex(c(1L,1L,1L,1L,1L)), all = FALSE, overlap = TRUE),c(1L))
-NULL
 > check("0004.087", fpos(as.complex(c(1L,1L)), as.complex(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.088", fpos(as.complex(c(1L,NA_integer_)), as.complex(c(1L,NA_integer_,1L,NA_integer_,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.089", fpos(as.character(c(1L,2L)), as.character(c(1L,2L,5L,1L,2L)), all = TRUE, overlap = TRUE), c(1L,4L))
-NULL
 > check("0004.090", fpos(as.character(c(1L,1L)), as.character(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = TRUE),c(1L,2L,3L,4L))
-NULL
 > check("0004.091", fpos(as.character(c(1L,1L)), as.character(c(1L,1L,1L,1L,1L)), all = FALSE, overlap = TRUE),c(1L))
-NULL
 > check("0004.092", fpos(as.character(c(1L,1L)), as.character(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.093", fpos(as.character(c(1L,NA_integer_)), as.character(c(1L,NA_integer_,1L,NA_integer_,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.094", fpos(as.logical(c(1L,2L)), as.logical(c(1L,2L,5L,1L,2L)), all = TRUE, overlap = TRUE), c(1L,2L,3L,4L))
-NULL
 > check("0004.095", fpos(as.logical(c(1L,1L)), as.logical(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = TRUE),c(1L,2L,3L,4L))
-NULL
 > check("0004.096", fpos(as.logical(c(1L,1L)), as.logical(c(1L,1L,1L,1L,1L)), all = FALSE, overlap = TRUE),c(1L))
-NULL
 > check("0004.097", fpos(as.logical(c(1L,1L)), as.logical(c(1L,1L,1L,1L,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > check("0004.098", fpos(as.logical(c(1L,NA_integer_)), as.logical(c(1L,NA_integer_,1L,NA_integer_,1L)), all = TRUE, overlap = FALSE),c(1L,3L))
-NULL
 > 
 > rm(s1, s2, class2133, big_matrix, big_matrix_ch, big_matrix_cp, big_matrix_d, big_matrix_l, mat_chr_a, mat_chr_b, mat_cpl_a,
 +    mat_cpl_b, mat_dbl_a, mat_dbl_b, mat_int_a, mat_int_b, mat_lgl_a, mat_lgl_b, mat_raw_a, mymatrix, small_matrix, small_matrix_ch,
@@ -1063,49 +689,30 @@ NULL
 > z0 = rnorm(10000000L)
 > 
 > check("0005.001", psum(x, y, z, na.rm = FALSE), c(6, NA, NA, 7))
-NULL
 > check("0005.002", psum(x, y, z, na.rm = TRUE), c(6, 7, 8, 7))
-NULL
 > check("0005.003", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 7L))
-NULL
 > check("0005.004", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 7L, 8L, 7L))
-NULL
 > check("0005.005", psum(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.")
 > check("0005.006", psum(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0005.007", psum(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0005.008", psum(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
 > check("0005.009", psum(1:10, 1:10, 21:30), 1:10 + 1:10 + 21:30)
-NULL
 > check("0005.010", psum(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0005.011", psum(x, na.rm = FALSE), x)
-NULL
 > check("0005.012", psum(as.integer(x), y, z, na.rm = TRUE), c(6, 7, 8, 7))
-NULL
 > check("0005.013", psum(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), c(3, 3, 4, 6, 0))
-NULL
 > check("0005.014", psum(x, y, as.integer(z), na.rm = FALSE), c(6, NA, NA, 7))
-NULL
 > check("0005.015", psum(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0005.016", psum(x0, y0, z0), x0+y0+z0)
-NULL
 > check("0005.017", psum(as.complex(x0), as.complex(y0), as.complex(z0)), as.complex(x0)+as.complex(y0)+as.complex(z0))
-NULL
 > check("0005.018", psum(as.complex(x0), as.complex(y0), z0), as.complex(x0)+as.complex(y0)+z0)
-NULL
 > check("0005.019", psum(as.complex(x), as.complex(y), as.complex(z), na.rm = FALSE), as.complex(c(6, NA, NA, 7)))
-NULL
 > check("0005.020", psum(as.complex(x), as.complex(y), as.complex(z), na.rm = TRUE), as.complex(c(6, 7, 8, 7)))
-NULL
 > check("0005.021", psum(x, y, z, rep(Inf,4L), na.rm = FALSE), x+y+z+Inf)
-NULL
 > check("0005.022", psum(x, y, z, rep(Inf,4L), na.rm = TRUE), rep(Inf, 4L))
-NULL
 > check("0005.023", psum(NA_integer_, na.rm = TRUE), 0L)
-NULL
 > check("0005.024", psum(NA_real_, na.rm = TRUE), 0)
-NULL
 > check("0005.025", psum(NA_complex_, na.rm = TRUE), 0+0i)
-NULL
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   pprod 
@@ -1113,49 +720,30 @@ NULL
 > 
 > 
 > check("0006.016", pprod(x, y, z, na.rm = FALSE), c(6, NA, NA, 5))
-NULL
 > check("0006.017", pprod(x, y, z, na.rm = TRUE), c(6, 12, 16, 5))
-NULL
 > check("0006.018", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 5L))
-NULL
 > check("0006.019", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 12L, 16L, 5L))
-NULL
 > check("0006.020", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.")
 > check("0006.021", pprod(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0006.022", pprod(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0006.023", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
 > check("0006.024", pprod(1:10, 1:10, 21:30), 1:10 * 1:10 * 21:30)
-NULL
 > check("0006.025", pprod(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0006.026", pprod(x, na.rm = FALSE), x)
-NULL
 > check("0006.027", pprod(as.integer(x), y, z, na.rm = TRUE), c(6, 12, 16, 5))
-NULL
 > check("0006.028", pprod(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), c(2, 3, 4, 5, 1))
-NULL
 > check("0006.029", pprod(x, y, as.integer(z), na.rm = FALSE), c(6, NA, NA, 5))
-NULL
 > check("0006.030", pprod(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0006.031", pprod(x0, y0, z0), x0*y0*z0)
-NULL
 > check("0006.032", pprod(as.complex(x0), as.complex(y0), as.complex(z0)), as.complex(x0)*as.complex(y0)*as.complex(z0))
-NULL
 > check("0006.033", pprod(as.complex(x0), as.complex(y0), z0), as.complex(x0)*as.complex(y0)*z0)
-NULL
 > check("0006.034", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = FALSE), as.complex(c(6, NA, NA, 5)))
-NULL
 > check("0006.035", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = TRUE), as.complex(c(6, 12, 16, 5)))
-NULL
 > check("0006.036", pprod(x, y, z, rep(Inf, 4L), na.rm = FALSE), x*y*z*Inf)
-NULL
 > check("0006.037", pprod(x, y, z, rep(Inf, 4L), na.rm = TRUE), rep(Inf, 4L))
-NULL
 > check("0006.038", pprod(NA_integer_, na.rm = TRUE), 1L)
-NULL
 > check("0006.039", pprod(NA_real_, na.rm = TRUE), 1)
-NULL
 > check("0006.040", pprod(NA_complex_, na.rm = TRUE), 1+0i)
-NULL
 > 
 > rm(x, y, z, x0, y0, z0)
 > 
@@ -1164,43 +752,30 @@ NULL
 > # --------------------------------------------------------------------------------------------------
 > 
 > check("0007.01", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B", "C"), c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z")))
-NULL
 > check("0007.02", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B"), c("X", "Y", "Z")), error = "'old' and 'new' are not the same length.")
 > check("0007.03", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B", "B"), c("X", "Y", "Z")), error = "'old' has duplicated value. Please make sure no duplicated values are introduced.")
 > check("0007.04", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B", "C"), c("X", "X", "Z")), error = "'new' has duplicated value. Please make sure no duplicated values are introduced.")
 > check("0007.05", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A"), c("X")), factor(c("X", "X", "B", "B", "B", "C"), levels = c("X", "B", "C")))
-NULL
 > check("0007.06", setlevels(factor(c(1, 1, 2, 2, 2, 3)), c("1","2","3"), c("X","Y","Z")), factor(c("X", "X", "Y", "Y", "Y", "Z")))
-NULL
 > check("0007.07", setlevels(factor(c(1, 1, 2, 2, 2, 3)), 1:3, c("X","Y","Z")), error = "Type of 'old' must be character.")
 > check("0007.08", setlevels(factor(c(1, 1, 2, 2, 2, 3)), c("1","2","3"), 1:3), error = "Type of 'new' must be character.")
 > check("0007.09", setlevels(factor(c("A", "A", "B", "B", "B", "C")), new = c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z")))
-NULL
 > check("0007.10", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B", "D"), c("X", "Y", "Z")), error = "Element 'D' of 'old' does not exist in 'x'.")
 > check("0007.11", setlevels(factor(c("A", "A", "B", "B", "B", "C"))), error = "argument \"new\" is missing, with no default")
 > check("0007.12", setlevels(c("A", "A", "B", "B", "B", "C"), c("A", "B", "C"), c("X", "Y", "Z")), error = "'setlevels' must be passed a factor.")
 > check("0007.13", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "A","B", "B"), c("X", "X","Y", "Z")), error = "'old' has duplicated value. Please make sure no duplicated values are introduced.")
 > check("0007.14", setlevels(factor(c("A", "A", "B", "B", "B", "C"), levels = c("C","A","B")), c("C", "A", "B"), c("Z", "X", "Y")), factor(c("X", "X", "Y", "Y", "Y", "Z"), levels = c("Z", "X", "Y")))
-NULL
 > check("0007.15", setlevels(factor(c("A", "A", "B", "B", "B", "C"), levels = c("C","A","B","D")), c("A", "B", "C"), c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z"), levels = c("Z", "X", "Y","D")))
-NULL
 > check("0007.16", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B","D")), c("A", "B", "C"), c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z",NA,NA), levels = c("Z", "X", "Y","D")))
-NULL
 > check("0007.17", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), c("A", "B", "C"), c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z",NA,NA), levels = c("Z", "X", "Y",NA), exclude=NULL))
-NULL
 > check("0007.18", setlevels(factor(c("A", "A", "B", "B", "B", "C"), levels = c("C","A","B",NA), exclude = NULL), c("A", "B", "C"), c("X", "Y", "Z")), factor(c("X", "X", "Y", "Y", "Y", "Z"), levels = c("Z", "X", "Y",NA), exclude=NULL))
-NULL
 > check("0007.19", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), c("A", NA), c("X","D")), factor(c("X", "X", "B", "B", "B", "C","D","D"), levels = c("C", "X", "B","D")))
-NULL
 > check("0007.20", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), as.character(NA), "D"), factor(c("A", "A", "B", "B", "B", "C","D","D"), levels = c("C", "A", "B","D")))
-NULL
 > check("0007.21", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), NA_character_, "D"), factor(c("A", "A", "B", "B", "B", "C","D","D"), levels = c("C", "A", "B","D")))
-NULL
 > check("0007.22", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), NA, "D"), error = "Type of 'old' must be character.")
 > check("0007.23", setlevels(factor(c("A", "A", "B", "B", "B", "C", NA, NA), levels = c("C","A","B",NA), exclude = NULL), "A", NA), error = "Type of 'new' must be character.")
 > check("0007.24", setlevels(factor(c("A", "A", "B", "B", "B", "C"), levels = c("A","B","C")), c("A", "B", "C"), c("X", "Y", "Z"), c(FALSE,TRUE)), error = "Argument 'skip_absent' must be TRUE or FALSE and length 1.")
 > check("0007.25", setlevels(factor(c("A", "A", "B", "B", "B", "C")), c("A", "B", "D"), c("X", "Y", "Z"), TRUE), factor(c("X", "X", "Y", "Y", "Y", "C"), levels = c("X","Y","C")))
-NULL
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   vswitch
@@ -1238,13 +813,9 @@ NULL
 > enc2 = enc2utf8(enc1)
 > 
 > check("0008.001", vswitch(x0, values0, outputs0), x0)
-NULL
 > check("0008.002", vswitch(x0, values0, outputs0, na0), x0)
-NULL
 > check("0008.003", vswitch(x1, values0, outputs1), out11)
-NULL
 > check("0008.004", vswitch(x1, values0, outputs1, na1), out12)
-NULL
 > check("0008.005", vswitch(s1, values0, outputs0),                 error = "S4 class objects for argument 'x' are not supported.")
 > check("0008.006", vswitch(x0, s1, outputs0),                      error = "S4 class objects for argument 'values' are not supported.")
 > check("0008.007", vswitch(x0, values0, outputs0, s1),             error = "S4 class objects for argument 'na' are not supported.")
@@ -1254,242 +825,125 @@ NULL
 > check("0008.011", vswitch(x0, values0, outputs0, 1:2),            error = "Length of 'na'  is different than 1 and length of 'x'. Please make length of 'na' is 1 or length of 'x'.")
 > check("0008.012", vswitch(1, c(as.Date("2020-04-14")), list(1L)), error = "Argument 'x' and 'values' must have same class.")
 > check("0008.013", vswitch(1, 1, 1L), 1L)
-NULL
 > check("0008.014", vswitch(factor("a"), factor("b"), list(1L)),    error = "Argument 'x' and 'values' are both factor but their levels are different.")
 > check("0008.015", vswitch(x0, values0[1], list(as.Date("2020-04-14")), 2), error = "Argument 'na' and items of 'outputs' must have same class.")
 > check("0008.016", vswitch(x0, values0, list(factor(c("a","b")),factor(c("a","b"))), factor("c")), error = "Argument 'na' and items of 'outputs' are both factor but their levels are different.")
 > check("0008.017", vswitch(as.numeric(x0), as.numeric(values0), outputs0), x0)
-NULL
 > check("0008.018", vswitch(as.numeric(x0), as.numeric(values0), outputs0, na0), x0)
-NULL
 > check("0008.019", vswitch(as.numeric(x1), as.numeric(values0), outputs1), out11)
-NULL
 > check("0008.020", vswitch(as.numeric(x1), as.numeric(values0), outputs1, na1), out12)
-NULL
 > check("0008.021", vswitch(as.complex(x0), as.complex(values0), outputs0), x0)
-NULL
 > check("0008.022", vswitch(as.complex(x0), as.complex(values0), outputs0, na0), x0)
-NULL
 > check("0008.023", vswitch(as.complex(x1), as.complex(values0), outputs1), out11)
-NULL
 > check("0008.024", vswitch(as.complex(x1), as.complex(values0), outputs1, na1), out12)
-NULL
 > check("0008.025", vswitch(as.logical(x0), as.logical(values0), outputs0), x0)
-NULL
 > check("0008.026", vswitch(as.logical(x0), as.logical(values0), outputs0, na0), x0)
-NULL
 > check("0008.027", vswitch(as.logical(x1), as.logical(values0), outputs1), out11)
-NULL
 > check("0008.028", vswitch(as.logical(x1), as.logical(values0), outputs1, na1), out12)
-NULL
 > check("0008.029", vswitch(as.character(x0), as.character(values0), outputs0), x0)
-NULL
 > check("0008.030", vswitch(as.character(x0), as.character(values0), outputs0, na0), x0)
-NULL
 > check("0008.031", vswitch(as.character(x1), as.character(values0), outputs1), out11)
-NULL
 > check("0008.032", vswitch(as.character(x1), as.character(values0), outputs1, na1), out12)
-NULL
 > check("0008.033", vswitch(as.list(x0), as.list(values0), outputs0), x0)
-NULL
 > check("0008.034", vswitch(as.list(x0), as.list(values0), outputs0, na0), x0)
-NULL
 > check("0008.035", vswitch(as.list(x1), as.list(values0), outputs1), out11)
-NULL
 > check("0008.036", vswitch(as.list(x1), as.list(values0), outputs1, na1), out12)
-NULL
 > check("0008.037", vswitch(x0, values0, outputs0l), as.logical(x0))
-NULL
 > check("0008.038", vswitch(x0, values0, outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.039", vswitch(x1, values0, outputs1l), as.logical(out11))
-NULL
 > check("0008.040", vswitch(x1, values0, outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.041", vswitch(as.numeric(x0), as.numeric(values0), outputs0l), as.logical(x0))
-NULL
 > check("0008.042", vswitch(as.numeric(x0), as.numeric(values0), outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.043", vswitch(as.numeric(x1), as.numeric(values0), outputs1l), as.logical(out11))
-NULL
 > check("0008.044", vswitch(as.numeric(x1), as.numeric(values0), outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.045", vswitch(as.complex(x0), as.complex(values0), outputs0l), as.logical(x0))
-NULL
 > check("0008.046", vswitch(as.complex(x0), as.complex(values0), outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.047", vswitch(as.complex(x1), as.complex(values0), outputs1l), as.logical(out11))
-NULL
 > check("0008.048", vswitch(as.complex(x1), as.complex(values0), outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.049", vswitch(as.logical(x0), as.logical(values0), outputs0l), as.logical(x0))
-NULL
 > check("0008.050", vswitch(as.logical(x0), as.logical(values0), outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.051", vswitch(as.logical(x1), as.logical(values0), outputs1l), as.logical(out11))
-NULL
 > check("0008.052", vswitch(as.logical(x1), as.logical(values0), outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.053", vswitch(as.character(x0), as.character(values0), outputs0l), as.logical(x0))
-NULL
 > check("0008.054", vswitch(as.character(x0), as.character(values0), outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.055", vswitch(as.character(x1), as.character(values0), outputs1l), as.logical(out11))
-NULL
 > check("0008.056", vswitch(as.character(x1), as.character(values0), outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.057", vswitch(as.list(x0), as.list(values0), outputs0l), as.logical(x0))
-NULL
 > check("0008.058", vswitch(as.list(x0), as.list(values0), outputs0l, as.logical(na0)), as.logical(x0))
-NULL
 > check("0008.059", vswitch(as.list(x1), as.list(values0), outputs1l), as.logical(out11))
-NULL
 > check("0008.060", vswitch(as.list(x1), as.list(values0), outputs1l, as.logical(na1)), as.logical(out12))
-NULL
 > check("0008.061", vswitch(x0, values0, outputs0n), as.numeric(x0))
-NULL
 > check("0008.062", vswitch(x0, values0, outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.063", vswitch(x1, values0, outputs1n), as.numeric(out11))
-NULL
 > check("0008.064", vswitch(x1, values0, outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.065", vswitch(as.numeric(x0), as.numeric(values0), outputs0n), as.numeric(x0))
-NULL
 > check("0008.066", vswitch(as.numeric(x0), as.numeric(values0), outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.067", vswitch(as.numeric(x1), as.numeric(values0), outputs1n), as.numeric(out11))
-NULL
 > check("0008.068", vswitch(as.numeric(x1), as.numeric(values0), outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.069", vswitch(as.complex(x0), as.complex(values0), outputs0n), as.numeric(x0))
-NULL
 > check("0008.070", vswitch(as.complex(x0), as.complex(values0), outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.071", vswitch(as.complex(x1), as.complex(values0), outputs1n), as.numeric(out11))
-NULL
 > check("0008.072", vswitch(as.complex(x1), as.complex(values0), outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.073", vswitch(as.logical(x0), as.logical(values0), outputs0n), as.numeric(x0))
-NULL
 > check("0008.074", vswitch(as.logical(x0), as.logical(values0), outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.075", vswitch(as.logical(x1), as.logical(values0), outputs1n), as.numeric(out11))
-NULL
 > check("0008.076", vswitch(as.logical(x1), as.logical(values0), outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.077", vswitch(as.character(x0), as.character(values0), outputs0n), as.numeric(x0))
-NULL
 > check("0008.078", vswitch(as.character(x0), as.character(values0), outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.079", vswitch(as.character(x1), as.character(values0), outputs1n), as.numeric(out11))
-NULL
 > check("0008.080", vswitch(as.character(x1), as.character(values0), outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.081", vswitch(as.list(x0), as.list(values0), outputs0n), as.numeric(x0))
-NULL
 > check("0008.082", vswitch(as.list(x0), as.list(values0), outputs0n, as.numeric(na0)), as.numeric(x0))
-NULL
 > check("0008.083", vswitch(as.list(x1), as.list(values0), outputs1n), as.numeric(out11))
-NULL
 > check("0008.084", vswitch(as.list(x1), as.list(values0), outputs1n, as.numeric(na1)), as.numeric(out12))
-NULL
 > check("0008.085", vswitch(x0, values0, outputs0s), as.character(x0))
-NULL
 > check("0008.086", vswitch(x0, values0, outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.087", vswitch(x1, values0, outputs1s), as.character(out11))
-NULL
 > check("0008.088", vswitch(x1, values0, outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.089", vswitch(as.numeric(x0), as.numeric(values0), outputs0s), as.character(x0))
-NULL
 > check("0008.090", vswitch(as.numeric(x0), as.numeric(values0), outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.091", vswitch(as.numeric(x1), as.numeric(values0), outputs1s), as.character(out11))
-NULL
 > check("0008.092", vswitch(as.numeric(x1), as.numeric(values0), outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.093", vswitch(as.complex(x0), as.complex(values0), outputs0s), as.character(x0))
-NULL
 > check("0008.094", vswitch(as.complex(x0), as.complex(values0), outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.095", vswitch(as.complex(x1), as.complex(values0), outputs1s), as.character(out11))
-NULL
 > check("0008.096", vswitch(as.complex(x1), as.complex(values0), outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.097", vswitch(as.logical(x0), as.logical(values0), outputs0s), as.character(x0))
-NULL
 > check("0008.098", vswitch(as.logical(x0), as.logical(values0), outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.099", vswitch(as.logical(x1), as.logical(values0), outputs1s), as.character(out11))
-NULL
 > check("0008.100", vswitch(as.logical(x1), as.logical(values0), outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.101", vswitch(as.character(x0), as.character(values0), outputs0s), as.character(x0))
-NULL
 > check("0008.102", vswitch(as.character(x0), as.character(values0), outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.103", vswitch(as.character(x1), as.character(values0), outputs1s), as.character(out11))
-NULL
 > check("0008.104", vswitch(as.character(x1), as.character(values0), outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.105", vswitch(as.list(x0), as.list(values0), outputs0s), as.character(x0))
-NULL
 > check("0008.106", vswitch(as.list(x0), as.list(values0), outputs0s, as.character(na0)), as.character(x0))
-NULL
 > check("0008.107", vswitch(as.list(x1), as.list(values0), outputs1s), as.character(out11))
-NULL
 > check("0008.108", vswitch(as.list(x1), as.list(values0), outputs1s, as.character(na1)), as.character(out12))
-NULL
 > check("0008.109", vswitch(x0, values0, outputs0v), x0l)
-NULL
 > check("0008.110", vswitch(x0, values0, outputs0v, na0l), x0l)
-NULL
 > check("0008.111", vswitch(x1, values0, outputs1v), out11l)
-NULL
 > check("0008.112", vswitch(x1, values0, outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.113", vswitch(as.numeric(x0), as.numeric(values0), outputs0v), x0l)
-NULL
 > check("0008.114", vswitch(as.numeric(x0), as.numeric(values0), outputs0v, na0l), x0l)
-NULL
 > check("0008.115", vswitch(as.numeric(x1), as.numeric(values0), outputs1v), out11l)
-NULL
 > check("0008.116", vswitch(as.numeric(x1), as.numeric(values0), outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.117", vswitch(as.complex(x0), as.complex(values0), outputs0v), x0l)
-NULL
 > check("0008.118", vswitch(as.complex(x0), as.complex(values0), outputs0v, na0l), x0l)
-NULL
 > check("0008.119", vswitch(as.complex(x1), as.complex(values0), outputs1v), out11l)
-NULL
 > check("0008.120", vswitch(as.complex(x1), as.complex(values0), outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.121", vswitch(as.logical(x0), as.logical(values0), outputs0v), x0l)
-NULL
 > check("0008.122", vswitch(as.logical(x0), as.logical(values0), outputs0v, na0l), x0l)
-NULL
 > check("0008.123", vswitch(as.logical(x1), as.logical(values0), outputs1v), out11l)
-NULL
 > check("0008.124", vswitch(as.logical(x1), as.logical(values0), outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.125", vswitch(as.character(x0), as.character(values0), outputs0v), x0l)
-NULL
 > check("0008.126", vswitch(as.character(x0), as.character(values0), outputs0v, na0l), x0l)
-NULL
 > check("0008.127", vswitch(as.character(x1), as.character(values0), outputs1v), out11l)
-NULL
 > check("0008.128", vswitch(as.character(x1), as.character(values0), outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.129", vswitch(as.list(x0), as.list(values0), outputs0v), x0l)
-NULL
 > check("0008.130", vswitch(as.list(x0), as.list(values0), outputs0v, na0l), x0l)
-NULL
 > check("0008.131", vswitch(as.list(x1), as.list(values0), outputs1v), out11l)
-NULL
 > check("0008.132", vswitch(as.list(x1), as.list(values0), outputs1v, as.list(na1)), out12l)
-NULL
 > check("0008.133", vswitch(x0, values0, list(as.raw(0),as.raw(1))), error="Type raw is not supported for argument 'outputs'")
 > check("0008.134", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), outputs0),  error="Type raw is not supported for argument 'x'.")
 > check("0008.135", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), outputs0l), error="Type raw is not supported for argument 'x'.")
@@ -1498,144 +952,84 @@ NULL
 > check("0008.138", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), outputs0c), error="Type raw is not supported for argument 'x'.")
 > check("0008.139", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), outputs0v), error="Type raw is not supported for argument 'x'.")
 > check("0008.140", vswitch(factor(c("a","b"), levels=letters[1:2]), factor("a", levels=letters[1:2]), list(1L)), c(1L, NA_integer_))
-NULL
 > check("0008.141", vswitch(x0, values0, list(factor("a", levels=letters[1:2]),factor("a", levels=letters[1:2])), factor("b", levels=letters[1:2])), factor(c("a","a","a","a","b","a","b"), levels=letters[1:2]))
-NULL
 > check("0008.142", vswitch(x0, values0, list(1L,s2)), error ="S4 class objects for argument 'outputs' (item 2) are not supported.")
 > check("0008.143", vswitch(x0, values0, list(as.Date("2020-04-14"),as.Date("2020-04-15"))), c(as.Date("2020-04-15"),as.Date("2020-04-14"),as.Date("2020-04-14"),as.Date("2020-04-15"),NA,as.Date("2020-04-15"),NA))
-NULL
 > check("0008.144", vswitch(x0, values0, list(1:2,3)), error = "Length of item 1 of 'output' is different than 1 and length of 'x'. Please make sure that all items of 'output' have length 1 or length of 'x'(7).")
 > check("0008.145", vswitch(x0, values0, outputs0c), as.complex(x0))
-NULL
 > check("0008.146", vswitch(x0, values0, outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.147", vswitch(x1, values0, outputs1c), as.complex(out11))
-NULL
 > check("0008.148", vswitch(x1, values0, outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.149", vswitch(as.numeric(x0), as.numeric(values0), outputs0c), as.complex(x0))
-NULL
 > check("0008.150", vswitch(as.numeric(x0), as.numeric(values0), outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.151", vswitch(as.numeric(x1), as.numeric(values0), outputs1c), as.complex(out11))
-NULL
 > check("0008.152", vswitch(as.numeric(x1), as.numeric(values0), outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.153", vswitch(as.complex(x0), as.complex(values0), outputs0c), as.complex(x0))
-NULL
 > check("0008.154", vswitch(as.complex(x0), as.complex(values0), outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.155", vswitch(as.complex(x1), as.complex(values0), outputs1c), as.complex(out11))
-NULL
 > check("0008.156", vswitch(as.complex(x1), as.complex(values0), outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.157", vswitch(as.logical(x0), as.logical(values0), outputs0c), as.complex(x0))
-NULL
 > check("0008.158", vswitch(as.logical(x0), as.logical(values0), outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.159", vswitch(as.logical(x1), as.logical(values0), outputs1c), as.complex(out11))
-NULL
 > check("0008.160", vswitch(as.logical(x1), as.logical(values0), outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.161", vswitch(as.character(x0), as.character(values0), outputs0c), as.complex(x0))
-NULL
 > check("0008.162", vswitch(as.character(x0), as.character(values0), outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.163", vswitch(as.character(x1), as.character(values0), outputs1c), as.complex(out11))
-NULL
 > check("0008.164", vswitch(as.character(x1), as.character(values0), outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.165", vswitch(as.list(x0), as.list(values0), outputs0c), as.complex(x0))
-NULL
 > check("0008.166", vswitch(as.list(x0), as.list(values0), outputs0c, as.complex(na0)), as.complex(x0))
-NULL
 > check("0008.167", vswitch(as.list(x1), as.list(values0), outputs1c), as.complex(out11))
-NULL
 > check("0008.168", vswitch(as.list(x1), as.list(values0), outputs1c, as.complex(na1)), as.complex(out12))
-NULL
 > check("0008.169", vswitch(x0, values0, list(as.Date("2020-04-14"),10)), error = "Items 1 and  2 of 'outputs' must have same class.")
 > check("0008.170", vswitch(x0, values0, list(factor("a", levels = letters[1:2]),factor("c", levels = letters[1:3]))), error = "Items 1 and  2 of 'outputs' are both factor but their levels are different.")
 > check("0008.171", vswitch(x0, values0, as.integer(outputs0)), x0)
-NULL
 > check("0008.172", vswitch(x0, values0, as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.173", vswitch(x0, values0, as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.174", vswitch(x0, values0, as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.175", vswitch(x0, values0, as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.176", vswitch(as.numeric(x0), as.numeric(values0), as.integer(outputs0)), x0)
-NULL
 > check("0008.177", vswitch(as.numeric(x0), as.numeric(values0), as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.178", vswitch(as.numeric(x0), as.numeric(values0), as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.179", vswitch(as.numeric(x0), as.numeric(values0), as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.180", vswitch(as.numeric(x0), as.numeric(values0), as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.181", vswitch(as.logical(x0), as.logical(values0), as.integer(outputs0)), x0)
-NULL
 > check("0008.182", vswitch(as.logical(x0), as.logical(values0), as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.183", vswitch(as.logical(x0), as.logical(values0), as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.184", vswitch(as.logical(x0), as.logical(values0), as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.185", vswitch(as.logical(x0), as.logical(values0), as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.186", vswitch(as.complex(x0), as.complex(values0), as.integer(outputs0)), x0)
-NULL
 > check("0008.187", vswitch(as.complex(x0), as.complex(values0), as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.188", vswitch(as.complex(x0), as.complex(values0), as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.189", vswitch(as.complex(x0), as.complex(values0), as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.190", vswitch(as.complex(x0), as.complex(values0), as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.191", vswitch(as.character(x0), as.character(values0), as.integer(outputs0)), x0)
-NULL
 > check("0008.192", vswitch(as.character(x0), as.character(values0), as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.193", vswitch(as.character(x0), as.character(values0), as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.194", vswitch(as.character(x0), as.character(values0), as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.195", vswitch(as.character(x0), as.character(values0), as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.196", vswitch(as.list(x0), as.list(values0), as.integer(outputs0)), x0)
-NULL
 > check("0008.197", vswitch(as.list(x0), as.list(values0), as.numeric(outputs0)), as.numeric(x0))
-NULL
 > check("0008.198", vswitch(as.list(x0), as.list(values0), as.logical(outputs0)), as.logical(x0))
-NULL
 > check("0008.199", vswitch(as.list(x0), as.list(values0), as.character(outputs0)), as.character(x0))
-NULL
 > check("0008.200", vswitch(as.list(x0), as.list(values0), as.complex(outputs0)), as.complex(x0))
-NULL
 > check("0008.201", vswitch(x0, values0, as.integer(outputs0), NA_character_), error = "Type of 'na' and 'outputs' are different. Please make sure they are the same.")
 > check("0008.202", vswitch(x0, values0, as.raw(c(0,1))), error="Type raw is not supported for argument 'outputs'")
 > check("0008.203", vswitch(x0, values0[1], as.Date("2020-04-14"), 2), error = "Argument 'na' and 'outputs' must have same class.")
 > check("0008.204", vswitch(x0, values0, factor(c("a","b")), factor("c")), error = "Argument 'na' and 'outputs' are both factor but their levels are different.")
 > check("0008.205", vswitch(x0, values0[1], factor(c("a"),levels=c("a","b")), factor(("b"),levels = c("a","b"))), factor(c("b","a","a","b","b","b","b"),levels=c("a","b")))
-NULL
 > check("0008.206", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.integer(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.207", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.numeric(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.208", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.logical(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.209", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.character(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.210", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.complex(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.211", vswitch(c(enc1,enc2),enc1,1),c(1,1))
-NULL
 > check("0008.212", vswitch(c(enc1,enc1),enc1,1),c(1,1))
-NULL
 > check("0008.213", vswitch(c(enc2,enc2),enc2,1),c(1,1))
-NULL
 > check("0008.214", vswitch(c(enc1,enc2),enc2,1),c(1,1))
-NULL
-> # check("0008.215", vswitch(character(),"a",1),numeric(0))
-> # check("0008.216", vswitch(numeric(),2,1),numeric(0))
+> check("0008.215", vswitch("a",character(),1),error = "Argument'values' cannot be zero-length vector.")
+> check("0008.216", vswitch("a","b",1,checkEnc = NA),error = "Argument 'checkEnc' must be TRUE or FALSE and length 1.")
+> # check("0008.217", vswitch(character(),"a",1),numeric(0))
+> # check("0008.218", vswitch(numeric(),2,1),numeric(0))
 > 
 > rm(outputs0, outputs1, s1, s2, class2133, x0,x1,values0,out11,out12,na1,na0)
 > rm(outputs0l,outputs1l,outputs0n,outputs1n,outputs0c,outputs1c,outputs0s,outputs1s,outputs0v,outputs1v)
@@ -1653,50 +1047,36 @@ NULL
 > z0 = sample(c(TRUE, FALSE, NA),1e6,TRUE)
 > 
 > check("0009.001", pall(x, y, z, na.rm = FALSE), sapply(1:4, function(i) all(x[i],y[i],z[i],na.rm=FALSE)))
-NULL
 > check("0009.002", pall(x, y, z, na.rm = TRUE), sapply(1:4, function(i) all(x[i],y[i],z[i],na.rm=TRUE)))
-NULL
 > check("0009.003", pall(x, y, TRUE, na.rm = FALSE), error = "Argument 3 is of length 1 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0009.004", pall(c(TRUE,FALSE,NA), c(TRUE,FALSE), na.rm = FALSE), error = "Argument 2 is of length 2 but argument 1 is of length 3. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0009.005", pall(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0009.006", pall(x, na.rm = FALSE), x)
-NULL
 > check("0009.007", pall(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0009.008", pall(x, as.integer(z), y, na.rm = TRUE), error = "Argument 2 is of type integer. Only logical type is supported.")
 > check("0009.009", pall(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.")
 > check("0009.010", pall(NA, na.rm = TRUE), TRUE)
-NULL
 > check("0009.011", pall(NA, na.rm = FALSE), NA)
-NULL
 > check("0009.012", pall(x0, y0, z0, na.rm = FALSE), sapply(1:1e6, function(i) all(x0[i],y0[i],z0[i],na.rm=FALSE)))
-NULL
 > check("0009.013", pall(x0, y0, z0, na.rm = TRUE), sapply(1:1e6, function(i) all(x0[i],y0[i],z0[i],na.rm=TRUE)))
-NULL
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   pany
 > # --------------------------------------------------------------------------------------------------
 > 
 > check("0010.001", pany(x, y, z, na.rm = FALSE), sapply(1:4, function(i) any(x[i],y[i],z[i],na.rm=FALSE)))
-NULL
 > check("0010.002", pany(x, y, z, na.rm = TRUE), sapply(1:4, function(i) any(x[i],y[i],z[i],na.rm=TRUE)))
-NULL
 > check("0010.003", pany(x, y, TRUE, na.rm = FALSE), error = "Argument 3 is of length 1 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0010.004", pany(c(TRUE,FALSE,NA), c(TRUE,FALSE), na.rm = FALSE), error = "Argument 2 is of length 2 but argument 1 is of length 3. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0010.005", pany(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0010.006", pany(x, na.rm = FALSE), x)
-NULL
 > check("0010.007", pany(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0010.008", pany(x, as.integer(z), y, na.rm = TRUE), error = "Argument 2 is of type integer. Only logical type is supported.")
 > check("0010.009", pany(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.")
 > check("0010.010", pany(NA, na.rm = TRUE), TRUE)
-NULL
 > check("0010.011", pany(NA, na.rm = FALSE), NA)
-NULL
 > check("0010.012", pany(x0, y0, z0, na.rm = FALSE), sapply(1:1e6, function(i) any(x0[i],y0[i],z0[i],na.rm=FALSE)))
-NULL
 > check("0010.013", pany(x0, y0, z0, na.rm = TRUE), sapply(1:1e6, function(i) any(x0[i],y0[i],z0[i],na.rm=TRUE)))
-NULL
 > 
 > rm(x, y, z, x0, y0, z0)
 > 
@@ -1715,47 +1095,29 @@ NULL
 > z1 = sample(c(1,2,NA),1e3,TRUE)
 > 
 > check("0011.001", pmean(x, y, z, na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = FALSE)))
-NULL
 > check("0011.002", pmean(x, y, z, na.rm = TRUE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = TRUE)))
-NULL
 > check("0011.003", pmean(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer and double types are supported.")
 > check("0011.004", pmean(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0011.005", pmean(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0011.006", pmean(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer and double types are supported.")
 > check("0011.007", pmean(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0011.008", pmean(x, na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i]), na.rm = FALSE)))
-NULL
 > check("0011.009", pmean(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), sapply(1:5, function(i) mean(c(c(1,3,NA,5,NA)[i], c(2,NA,4,1,NA)[i]), na.rm = TRUE)))
-NULL
 > check("0011.010", pmean(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0011.011", pmean(x0, y0, z0), sapply(1:1000, function(i) mean(c(x0[i], y0[i], z0[i]), na.rm = FALSE)))
-NULL
 > check("0011.012", pmean(x, y, z, rep(Inf,4L), na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i],rep(Inf,4L)[i]), na.rm = FALSE)))
-NULL
 > check("0011.013", pmean(x, y, z, rep(Inf,4L), na.rm = TRUE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i],rep(Inf,4L)[i]), na.rm = TRUE)))
-NULL
 > check("0011.014", pmean(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), sapply(1:4, function(i) mean(c(as.integer(x[i]), as.integer(y[i]), as.integer(z[i])), na.rm = FALSE)))
-NULL
 > check("0011.015", pmean(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), sapply(1:4, function(i) mean(c(as.integer(x[i]), as.integer(y[i]), as.integer(z[i])), na.rm = TRUE)))
-NULL
 > check("0011.016", pmean(as.integer(x), y, z, na.rm = TRUE), sapply(1:4, function(i) mean(c(as.integer(x[i]), y[i], z[i]), na.rm = TRUE)))
-NULL
 > check("0011.017", pmean(x, y, as.integer(z), na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i], y[i], as.integer(z[i])), na.rm = FALSE)))
-NULL
 > check("0011.018", pmean(NA_integer_, na.rm = FALSE), mean(NA_integer_,na.rm = FALSE))
-NULL
 > check("0011.019", pmean(NA_real_, na.rm = FALSE), mean(NA_real_,na.rm = FALSE))
-NULL
 > check("0011.020", pmean(x0, y0, z0, na.rm = TRUE), sapply(1:1000, function(i) mean(c(x0[i], y0[i], z0[i]), na.rm = TRUE)))
-NULL
 > check("0011.021", pmean(x1, y1, z1, na.rm = FALSE), sapply(1:1000, function(i) mean(c(x1[i], y1[i], z1[i]), na.rm = FALSE)))
-NULL
 > check("0011.022", pmean(x1, y1, z1, na.rm = TRUE), sapply(1:1000, function(i) mean(c(x1[i], y1[i], z1[i]), na.rm = TRUE)))
-NULL
 > check("0011.023", pmean(NA_integer_, na.rm = TRUE), mean(NA_integer_,na.rm = TRUE))
-NULL
 > check("0011.024", pmean(NA_real_, na.rm = TRUE), mean(NA_real_,na.rm = TRUE))
-NULL
 > 
 > rm(x, y, z, x0, y0, z0, x1, y1, z1)
 > 
@@ -1766,26 +1128,16 @@ NULL
 > x = c(0L,1L,2L,NA_integer_)
 > 
 > check("0012.001", countNA(x), sum(is.na(x)))
-NULL
 > check("0012.002", countNA(as.logical(x)), sum(is.na(as.logical(x))))
-NULL
 > check("0012.003", countNA(as.numeric(x)), sum(is.na(as.numeric(x))))
-NULL
 > check("0012.004", countNA(as.complex(x)), sum(is.na(as.complex(x))))
-NULL
 > check("0012.005", countNA(as.character(x)), sum(is.na(as.character(x))))
-NULL
 > check("0012.006", countNA(as.list(x)), list(0L,0L,0L,1L))
-NULL
 > check("0012.007", countNA(NaN), sum(is.na(NaN)))
-NULL
 > check("0012.008", countNA(as.raw("0")), error = "Type raw is not supported.")
 > check("0012.009", countNA(NULL), 0L)
-NULL
 > check("0012.010", countNA(list(c(0L,1L,2L,NA_integer_),NULL)), list(1L,0L))
-NULL
 > check("0012.011", countNA(list(x,list(x,1),1)), list(1L,list(1L,0L),0L))
-NULL
 > 
 > rm(x)
 > 
@@ -1796,26 +1148,18 @@ NULL
 > x = c(0L,1L,2L,NA_integer_)
 > 
 > check("0013.001", count(x, 1L), sum(x == 1L,na.rm = TRUE))
-NULL
 > check("0013.002", count(as.logical(x), TRUE), sum(as.logical(x) == TRUE,na.rm = TRUE))
-NULL
 > check("0013.003", count(as.numeric(x), 1), sum(as.numeric(x) == 1,na.rm = TRUE))
-NULL
 > check("0013.004", count(as.complex(x), 1+0i), sum(as.complex(x) == 1+0i,na.rm = TRUE))
-NULL
 > check("0013.005", count(as.character(x), "2"), sum(as.character(x) == "2",na.rm = TRUE))
-NULL
 > check("0013.006", count(NULL,NA), error = "Type of 'value' (logical) is different than type of 'x' (NULL). Please make sure both have the same type.")
 > check("0013.007", count(NaN, NA_real_), 0L)
-NULL
 > check("0013.008", count(as.raw("00"),as.raw("01")), error = "Type raw is not supported.")
 > check("0013.009", count(NULL,NULL), error = "Argument 'value' must be non NULL and length 1.")
 > check("0013.010", count(c(as.Date("2020-06-20"),as.Date("2020-06-21")), as.Date("2020-06-20")), 1L)
-NULL
 > check("0013.011", count(c(as.Date("2020-06-20"),as.Date("2020-06-21")), 0), error = "'x' has different class than 'y'. Please make sure that both arguments have the same class.")
 > check("0013.012", count(iris$Species, factor("setosa","setosa")), error = "'x' and 'y' are both type factor but their levels are different.")
 > check("0013.013", count(iris$Species, iris$Species[1]), 50L)
-NULL
 > 
 > rm(x)
 > 
@@ -1834,32 +1178,23 @@ NULL
 > f2 = factor(c("a","a","c","a"), c("a","b","c","d"))
 > 
 > check("0014.001", pcount(x, value = 3), sapply(1:4, function(i) count(x[i], 3)))
-NULL
 > check("0014.002", pcount(as.integer(x), value = 3L), sapply(1:4, function(i) count(as.integer(x[i]), 3L)))
-NULL
 > check("0014.003", pcount(as.character(x), value = "3"), sapply(1:4, function(i) count(as.character(x[i]), "3")))
-NULL
 > check("0014.004", pcount(as.complex(x), value = 3+0i), sapply(1:4, function(i) count(as.complex(x[i]), 3+0i)))
-NULL
 > check("0014.005", pcount(as.logical(x), value = TRUE), sapply(1:4, function(i) count(as.logical(x[i]), TRUE)))
-NULL
 > check("0014.006", pcount(as.logical(x), value = NULL), error = "Argument 'value' must be non NULL and length 1.")
 > check("0014.007", pcount(as.logical(x), value = c(TRUE,FALSE)), error = "Argument 'value' must be non NULL and length 1.")
 > check("0014.008", pcount(value = TRUE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0014.009", pcount(x,y,z,value = 3), c(1L,1L,0L,0L))
-NULL
 > check("0014.010", pcount(x,y,z,value = 4), c(0L,1L,2L,0L))
-NULL
 > check("0014.011", pcount(x,y,z[1:3],value = 4), error = "Argument 3 is of length 3 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0014.012", pcount(x,y,as.logical(z),value = 4), error = "Type of argument 3 is logical but argument 1 is of type double. Please make sure both have the same type.")
 > check("0014.013", pcount(x,y,z,value = 4L), error = "Type of 'value' (integer) is different than type of Argument 1 (double). Please make sure both have the same type.")
 > check("0014.014", pcount(list(x),y,z,value = 4), error = "Argument 1 is of type list. Only logical, integer, double, complex and character types are supported.")
 > check("0014.015", pcount(d1, d2, value = as.Date("2020-06-20")), c(1L, 0L, 1L, 0L))
-NULL
 > check("0014.016", pcount(d1, d2, value = 5), error = "Class of 'value' is different than class of Argument 1. Please make sure both have the same class.")
 > check("0014.017", pcount(d1, c(1,2,3,4), value = as.Date("2020-06-20")), error = "Class of 'value' is different than class of Argument 2. Please make sure both have the same class.")
 > check("0014.018", pcount(f1, f2, value = factor("a", c("a","b","c","d"))), c(2L, 1L, 0L, 1L))
-NULL
 > check("0014.019", pcount(f1, f2, value = factor("a", c("a","b","c"))), error = "Levels of 'value' are different than levels of Argument 1. Please make sure both have the same levels.")
 > check("0014.020", pcount(f1, factor("a", c("a","b","c")), value = factor("a", c("a","b","c","d"))), error = "Levels of 'value' are different than levels of Argument 2. Please make sure both have the same levels.")
 > 
@@ -1878,53 +1213,35 @@ NULL
 +                 b = rep(rnorm(5),4L))
 > 
 > check("0015.001", fduplicated(iris$Species), duplicated(iris$Species))
-NULL
 > check("0015.002", fduplicated(iris$Petal.Width), duplicated(iris$Petal.Width))
-NULL
 > check("0015.003", fduplicated(iris$Petal.Length), duplicated(iris$Petal.Length))
-NULL
 > check("0015.004", fduplicated(iris$Sepal.Length), duplicated(iris$Sepal.Length))
-NULL
 > check("0015.005", fduplicated(iris$Sepal.Width), duplicated(iris$Sepal.Width))
-NULL
 > check("0015.006", fduplicated(as.character(iris$Petal.Width)), duplicated(as.character(iris$Petal.Width)))
-NULL
 > check("0015.007", fduplicated(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE)), duplicated(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE)))
-NULL
 > check("0015.008", fduplicated(x1), duplicated(x1))
-NULL
 > check("0015.009", fduplicated(x2), duplicated(x2))
-NULL
 > check("0015.010", fduplicated(x3), duplicated(x3))
-NULL
 > check("0015.011", fduplicated(x4), duplicated(x4))
-NULL
 > check("0015.012", fduplicated(x5), duplicated(x5))
-NULL
-> 
+> check("0015.013", fduplicated(data.frame(a=x1,b=x1)),duplicated(data.frame(a=x1,b=x1)))
+> check("0015.014", fduplicated(data.frame(a=x2,b=x2)),duplicated(data.frame(a=x2,b=x2)))
+> check("0015.015", fduplicated(data.frame(a=x3,b=x3)),duplicated(data.frame(a=x3,b=x3)))
+> check("0015.016", fduplicated(data.frame(a=x4,b=x4)),duplicated(data.frame(a=x4,b=x4)))
+> check("0015.017", fduplicated(data.frame(a=x5,b=x5)),duplicated(data.frame(a=x5,b=x5)))
 > check("0015.018", fduplicated(iris[,5:4]), duplicated(iris[,5:4]))
-NULL
 > check("0015.019", fduplicated(iris[,5:3]), duplicated(iris[,5:3]))
-NULL
 > check("0015.020", fduplicated(iris[,5:2]), duplicated(iris[,5:2]))
-NULL
 > check("0015.021", fduplicated(iris[,5:1]), duplicated(iris[,5:1]))
-NULL
 > check("0015.022", fduplicated(raw(4L)),error = "Type raw is not supported.")
 > check("0015.023", fduplicated(iris3),error = "Arrays are not yet supported. (please raise a feature request if needed)")
 > check("0015.024", fduplicated(matrix(c(1,1,1,1),nrow = 2)),c(FALSE,TRUE))
-NULL
 > check("0015.025", fduplicated(matrix(c(1L,1L,1L,1L),nrow = 2)),c(FALSE,TRUE))
-NULL
 > check("0015.026", fduplicated(matrix(c(TRUE,TRUE,FALSE,FALSE),nrow = 2)),c(FALSE,TRUE))
-NULL
 > check("0015.027", fduplicated(matrix(c("1","1","1","1"),nrow = 2)),c(FALSE,TRUE))
-NULL
 > check("0015.028", fduplicated(matrix(as.complex(c(1,1,1,1)),nrow = 2)),c(FALSE,TRUE))
-NULL
 > check("0015.029", fduplicated(matrix(as.raw(c(1,1,1,1)),nrow = 2)),error = "Matrix of type raw are not supported.")
 > check("0015.030", fduplicated(x6),duplicated(x6))
-NULL
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   uniq
@@ -1938,67 +1255,44 @@ NULL
 > rdn = sample(c(1,NA_real_,NaN),1e4,TRUE)
 > 
 > check("0016.001", funique(iris$Species), unique(iris$Species))
-NULL
 > check("0016.002", funique(iris$Petal.Width), unique(iris$Petal.Width))
-NULL
 > check("0016.003", funique(iris$Petal.Length), unique(iris$Petal.Length))
-NULL
 > check("0016.004", funique(iris$Sepal.Length), unique(iris$Sepal.Length))
-NULL
 > check("0016.005", funique(iris$Sepal.Width), unique(iris$Sepal.Width))
-NULL
 > check("0016.006", funique(as.character(iris$Petal.Width)), unique(as.character(iris$Petal.Width)))
-NULL
 > check("0016.007", funique(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE)), unique(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE)))
-NULL
 > check("0016.008", funique(x1), unique(x1))
-NULL
 > check("0016.009", funique(x2), unique(x2))
-NULL
 > check("0016.010", funique(x3), unique(x3))
-NULL
 > check("0016.011", funique(x4), unique(x4))
-NULL
 > check("0016.012", funique(x5), unique(x5))
-NULL
-> 
+> check("0016.013", funique(data.frame(a=x1,b=x1)),{out = unique(data.frame(a=x1,b=x1)); row.names(out)<-NULL;out})
+> check("0016.014", funique(data.frame(a=x2,b=x2)),{out = unique(data.frame(a=x2,b=x2)); row.names(out)<-NULL;out})
+> check("0016.015", funique(data.frame(a=x3,b=x3)),{out = unique(data.frame(a=x3,b=x3)); row.names(out)<-NULL;out})
+> check("0016.016", funique(data.frame(a=x4,b=x4)),{out = unique(data.frame(a=x4,b=x4)); row.names(out)<-NULL;out})
+> check("0016.017", funique(data.frame(a=x5,b=x5)),{out = unique(data.frame(a=x5,b=x5)); row.names(out)<-NULL;out})
 > check("0016.018", funique(df), {adf = unique(df); row.names(adf) <- NULL; adf })
-NULL
 > check("0016.019", funique(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), as.Date("2020-05-01"))
-NULL
 > check("0016.020", funique(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
 +                                      b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
 +       data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01"))))
-NULL
 > 
 > check("0016.021", funique(matrix(c(1,1,1,1,2,2,3,3,2,2),nrow = 5)),matrix(c(1,1,2,2,3,2),nrow = 3))
-NULL
 > check("0016.022", funique(matrix(as.integer(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),matrix(c(1L,1L,2L,2L,3L,2L),nrow = 3))
-NULL
 > check("0016.023", funique(matrix(c(TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,NA,NA),nrow = 6)),matrix(c(TRUE,FALSE,TRUE,TRUE,FALSE,NA),nrow = 3))
-NULL
 > check("0016.024", funique(matrix(as.character(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),matrix(as.character(c(1,1,2,2,3,2)),nrow = 3))
-NULL
 > check("0016.025", funique(matrix(as.complex(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),matrix(as.complex(c(1,1,2,2,3,2)),nrow = 3))
-NULL
 > check("0016.026", funique(matrix(as.raw(c(1,1,1,1)),nrow = 2)),error = "Matrix of type raw are not supported.")
 > check("0016.027", funique(iris3), error = "Arrays are not yet supported. (please raise a feature request if needed)")
 > check("0016.028", funique(matrix(x1[1:1000],ncol=10)), unique(matrix(x1[1:1000],ncol=10)))
-NULL
 > check("0016.029", funique(matrix(x2[1:1000],ncol=10)), unique(matrix(x2[1:1000],ncol=10)))
-NULL
 > check("0016.030", funique(matrix(x3[1:1000],ncol=10)), unique(matrix(x3[1:1000],ncol=10)))
-NULL
 > check("0016.031", funique(matrix(x4[1:1000],ncol=10)), unique(matrix(x4[1:1000],ncol=10)))
-NULL
 > check("0016.032", funique(matrix(x5[1:1000],ncol=10)), unique(matrix(x5[1:1000],ncol=10)))
-NULL
 > check("0016.033", funique(matrix(rdn,ncol=10)), unique(matrix(rdn,ncol=10)))
-NULL
 > check("0016.034", funique(x6),unique(x6))
-NULL
 > 
-> rm(x1, x2, x3, x4, x5, x6, adf, df, rdn)
+> rm(x1, x2, x3, x4, x5, x6, adf, df, rdn, out)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   countOccur
@@ -2027,36 +1321,22 @@ NULL
 > row.names(out3) = NULL
 > 
 > check("0017.001", countOccur(iris$Species)[[2]], c(50L,50L,50L))
-NULL
 > check("0017.002", countOccur(as.numeric(iris$Species))[[2]], c(50L,50L,50L))
-NULL
 > check("0017.003", countOccur(as.complex(iris$Species))[[2]], c(50L,50L,50L))
-NULL
 > check("0017.004", countOccur(as.character(iris$Species))[[2]], c(50L,50L,50L))
-NULL
 > check("0017.005", countOccur(c(NA,TRUE,TRUE,FALSE,NA,FALSE))[[2]], c(2L,2L,2L))
-NULL
 > check("0017.005", countOccur(raw(2L)), error = "Type raw is not supported.")
 > check("0017.006", df1[order(df1$Variable),2], as.vector(table(x1,useNA = "always")))
-NULL
 > check("0017.007", df2[order(df2$Variable),2], as.vector(table(x2,useNA = "always")))
-NULL
 > check("0017.008", df3[order(df3$Variable),2], as.vector(table(x3,useNA = "always")))
-NULL
 > check("0017.009", df4[order(df4$Variable),2], as.vector(table(x4,useNA = "always")))
-NULL
 > check("0017.010", df5[order(df5$Variable),2], as.vector(table(x5,useNA = "always")))
-NULL
 > check("0017.011", countOccur(rep(as.Date("2020-06-02"),10L))[[2]], 10L)
-NULL
 > check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
 +                                         b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
 +       data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
-NULL
 > check("0017.013", countOccur(iris[,5:4]), out)
-NULL
 > check("0017.014",out3 ,out2)
-NULL
 > check("0017.015",countOccur(matrix(c(1,1,1,1),nrow = 2)),error = "Array are not yet supported.")
 > 
 > rm(x1, x2, x3, x4, x5,df1, df2, df3, df4, df5, out, out2, out3)
@@ -2080,64 +1360,40 @@ NULL
 +                 b = rep(rnorm(5),4L))
 > 
 > check("0018.001", uniqLen(iris$Species), length(unique(iris$Species)))
-NULL
 > check("0018.002", uniqLen(iris$Petal.Width), length(unique(iris$Petal.Width)))
-NULL
 > check("0018.003", uniqLen(iris$Petal.Length), length(unique(iris$Petal.Length)))
-NULL
 > check("0018.004", uniqLen(iris$Sepal.Length), length(unique(iris$Sepal.Length)))
-NULL
 > check("0018.005", uniqLen(iris$Sepal.Width), length(unique(iris$Sepal.Width)))
-NULL
 > check("0018.006", uniqLen(as.character(iris$Petal.Width)), length(unique(as.character(iris$Petal.Width))))
-NULL
 > check("0018.007", uniqLen(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE)), length(unique(c(TRUE,FALSE,TRUE,FALSE,NA,NA,TRUE))))
-NULL
 > check("0018.008", uniqLen(x1), length(unique(x1)))
-NULL
 > check("0018.009", uniqLen(x2), length(unique(x2)))
-NULL
 > check("0018.010", uniqLen(x3), length(unique(x3)))
-NULL
 > check("0018.011", uniqLen(x4), length(unique(x4)))
-NULL
 > check("0018.012", uniqLen(x5), length(unique(x5)))
-NULL
-> 
+> check("0018.013", uniqLen(data.frame(a=x1,b=x1)),dim(unique(data.frame(a=x1,b=x1)))[1])
+> check("0018.014", uniqLen(data.frame(a=x2,b=x2)),dim(unique(data.frame(a=x2,b=x2)))[1])
+> check("0018.015", uniqLen(data.frame(a=x3,b=x3)),dim(unique(data.frame(a=x3,b=x3)))[1])
+> check("0018.016", uniqLen(data.frame(a=x4,b=x4)),dim(unique(data.frame(a=x4,b=x4)))[1])
+> check("0018.017", uniqLen(data.frame(a=x5,b=x5)),dim(unique(data.frame(a=x5,b=x5)))[1])
 > check("0018.018", uniqLen(df), dim(unique(df))[1])
-NULL
 > check("0018.019", uniqLen(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), 1L)
-NULL
 > check("0018.020", uniqLen(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
 +                                      b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),1L)
-NULL
-> 
 > check("0018.021", uniqLen(matrix(c(1,1,1,1,2,2,3,3,2,2),nrow = 5)),3L)
-NULL
 > check("0018.022", uniqLen(matrix(as.integer(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),3L)
-NULL
 > check("0018.023", uniqLen(matrix(c(TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,NA,NA),nrow = 6)),3L)
-NULL
 > check("0018.024", uniqLen(matrix(as.character(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),3L)
-NULL
 > check("0018.025", uniqLen(matrix(as.complex(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),3L)
-NULL
 > check("0018.026", uniqLen(matrix(as.raw(c(1,1,1,1)),nrow = 2)),error = "Matrix of type raw are not supported.")
 > check("0018.027", uniqLen(iris3), error = "Arrays are not yet supported. (please raise a feature request if needed)")
 > check("0018.028", uniqLen(matrix(x1[1:1000],ncol=10)), dim(unique(matrix(x1[1:1000],ncol=10)))[1])
-NULL
 > check("0018.029", uniqLen(matrix(x2[1:1000],ncol=10)), dim(unique(matrix(x2[1:1000],ncol=10)))[1])
-NULL
 > check("0018.030", uniqLen(matrix(x3[1:1000],ncol=10)), dim(unique(matrix(x3[1:1000],ncol=10)))[1])
-NULL
 > check("0018.031", uniqLen(matrix(x4[1:1000],ncol=10)), dim(unique(matrix(x4[1:1000],ncol=10)))[1])
-NULL
 > check("0018.032", uniqLen(matrix(x5[1:1000],ncol=10)), dim(unique(matrix(x5[1:1000],ncol=10)))[1])
-NULL
 > check("0018.033", uniqLen(matrix(rdn,ncol=10)), dim(unique(matrix(rdn,ncol=10)))[1])
-NULL
 > check("0018.034", uniqLen(x6),dim(unique(x6))[1])
-NULL
 > 
 > rm(x1, x2, x3, x4, x5, x6, df, rdn)
 > 
@@ -2154,4 +1410,4 @@ NULL
 > 
 > proc.time()
    user  system elapsed 
- 14.444   2.955  17.656 
+ 41.479   3.902  46.185 

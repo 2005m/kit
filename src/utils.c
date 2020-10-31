@@ -508,7 +508,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
           pans_ct[h[id]-1]++;
           goto lbl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       pans_l[i]++;

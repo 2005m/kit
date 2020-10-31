@@ -12,24 +12,25 @@ check = function(test,x,y,error=NULL,warning=NULL) {
   for (len in c("warning","error")) {
     output = opt[[len]]; input = get(len)
     if (length(input) != length(output)) {
-      cat("Check",test,"failed.\n"); return()
+      cat("Check",test,"failed.\n"); return(invisible(FALSE))
     } else {
       for (i in seq_along(input)) {
         if(!(length(grep(input[i], output[i], fixed=TRUE)) ||
              length(
                tryCatch(grep(input[i], output[i], ignore.case=FALSE), error=function(err) NULL)))
              ) {
-          cat("Check",test,"failed.\n"); return()
+          cat("Check",test,"failed.\n"); return(invisible(FALSE))
         }
       }
     }
   }
   if (length(error) == 0) {
-    if (identical(x,y)) return()
+    if (identical(x,y)) return(invisible(TRUE))
     if (is.atomic(x) && is.atomic(y) && isTRUE(all.equal(x,y,check.names=!isTRUE(y))) &&
-        typeof(x)==typeof(y)) return()
+        typeof(x)==typeof(y)) return(invisible(TRUE))
     cat("Check",test,"failed.\n")
   }
+  return(invisible(FALSE))
 }
 
 library(kit); unloadNamespace("kit")
@@ -487,6 +488,8 @@ check("0003.110",
           x >=  1000, structure(x * 1.0, class = 'abc')),
       structure(x, class = 'abc')
 )
+check("0003.111", nif(c(TRUE,FALSE), 1, c(FALSE,TRUE), s2), error = "S4 class objects are not supported.")
+
 
 rm(s1, s2, class2132, out_vec, out_vec_def, out_vec_na, out_vec_oc, test_vec1, test_vec2, test_vec3, test_vec_na1, test_vec_na2)
 rm(V0,V1,V2,V3,V4)
@@ -1003,8 +1006,10 @@ check("0008.211", vswitch(c(enc1,enc2),enc1,1),c(1,1))
 check("0008.212", vswitch(c(enc1,enc1),enc1,1),c(1,1))
 check("0008.213", vswitch(c(enc2,enc2),enc2,1),c(1,1))
 check("0008.214", vswitch(c(enc1,enc2),enc2,1),c(1,1))
-# check("0008.215", vswitch(character(),"a",1),numeric(0))
-# check("0008.216", vswitch(numeric(),2,1),numeric(0))
+check("0008.215", vswitch("a",character(),1),error = "Argument'values' cannot be zero-length vector.")
+check("0008.216", vswitch("a","b",1,checkEnc = NA),error = "Argument 'checkEnc' must be TRUE or FALSE and length 1.")
+# check("0008.217", vswitch(character(),"a",1),numeric(0))
+# check("0008.218", vswitch(numeric(),2,1),numeric(0))
 
 rm(outputs0, outputs1, s1, s2, class2133, x0,x1,values0,out11,out12,na1,na0)
 rm(outputs0l,outputs1l,outputs0n,outputs1n,outputs0c,outputs1c,outputs0s,outputs1s,outputs0v,outputs1v)
@@ -1199,7 +1204,11 @@ check("0015.009", fduplicated(x2), duplicated(x2))
 check("0015.010", fduplicated(x3), duplicated(x3))
 check("0015.011", fduplicated(x4), duplicated(x4))
 check("0015.012", fduplicated(x5), duplicated(x5))
-
+check("0015.013", fduplicated(data.frame(a=x1,b=x1)),duplicated(data.frame(a=x1,b=x1)))
+check("0015.014", fduplicated(data.frame(a=x2,b=x2)),duplicated(data.frame(a=x2,b=x2)))
+check("0015.015", fduplicated(data.frame(a=x3,b=x3)),duplicated(data.frame(a=x3,b=x3)))
+check("0015.016", fduplicated(data.frame(a=x4,b=x4)),duplicated(data.frame(a=x4,b=x4)))
+check("0015.017", fduplicated(data.frame(a=x5,b=x5)),duplicated(data.frame(a=x5,b=x5)))
 check("0015.018", fduplicated(iris[,5:4]), duplicated(iris[,5:4]))
 check("0015.019", fduplicated(iris[,5:3]), duplicated(iris[,5:3]))
 check("0015.020", fduplicated(iris[,5:2]), duplicated(iris[,5:2]))
@@ -1237,7 +1246,11 @@ check("0016.009", funique(x2), unique(x2))
 check("0016.010", funique(x3), unique(x3))
 check("0016.011", funique(x4), unique(x4))
 check("0016.012", funique(x5), unique(x5))
-
+check("0016.013", funique(data.frame(a=x1,b=x1)),{out = unique(data.frame(a=x1,b=x1)); row.names(out)<-NULL;out})
+check("0016.014", funique(data.frame(a=x2,b=x2)),{out = unique(data.frame(a=x2,b=x2)); row.names(out)<-NULL;out})
+check("0016.015", funique(data.frame(a=x3,b=x3)),{out = unique(data.frame(a=x3,b=x3)); row.names(out)<-NULL;out})
+check("0016.016", funique(data.frame(a=x4,b=x4)),{out = unique(data.frame(a=x4,b=x4)); row.names(out)<-NULL;out})
+check("0016.017", funique(data.frame(a=x5,b=x5)),{out = unique(data.frame(a=x5,b=x5)); row.names(out)<-NULL;out})
 check("0016.018", funique(df), {adf = unique(df); row.names(adf) <- NULL; adf })
 check("0016.019", funique(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), as.Date("2020-05-01"))
 check("0016.020", funique(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
@@ -1259,7 +1272,7 @@ check("0016.032", funique(matrix(x5[1:1000],ncol=10)), unique(matrix(x5[1:1000],
 check("0016.033", funique(matrix(rdn,ncol=10)), unique(matrix(rdn,ncol=10)))
 check("0016.034", funique(x6),unique(x6))
 
-rm(x1, x2, x3, x4, x5, x6, adf, df, rdn)
+rm(x1, x2, x3, x4, x5, x6, adf, df, rdn, out)
 
 # --------------------------------------------------------------------------------------------------
 #                                   countOccur
@@ -1338,12 +1351,15 @@ check("0018.009", uniqLen(x2), length(unique(x2)))
 check("0018.010", uniqLen(x3), length(unique(x3)))
 check("0018.011", uniqLen(x4), length(unique(x4)))
 check("0018.012", uniqLen(x5), length(unique(x5)))
-
+check("0018.013", uniqLen(data.frame(a=x1,b=x1)),dim(unique(data.frame(a=x1,b=x1)))[1])
+check("0018.014", uniqLen(data.frame(a=x2,b=x2)),dim(unique(data.frame(a=x2,b=x2)))[1])
+check("0018.015", uniqLen(data.frame(a=x3,b=x3)),dim(unique(data.frame(a=x3,b=x3)))[1])
+check("0018.016", uniqLen(data.frame(a=x4,b=x4)),dim(unique(data.frame(a=x4,b=x4)))[1])
+check("0018.017", uniqLen(data.frame(a=x5,b=x5)),dim(unique(data.frame(a=x5,b=x5)))[1])
 check("0018.018", uniqLen(df), dim(unique(df))[1])
 check("0018.019", uniqLen(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), 1L)
 check("0018.020", uniqLen(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
                                      b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),1L)
-
 check("0018.021", uniqLen(matrix(c(1,1,1,1,2,2,3,3,2,2),nrow = 5)),3L)
 check("0018.022", uniqLen(matrix(as.integer(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),3L)
 check("0018.023", uniqLen(matrix(c(TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,NA,NA),nrow = 6)),3L)
