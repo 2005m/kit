@@ -20,4 +20,6 @@ r_packages:
   - covr
 
 after_success: 
-  - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov(quiet=FALSE)'
+  - test $TRAVIS_R_VERSION_STRING = 'release' && 
+    test $TRAVIS_OS_NAME = 'linux' && 
+    Rscript -e 'covr::codecov(quiet=FALSE)'

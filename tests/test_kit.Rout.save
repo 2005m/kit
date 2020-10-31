@@ -1626,10 +1626,14 @@ NULL
 > check("0008.208", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.logical(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.209", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.character(outputs0)), error="Type raw is not supported for argument 'x'.")
 > check("0008.210", vswitch(as.raw(rep(0,7L)), c(as.raw(0), as.raw(1)), as.complex(outputs0)), error="Type raw is not supported for argument 'x'.")
-> # check("0008.211", vswitch(c(enc1,enc2),enc1,1),c(1,1))
-> # check("0008.212", vswitch(c(enc1,enc1),enc1,1),c(1,1))
-> # check("0008.213", vswitch(c(enc2,enc2),enc2,1),c(1,1))
-> # check("0008.214", vswitch(c(enc1,enc2),enc2,1),c(1,1))
+> check("0008.211", vswitch(c(enc1,enc2),enc1,1),c(1,1))
+NULL
+> check("0008.212", vswitch(c(enc1,enc1),enc1,1),c(1,1))
+NULL
+> check("0008.213", vswitch(c(enc2,enc2),enc2,1),c(1,1))
+NULL
+> check("0008.214", vswitch(c(enc1,enc2),enc2,1),c(1,1))
+NULL
 > # check("0008.215", vswitch(character(),"a",1),numeric(0))
 > # check("0008.216", vswitch(numeric(),2,1),numeric(0))
 > 
@@ -2150,4 +2154,4 @@ NULL
 > 
 > proc.time()
    user  system elapsed 
- 14.607   2.617  18.188 
+ 14.444   2.955  17.656 

@@ -21,6 +21,8 @@
     \itemize{
       \item Small algorithmic improvement for functions \code{\strong{fduplicated}}, \code{\strong{funique}}
       and \code{\strong{countOccur}} for \code{vectors}, \code{data.frame} and \code{matrix}.
+      
+      \item A tests folder has been added to the source package to track coverage and bugs.
     }
   }
   \subsection{C-Level Facilities}{
