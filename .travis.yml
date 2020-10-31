@@ -9,14 +9,17 @@ branches:
     - "master"
 
 r:
-  - oldrel
   - release
+  - oldrel
   - devel
-  - 3.6
-  - 3.5
-  - 3.4
-  - 3.3
-  - 3.2
 
 os:
   - linux
+
+r_packages:
+  - covr
+
+after_success: 
+  - test $TRAVIS_R_VERSION_STRING = 'release' && 
+    test $TRAVIS_OS_NAME = 'linux' && 
+    Rscript -e 'covr::codecov(quiet=FALSE)'

@@ -337,8 +337,8 @@ SEXP subSetRowMatrix(SEXP mat, SEXP rws) {
   return mato;
 }
 
-// No checks in this functions
-SEXP subSetColDataFrame(SEXP df, SEXP str) {
+// No checks in this functions (not used for now)
+SEXP subSetColDataFrame(SEXP df, SEXP str) { // # nocov start
   SEXP nm = PROTECT(getAttrib(df, R_NamesSymbol));
   const int len = length(str);
   const int cnm = length(nm);
@@ -375,10 +375,10 @@ SEXP subSetColDataFrame(SEXP df, SEXP str) {
   setAttrib(dfo, R_RowNamesSymbol, rownam);
   UNPROTECT(3);
   return dfo;
-}
+} // # nocov end
 
-// No checks in this functions (subset just one column)
-SEXP subSetColMatrix(SEXP x, R_xlen_t idx) {
+// No checks in this functions (subset just one column) (not used for now)
+SEXP subSetColMatrix(SEXP x, R_xlen_t idx) { // # nocov start
   const R_xlen_t len_i = nrows(x);
   SEXPTYPE xt = UTYPEOF(x);
   SEXP ans = PROTECT(allocVector(xt, len_i));
@@ -407,7 +407,7 @@ SEXP subSetColMatrix(SEXP x, R_xlen_t idx) {
   }
   UNPROTECT(1);
   return ans;
-}
+} // # nocov end
 
 // This function does not do any check
 SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
@@ -460,8 +460,7 @@ SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
   return dfo;
 }
 
-// TRy to improve this by removing element in the loop or initilising at 0 
-
+// Try to improve this by removing element in the loop or initilising at 0 
 SEXP countOccurR(SEXP x) { // can be improved for factors
   if (isFrame(x)) {
     SEXP ans = PROTECT(countOccurDataFrameR(x));
@@ -494,9 +493,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
   }
   R_xlen_t count = 0;
   int *restrict h = (int*)calloc(M, sizeof(int));
-  //SEXP ans_l = PROTECT(allocVector(LGLSXP, n));
   SEXP ans_ct = PROTECT(allocVector(INTSXP, n));
-  //int *restrict pans_l = LOGICAL(ans_l);
   int *restrict pans_l = (int*)calloc(n, sizeof(int));
   int *restrict pans_ct = INTEGER(ans_ct);
   SEXP ans_f = PROTECT(allocVector(VECSXP, 2));
@@ -511,7 +508,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
           pans_ct[h[id]-1]++;
           goto lbl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       pans_l[i]++;
@@ -702,9 +699,7 @@ SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash a
   }
   R_xlen_t count = 0;
   int *restrict h = (int*)calloc(M, sizeof(int));
-  //SEXP ans_l = PROTECT(allocVector(LGLSXP, len_i));
   SEXP ans_ct = PROTECT(allocVector(INTSXP, len_i));
-  //int *restrict pans_l = LOGICAL(ans_l);
   int *restrict pans_l = (int*)calloc(len_i, sizeof(int));
   int *restrict pans_ct = INTEGER(ans_ct);
   const int *restrict v = INTEGER(mlv);
