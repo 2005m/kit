@@ -9,6 +9,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"CfposR",       (DL_FUNC) &fposR,       -1},
   {"CiifR",        (DL_FUNC) &iifR,        -1},
   {"CnifR",        (DL_FUNC) &nifR,        -1},
+  {"CnswitchR",    (DL_FUNC) &nswitchR,    -1},
   {"CompEnabledR", (DL_FUNC) &ompEnabledR, -1},
   {"CpanyR",       (DL_FUNC) &panyR,       -1},
   {"CpallR",       (DL_FUNC) &pallR,       -1},
@@ -33,6 +34,7 @@ void R_init_kit(DllInfo *dll) {
   R_RegisterCCallable("kit", "CfposR",       (DL_FUNC) &fposR);
   R_RegisterCCallable("kit", "CiifR",        (DL_FUNC) &iifR);
   R_RegisterCCallable("kit", "CnifR",        (DL_FUNC) &nifR);
+  R_RegisterCCallable("kit", "CnswitchR",    (DL_FUNC) &nswitchR);
   R_RegisterCCallable("kit", "CpanyR",       (DL_FUNC) &panyR);
   R_RegisterCCallable("kit", "CpallR",       (DL_FUNC) &pallR);
   R_RegisterCCallable("kit", "CpcountR",     (DL_FUNC) &pcountR);
