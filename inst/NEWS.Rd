@@ -12,9 +12,13 @@
       vectors, \code{data.frame} and \code{matrix}. It should be faster than these functions. For more
       details and benchmark please see \code{?kit::uniqLen}.
       
-      \item Function \code{\strong{switch}} now supports mixed encoding and gains an additional argument 
+      \item Function \code{\strong{vswitch}} now supports mixed encoding and gains an additional argument 
       \code{checkEnc=TRUE}. Thanks to Xianying Tan (@shrektan) for the request and review 
       \href{https://github.com/2005m/kit/pull/7}{PR#7}.
+      
+      \item Function \code{\strong{nswitch}} is a nested version of function \code{\strong{vswitch}} 
+      and also supports mixed encoding. Please see please see \code{?kit::nswitch} for further details. 
+      Thanks to Xianying Tan (@shrektan) for the request and review \href{https://github.com/2005m/kit/pull/10}{PR#10}.
     }
   }
   \subsection{Notes}{

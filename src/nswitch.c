@@ -48,33 +48,6 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
   if (type_x != type1) {
     error("Type of 'x' and 'values' are different. Please make sure they are the same.");
   }
-  
-  // Move this part lower because of length test
-  // Test length of x ? or values
-  SEXP xans = R_NilValue, vans = R_NilValue;
-  int nprotect = 0;
-  bool utfcon = false;
-  if (pchkenc && type_x == STRSXP) {
-    if (!isMixEnc(x)) {
-      for (ssize_t i = 0; i < n; ++i) {
-        if(getCharCE(STRING_PTR(x)[0]) != getCharCE(STRING_PTR(PTR_ETL(args,2*i))[0])) {
-          utfcon = true;
-          break;
-        }
-      }
-    } else {
-      utfcon = true;
-    }
-    if (utfcon) {
-      xans = PROTECT(enc2UTF8(x));
-      vans = PROTECT(allocVector(STRSXP, n));
-      nprotect = 2;
-      for (ssize_t i = 0; i < n; ++i) {
-        SET_STRING_ELT(vans, i, STRING_PTR(enc2UTF8(PTR_ETL(args,2*i)))[0]);
-      }
-    }
-  }
-  
   SEXP out0c = PROTECT(getAttrib(PTR_ETL(args, 1), R_ClassSymbol));
   SEXP out0l = PROTECT(getAttrib(PTR_ETL(args, 1), R_LevelsSymbol));
   if (nonna) {
@@ -130,6 +103,29 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
       UNPROTECT(1);
     }
     amask[i] = len_i>1 ? SSIZE_MAX : 0;
+  }
+  SEXP xans = R_NilValue, vans = R_NilValue;
+  int nprotect = 0;
+  bool utfcon = false;
+  if (pchkenc && type_x == STRSXP) {
+    if (!isMixEnc(x)) {
+      for (ssize_t i = 0; i < n; ++i) {
+        if(getCharCE(STRING_PTR(x)[0]) != getCharCE(STRING_PTR(PTR_ETL(args,2*i))[0])) {
+          utfcon = true;
+          break;
+        }
+      }
+    } else {
+      utfcon = true;
+    }
+    if (utfcon) {
+      xans = PROTECT(enc2UTF8(x));
+      vans = PROTECT(allocVector(STRSXP, n));
+      nprotect = 2;
+      for (ssize_t i = 0; i < n; ++i) {
+        SET_STRING_ELT(vans, i, STRING_PTR(enc2UTF8(PTR_ETL(args,2*i)))[0]);
+      }
+    }
   }
   SEXP ans = PROTECT(allocVector(type0, len_x));
   copyMostAttrib(PTR_ETL(args, 1), ans);
