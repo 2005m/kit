@@ -1459,7 +1459,7 @@ check("0019.062", nswitch(c(enc2,enc2),enc2,1),c(1,1))
 check("0019.063", nswitch(c(enc1,enc2),enc2,1),c(1,1))
 check("0019.064", nswitch(c(enc1,enc1),enc2,1),c(1,1))
 
-rm(x1,x2,x3,x4,x5,s1,s2,class2133, enc1, enc2)
+rm(x1,x2,x3,x4,x5,x6,s1,s2,class2133, enc1, enc2)
 
 # --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS
