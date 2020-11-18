@@ -109,8 +109,9 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
   bool utfcon = false;
   if (pchkenc && type_x == STRSXP) {
     if (!isMixEnc(x)) {
+      const cetype_t cx = getCharCE(STRING_PTR(x)[0]);
       for (ssize_t i = 0; i < n; ++i) {
-        if(getCharCE(STRING_PTR(x)[0]) != getCharCE(STRING_PTR(PTR_ETL(args,2*i))[0])) {
+        if(cx != getCharCE(STRING_PTR(PTR_ETL(args,2*i))[0])) {
           utfcon = true;
           break;
         }
