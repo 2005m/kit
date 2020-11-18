@@ -3,7 +3,7 @@
 \alias{nswitch}
 \title{ Vectorised switch }
 \description{
-  \code{vswitch} is a vectorised version of \code{base} function \code{switch}. This function can also be seen as a particular case of function \code{nif}, as shown in examples below, and should also be faster.
+  \code{vswitch}/ \code{nswitch} is a vectorised version of \code{base} function \code{switch}. This function can also be seen as a particular case of function \code{nif}, as shown in examples below, and should also be faster.
 }
 \usage{
     vswitch(x, values, outputs, default=NULL,
