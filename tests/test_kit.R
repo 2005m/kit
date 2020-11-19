@@ -53,6 +53,7 @@ fduplicated = kit::fduplicated
 funique     = kit::funique
 countOccur  = kit::countOccur
 uniqLen     = kit::uniqLen
+nswitch     = kit::nswitch
 
 # --------------------------------------------------------------------------------------------------
 #                                   topn 
@@ -1312,8 +1313,7 @@ check("0017.008", df3[order(df3$Variable),2], as.vector(table(x3,useNA = "always
 check("0017.009", df4[order(df4$Variable),2], as.vector(table(x4,useNA = "always")))
 check("0017.010", df5[order(df5$Variable),2], as.vector(table(x5,useNA = "always")))
 check("0017.011", countOccur(rep(as.Date("2020-06-02"),10L))[[2]], 10L)
-check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
-                                        b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
+check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
       data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
 check("0017.013", countOccur(iris[,5:4]), out)
 check("0017.014",out3 ,out2)
@@ -1336,8 +1336,7 @@ x2 = sample(as.logical(c(1:1000,NA_integer_)),1e6,TRUE)
 x3 = sample(as.numeric(c(1:1000,NA_integer_)),1e6,TRUE)
 x4 = sample(as.complex(c(1:1000,NA_complex_,(NaN+0i)/0,NaN)),1e6,TRUE)
 x5 = sample(as.character(c(1:1000,NA_integer_)),1e6,TRUE)
-x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),
-                b = rep(rnorm(5),4L))
+x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),b = rep(rnorm(5),4L))
 
 check("0018.001", uniqLen(iris$Species), length(unique(iris$Species)))
 check("0018.002", uniqLen(iris$Petal.Width), length(unique(iris$Petal.Width)))
@@ -1358,8 +1357,7 @@ check("0018.016", uniqLen(data.frame(a=x4,b=x4)),dim(unique(data.frame(a=x4,b=x4
 check("0018.017", uniqLen(data.frame(a=x5,b=x5)),dim(unique(data.frame(a=x5,b=x5)))[1])
 check("0018.018", uniqLen(df), dim(unique(df))[1])
 check("0018.019", uniqLen(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), 1L)
-check("0018.020", uniqLen(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
-                                     b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),1L)
+check("0018.020", uniqLen(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),1L)
 check("0018.021", uniqLen(matrix(c(1,1,1,1,2,2,3,3,2,2),nrow = 5)),3L)
 check("0018.022", uniqLen(matrix(as.integer(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),3L)
 check("0018.023", uniqLen(matrix(c(TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,NA,NA),nrow = 6)),3L)
@@ -1378,10 +1376,96 @@ check("0018.034", uniqLen(x6),dim(unique(x6))[1])
 rm(x1, x2, x3, x4, x5, x6, df, rdn)
 
 # --------------------------------------------------------------------------------------------------
+#                                   nswitch
+# --------------------------------------------------------------------------------------------------
+
+x1 = c(0L, 0L, 1L, 2L, 3L, 2L)
+x2 = as.logical(x1)
+x3 = as.numeric(x1)
+x4 = as.complex(x1)
+x5 = as.character(x1)
+x6 = as.list(x1)
+
+class2133 = setClass("class2133", slots=list(x="numeric"))
+s1 = class2133(x=20191231)
+s2 = class2133(x=20191230)
+
+enc1 = "fa\xE7ile"
+Encoding(enc1) = "latin1"
+enc2 = enc2utf8(enc1)
+
+check("0019.001", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L, TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE))
+check("0019.002", nswitch(x2, FALSE, FALSE, TRUE, TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,TRUE,TRUE))
+check("0019.003", nswitch(x3, 0, FALSE, 1, TRUE, 2, TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE))
+check("0019.004", nswitch(x4, 0+0i, FALSE, 1+0i, TRUE, 2+0i, TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE))
+check("0019.005", nswitch(x5, "0", FALSE, "1", TRUE, "2", TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE))
+check("0019.006", nswitch(x1, 0L, 1L, 1L, 2L, 2L, 3L, default = 4L), c(1L,1L,2L,3L,4L,3L))
+check("0019.007", nswitch(x2, TRUE, 1L, FALSE, 2L, default = 0L), c(2L,2L,1L,1L,1L,1L))
+check("0019.008", nswitch(x3, 0, 1L, 1, 2L, 2, 3L, default = 4L), c(1L,1L,2L,3L,4L,3L))
+check("0019.009", nswitch(x4, 0+0i, 0L, 1+0i, 1L, 2+0i, 2L, default = 3L), c(0L,0L,1L,2L,3L,2L))
+check("0019.010", nswitch(x5, "0", 0L, "1", 1L, "2", 2L, default = 3L), c(0L,0L,1L,2L,3L,2L))
+check("0019.011", nswitch(x1, 0L, 1, 1L, 2, 2L, 3, default = 4), c(1,1,2,3,4,3))
+check("0019.012", nswitch(x2, TRUE, 1, FALSE, 2, default = 0), c(2,2,1,1,1,1))
+check("0019.013", nswitch(x3, 0, 1, 1, 2, 2, 3, default = 4), c(1,1,2,3,4,3))
+check("0019.014", nswitch(x4, 0+0i, 0, 1+0i, 1, 2+0i, 2, default = 3), c(0,0,1,2,3,2))
+check("0019.015", nswitch(x5, "0", 0, "1", 1, "2", 2, default = 3), c(0,0,1,2,3,2))
+check("0019.016", nswitch(x1, 0L, 1+0i, 1L, 2+0i, 2L, 3+0i, default = 4+0i), c(1+0i,1+0i,2+0i,3+0i,4+0i,3+0i))
+check("0019.017", nswitch(x2, TRUE, 1+0i, FALSE, 2+0i, default = 0+0i), c(2+0i,2+0i,1+0i,1+0i,1+0i,1+0i))
+check("0019.018", nswitch(x3, 0, 1+0i, 1, 2+0i, 2, 3+0i, default = 4+0i), c(1+0i,1+0i,2+0i,3+0i,4+0i,3+0i))
+check("0019.019", nswitch(x4, 0+0i, 0+0i, 1+0i, 1+0i, 2+0i, 2+0i, default = 3+0i), c(0+0i,0+0i,1+0i,2+0i,3+0i,2+0i))
+check("0019.020", nswitch(x5, "0", 0+0i, "1", 1+0i, "2", 2+0i, default = 3+0i), c(0+0i,0+0i,1+0i,2+0i,3+0i,2+0i))
+check("0019.021", nswitch(x1, 0L, "1+0i", 1L, "2+0i", 2L, "3+0i", default = "4+0i"), c("1+0i","1+0i","2+0i","3+0i","4+0i","3+0i"))
+check("0019.022", nswitch(x2, TRUE, "1+0i", FALSE, "2+0i", default = "0+0i"), c("2+0i","2+0i","1+0i","1+0i","1+0i","1+0i"))
+check("0019.023", nswitch(x3, 0, "1+0i", 1, "2+0i", 2, "3+0i", default = "4+0i"), c("1+0i","1+0i","2+0i","3+0i","4+0i","3+0i"))
+check("0019.024", nswitch(x4, 0+0i, "0+0i", 1+0i, "1+0i", 2+0i, "2+0i", default = "3+0i"), c("0+0i","0+0i","1+0i","2+0i","3+0i","2+0i"))
+check("0019.025", nswitch(x5, "0", "0+0i", "1", "1+0i", "2", "2+0i", default = "3+0i"), c("0+0i","0+0i","1+0i","2+0i","3+0i","2+0i"))
+check("0019.026", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L, TRUE, checkEnc = 2), error = "Argument 'checkEnc' must be TRUE or FALSE and length 1.")
+check("0019.027", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L), error = "Received 5 inputs; please supply an even number of arguments in ... consisting of target value, resulting output pairs (in that order). Note that argument 'default' must be named explicitly (e.g.: default=0)")
+check("0019.028", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L, TRUE, default = s1), error = "S4 class objects for argument 'na' are not supported.")
+check("0019.029", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L, TRUE, default = c(0L,1L)), error = "Length of 'default' must either be 1 or length of 'x'.")
+check("0019.030", nswitch(x1, 0L, FALSE, 1L, TRUE, 2L, TRUE, default = 1), error = "Resulting value is of type logical but 'default' is of type double. Please make sure that both arguments have the same type.")
+check("0019.031", nswitch(s1, 0L, FALSE, 1L, TRUE, 2L, TRUE), error = "S4 class objects for argument 'x' are not supported.")
+check("0019.032", nswitch(x6, list(0L), FALSE, list(1L), TRUE, list(2L), TRUE, default = FALSE), c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE))
+check("0019.033", nswitch(x6, list(0L), 0L, list(1L), 1L, list(2L), 2L, default = 3L), c(0L,0L,1L,2L,3L,2L))
+check("0019.034", nswitch(x6, list(0L), 0, list(1L), 1, list(2L), 2, default = 3), c(0,0,1,2,3,2))
+check("0019.035", nswitch(x6, list(0L), 0+0i, list(1L), 1+0i, list(2L), 2+0i, default = 3+0i), c(0+0i,0+0i,1+0i,2+0i,3+0i,2+0i))
+check("0019.036", nswitch(x6, list(0L), "0", list(1L), "1", list(2L), "2", default = "3"), c("0","0","1","2","3","2"))
+check("0019.037", nswitch(x6, 0L, list("0"), 1L, list("1"), 2L, list("2"), default = list("3")), error = "Type of 'x' and 'values' are different. Please make sure they are the same.")
+check("0019.038", nswitch(x6, list(0L), list("0"), list(1L), list("1"), list(2L), list("2"), default = list("3")), list("0","0","1","2","3","2"))
+check("0019.039", nswitch(x1, 0L, list("0"), 1L, list("1"), 2L, list("2"), default = list("3")), list("0","0","1","2","3","2"))
+check("0019.040", nswitch(x2, TRUE, list("0"), FALSE, list("1"), default = list("3")), list("1","1","0","0","0","0"))
+check("0019.041", nswitch(x3, 0, list("0"), 1, list("1"), 2, list("2"), default = list("3")), list("0","0","1","2","3","2"))
+check("0019.042", nswitch(x4, 0+0i, list("0"), 1+0i, list("1"), 2+0i, list("2"), default = list("3")), list("0","0","1","2","3","2"))
+check("0019.043", nswitch(x5, "0", list("0"), "1", list("1"), "2", list("2"), default = list("3")), list("0","0","1","2","3","2"))
+check("0019.044", nswitch(x1, 0L, as.raw("00"), 1L, as.raw("01"), 2L, as.raw("02"), default = as.raw("03")), error = "Type raw is not supported for argument 'outputs'")
+check("0019.045", nswitch(x1, 0L, 1, 1L, 2, 2L, 3, default = as.Date("2020-01-01")), error = "Resulting value has different class than 'default'. Please make sure that both arguments have the same class.")
+check("0019.046", nswitch(as.raw(x1), as.raw(0L), 1, as.raw(1L), 2, as.raw(2L), 3, default = 4), error = "Type raw is not supported for argument 'x'.")
+check("0019.047", nswitch(as.raw(x1), as.raw(0L), 1L, as.raw(1L), 2L, as.raw(2L), 3L, default = 4L), error = "Type raw is not supported for argument 'x'.")
+check("0019.048", nswitch(as.raw(x1), as.raw(0L), 1+0i, as.raw(1L), 2+0i, as.raw(2L), 3+0i, default = 4+0i), error = "Type raw is not supported for argument 'x'.")
+check("0019.049", nswitch(as.raw(x1), as.raw(0L), "1", as.raw(1L), "2", as.raw(2L), "3", default = "4"), error = "Type raw is not supported for argument 'x'.")
+check("0019.050", nswitch(as.raw(x1), as.raw(0L), list(1), as.raw(1L), list(2), as.raw(2L), list(3), default = list(4)), error = "Type raw is not supported for argument 'x'.")
+check("0019.051", nswitch(as.raw(x1), as.raw(0L), TRUE, as.raw(1L), FALSE), error = "Type raw is not supported for argument 'x'.")
+check("0019.052", nswitch(x1, 0L, as.factor(1L), default = as.factor(4L)), error = "Resulting value and 'default' are both type factor but their levels are different.")
+check("0019.053", nswitch(x1, 0L, as.factor(1L),1L, as.factor(2L), default = as.factor(1L)), error = "Items 2 and  4 of '...' are both factor but their levels are different.")
+check("0019.054", nswitch(x1, 0L, 1, 1L, as.Date("2020-01-01"), default = 2), error = "Items 2 and  4 of '...' must have same class.")
+check("0019.055", nswitch(x1, 0L, 1L, 1L, s1), error = "S4 class objects for argument '...' (item 2) are not supported.")
+check("0019.056", nswitch(x1, 0L, 1L, 1L, c(2L,3L)), error = "Length of item 4 of '...' is different than 1 and length of 'x'. Please make sure that all items of 'output' have length 1 or length of 'x'(6).")
+check("0019.057", nswitch(x1, 0L, 1L, 1L, 2, 2L, 3L), error = "Item 2 and 4 of '...' are not of the same type.")
+check("0019.058", nswitch(x1, 0L, 1L, 1, 2L, 2L, 3L), error = "Item 1 and 3 of '...' are not of the same type.")
+check("0019.059", nswitch(x1, c(0L,1L), 1L, 1L, 2L, 2L, 3L), error = "Length of item 1 of '...' is different than 1. Please make sure it has length 1.")
+check("0019.060", nswitch(c(enc1,enc2),enc1,1),c(1,1))
+check("0019.061", nswitch(c(enc1,enc1),enc1,1),c(1,1))
+check("0019.062", nswitch(c(enc2,enc2),enc2,1),c(1,1))
+check("0019.063", nswitch(c(enc1,enc2),enc2,1),c(1,1))
+check("0019.064", nswitch(c(enc1,enc1),enc2,1),c(1,1))
+
+rm(x1,x2,x3,x4,x5,x6,s1,s2,class2133, enc1, enc2)
+
+# --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS
 # --------------------------------------------------------------------------------------------------
 
-rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,
+rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif, nswitch,
    nif,pall,pany,pcount,pmean,pprod,psum,setlevels,topn,uniqLen,vswitch)
 
 # --------------------------------------------------------------------------------------------------

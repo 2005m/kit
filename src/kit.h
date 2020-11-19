@@ -71,6 +71,7 @@ extern SEXP fposVectR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
 extern SEXP nifR(SEXP na, SEXP rho, SEXP args);
 extern SEXP nifInternalR(SEXP na, SEXP rho, SEXP args);
+extern SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args);
 extern SEXP ompEnabledR();
 extern SEXP pallR(SEXP na, SEXP args);
 extern SEXP panyR(SEXP na, SEXP args);
