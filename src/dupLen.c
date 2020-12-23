@@ -155,12 +155,12 @@ SEXP dupLenMatrixR(SEXP x) {
       while (h[id]) {
         for (R_xlen_t j = 0; j < len_x; ++j) {
           if (px[h[id]-1+j*len_i] != px[i+j*len_i]) {
-            goto labelmi1;
+            goto labelmi1; // # nocov
           }
         }
         goto labelmi2;
         labelmi1:;
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       count++;

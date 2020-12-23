@@ -8,7 +8,8 @@
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
-      \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning.
+      \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning 
+      \href{https://github.com/2005m/kit/pull/11}{PR#11}.
     }
   }
 }
