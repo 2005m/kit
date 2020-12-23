@@ -7,12 +7,13 @@
 Similar to base R functions \code{duplicated} and \code{unique}, \code{fduplicated} and \code{funique} are slightly faster for vectors and much faster for \code{data.frame}. Function \code{uniqLen} is equivalent to base R \code{length(unique)} or \code{data.tbale::uniqueN}.
 }
 \usage{
-  fduplicated(x)
-  funique(x)
+  fduplicated(x, fromLast = FALSE)
+  funique(x, fromLast = FALSE)
   uniqLen(x)
 }
 \arguments{
   \item{x}{ A vector, data.frame or matrix.}
+  \item{fromLast}{ A logical value to indicate whether the search should start from the end or beginning. Default is \code{FALSE}.}
 }
 \value{
 Function \code{fduplicated} returns a logical vector and \code{funique} returns a vector of the same type as \code{x} without the duplicated value. Function \code{uniqLen} returns an integer.

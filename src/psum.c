@@ -1,6 +1,6 @@
 /*
  * kit : Useful R Functions Implemented in C
- * Copyright (C) 2020  Morgan Jacob
+ * Copyright (C) 2020-2021  Morgan Jacob
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -528,7 +528,7 @@ SEXP pcountR(SEXP x, SEXP args) {
   UNPROTECT(1 + nprotect);
   SEXP ans;
   if (len0 > INT_MAX) {
-    ans = PROTECT(allocVector(REALSXP, len0));
+    ans = PROTECT(allocVector(REALSXP, len0)); // # nocov start
     double *restrict pans = REAL(ans);
     memset(pans, 0, (unsigned)len0*sizeof(double));
     switch(anstype) {
@@ -587,7 +587,7 @@ SEXP pcountR(SEXP x, SEXP args) {
         }
       }
     } break;
-    }
+    } // # nocov end
   } else {
     ans = PROTECT(allocVector(INTSXP, len0));
     int *restrict pans = INTEGER(ans);

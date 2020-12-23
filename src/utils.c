@@ -1,6 +1,6 @@
 /*
  * kit : Useful R Functions Implemented in C
- * Copyright (C) 2020  Morgan Jacob
+ * Copyright (C) 2020-2021  Morgan Jacob
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -476,7 +476,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
   size_t M;
   if (tx == INTSXP || tx == STRSXP || tx == REALSXP || tx == CPLXSXP ) {
     if(n >= 1073741824) {
-      error("Length of 'x' is too large. (Long vector not supported yet)");
+      error("Length of 'x' is too large. (Long vector not supported yet)"); // # nocov
     }
     const size_t n2 = 2U * (size_t) n;
     M = 256;
@@ -538,7 +538,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
           pans_ct[h[id]-1]++;
           goto ibl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       pans_l[i]++;
@@ -570,7 +570,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
           pans_ct[h[id]-1]++;
           goto rbl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       pans_l[i]++;
@@ -687,7 +687,7 @@ SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash a
   const R_xlen_t len_i = xlength(px[0]);
   SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
   for (R_xlen_t i = 0; i < len_x; ++i) {
-    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i]))), (unsigned)len_i*sizeof(int));
+    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i],ScalarLogical(false)))), (unsigned)len_i*sizeof(int));
   }
   UNPROTECT((int)len_x);
   const size_t n2 = 2U * (size_t) len_i;
