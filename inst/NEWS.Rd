@@ -4,6 +4,15 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.6 (2020-11-21)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
+      \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning.
+    }
+  }
+}
+
 \section{version 0.0.5 (2020-11-21)}{
   \subsection{New Features}{
     \itemize{

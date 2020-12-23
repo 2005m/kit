@@ -64,7 +64,7 @@ SEXP dupLenDataFrameR(SEXP x) {
   const R_xlen_t len_i = xlength(px[0]);
   SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
   for (R_xlen_t i = 0; i < len_x; ++i) {
-    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i]))), (unsigned)len_i*sizeof(int));
+    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i], ScalarLogical(false)))), (unsigned)len_i*sizeof(int));
   }
   UNPROTECT((int)len_x);
   const size_t n2 = 2U * (size_t) len_i;
@@ -241,12 +241,12 @@ SEXP dupLenMatrixR(SEXP x) {
       while (h[id]) {
         for (R_xlen_t j = 0; j < len_x; ++j) {
           if (px[h[id]-1+j*len_i] != px[i+j*len_i]) {
-            goto labelms1;
+            goto labelms1; // # nocov
           }
         }
         goto labelms2;
         labelms1:;
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       count++;
@@ -271,7 +271,7 @@ SEXP dupLenVecR(SEXP x) {
   size_t M;
   if (tx == INTSXP || tx == STRSXP || tx == REALSXP || tx == CPLXSXP ) {
     if(n >= 1073741824) {
-      error("Length of 'x' is too large. (Long vector not supported yet)");
+      error("Length of 'x' is too large. (Long vector not supported yet)"); // # nocov
     }
     const size_t n2 = 2U * (size_t) n;
     M = 256;
@@ -284,7 +284,7 @@ SEXP dupLenVecR(SEXP x) {
     M = 4;
     K = 2;
   } else {
-    error("Type %s is not supported.", type2char(tx));
+    error("Type %s is not supported.", type2char(tx)); // # nocov
   }
   R_xlen_t count = 0;
   int *h = (int*)calloc(M, sizeof(int));
@@ -315,7 +315,7 @@ SEXP dupLenVecR(SEXP x) {
         if (px[h[id]-1]==px[i]) {
           goto ibl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       count++;
