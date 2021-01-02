@@ -4,12 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.6 (2020-11-21)}{
+\section{version 0.0.6 (2021-01-21)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
       \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning 
       \href{https://github.com/2005m/kit/pull/11}{PR#11}.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item A few OpenMP directives were missing for functions \code{\strong{vswitch}} and
+      \code{\strong{nswitch}} for character vectors. These have been added in
+      \href{https://github.com/2005m/kit/pull/12}{PR#12}.
     }
   }
 }

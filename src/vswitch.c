@@ -289,6 +289,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           int *ppo = INTEGER(po[i]);
+          OMP_PARALLEL_FOR(nth)
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               pans[j]= ppo[j & amask[i]];
@@ -381,6 +382,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           double *ppo = REAL(po[i]);
+          OMP_PARALLEL_FOR(nth)
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               pans[j]= ppo[j & amask[i]];
@@ -758,6 +760,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
       case STRSXP: {
         const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
             if (px[j]==pvalues[i]) {
@@ -845,6 +848,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
       case STRSXP: {
         const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
             if (px[j]==pvalues[i]) {
@@ -932,6 +936,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
       case STRSXP: {
         const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
             if (px[j]==pvalues[i]) {
@@ -1020,6 +1025,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
       case STRSXP: {
         const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
             if (px[j]==pvalues[i]) {
