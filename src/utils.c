@@ -221,6 +221,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
@@ -253,6 +254,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
