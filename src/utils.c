@@ -221,6 +221,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
@@ -253,6 +254,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
@@ -263,6 +265,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
+      copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
@@ -644,7 +647,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
           pans_ct[h[id]-1]++;
           goto sbl;
         }
-        id++; id %= M;
+        id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
       pans_l[i]++;

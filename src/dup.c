@@ -874,6 +874,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         }
       }
       free(pans);
+      copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
     } else {
@@ -1146,6 +1147,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         }
       }
       free(pans);
+      copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
     } else {
@@ -1247,6 +1249,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         }
       }
       free(pans);
+      copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
     } else {
