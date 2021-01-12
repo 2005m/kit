@@ -1250,6 +1250,12 @@ df$Petal.Length = as.character(df$Petal.Length)
 df$Sepal.Width = as.logical(df$Sepal.Width)
 df$Sepal.Length = as.complex(df$Sepal.Length)
 rdn = sample(c(1,NA_real_,NaN),1e3,TRUE)
+x7 = c("UK","USA","FR","IT","IT")
+attr(x7,"label") = "Country"
+x8 = c(1+1i,1+1i,2+1i,2+1i)
+attr(x8,"label") = "complex"
+x9 = c(TRUE,TRUE,FALSE,FALSE)
+attr(x9,"label") = "logical"
 
 check("0016.001", funique(iris$Species), unique(iris$Species))
 check("0016.002", funique(iris$Petal.Width), unique(iris$Petal.Width))
@@ -1270,10 +1276,7 @@ check("0016.016", funique(data.frame(a=x4,b=x4)),{out = unique(data.frame(a=x4,b
 check("0016.017", funique(data.frame(a=x5,b=x5)),{out = unique(data.frame(a=x5,b=x5)); row.names(out)<-NULL;out})
 check("0016.018", funique(df), {adf = unique(df); row.names(adf) <- NULL; adf })
 check("0016.019", funique(c(as.Date("2020-05-01"),as.Date("2020-05-01"))), as.Date("2020-05-01"))
-check("0016.020", funique(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), 
-                                     b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
-      data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01"))))
-
+check("0016.020", funique(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))), data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01"))))
 check("0016.021", funique(matrix(c(1,1,1,1,2,2,3,3,2,2),nrow = 5)),matrix(c(1,1,2,2,3,2),nrow = 3))
 check("0016.022", funique(matrix(as.integer(c(1,1,1,1,2,2,3,3,2,2)),nrow = 5)),matrix(c(1L,1L,2L,2L,3L,2L),nrow = 3))
 check("0016.023", funique(matrix(c(TRUE,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,NA,NA),nrow = 6)),matrix(c(TRUE,FALSE,TRUE,TRUE,FALSE,NA),nrow = 3))
@@ -1307,8 +1310,14 @@ check("0016.050", funique(data.frame(a=x4,b=x4),fromLast = TRUE),{out = unique(d
 check("0016.051", funique(data.frame(a=x5,b=x5),fromLast = TRUE),{out = unique(data.frame(a=x5,b=x5),fromLast = TRUE); row.names(out)<-NULL;out})
 check("0016.052", funique(data.frame(a=x5,b=x5),fromLast = NA),error = "Argument 'fromLast' must be TRUE or FALSE and length 1.")
 check("0016.053", funique(iris[,5:4],fromLast = TRUE), {out = unique(iris[,5:4],fromLast = TRUE); row.names(out)<-NULL;out})
+check("0016.054", attr(funique(x7),"label"),"Country")
+check("0016.055", attr(funique(data.frame(a=x7,b=x7,stringsAsFactors = FALSE))[,1],"label"),"Country")
+check("0016.056", attr(funique(x8),"label"),"complex")
+check("0016.057", attr(funique(data.frame(a=x8,b=x8,stringsAsFactors = FALSE))[,1],"label"),"complex")
+check("0016.058", attr(funique(x9),"label"),"logical")
+check("0016.059", attr(funique(data.frame(a=x9,b=x9,stringsAsFactors = FALSE))[,1],"label"),"logical")
 
-rm(x1, x2, x3, x4, x5, x6, adf, df, rdn, out)
+rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out)
 
 # --------------------------------------------------------------------------------------------------
 #                                   countOccur

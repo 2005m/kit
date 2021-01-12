@@ -4,7 +4,7 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.6 (2021-01-21)}{
+\section{version 0.0.6 (2021-02-21)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
@@ -17,6 +17,10 @@
       \item A few OpenMP directives were missing for functions \code{\strong{vswitch}} and
       \code{\strong{nswitch}} for character vectors. These have been added in
       \href{https://github.com/2005m/kit/pull/12}{PR#12}.
+      
+      \item Function \code{\strong{funique}} was not preserving attributes for character, logical and
+      complex vectors/data.frames. Thanks to Sebastian Krantz (@SebKrantz) for bringing that to my
+      attention. This has been fixed in \href{https://github.com/2005m/kit/pull/13}{PR#13}.
     }
   }
 }
