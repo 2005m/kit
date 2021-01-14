@@ -265,6 +265,24 @@ SEXP dupLenMatrixR(SEXP x) {
  */
 
 SEXP dupLenVecR(SEXP x) {
+  if (isFactor(x)) {
+    const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
+    UNPROTECT(1);
+    bool *restrict count = (bool*)calloc(len,sizeof(bool));
+    const int *restrict px = INTEGER(x);
+    const int xlen = LENGTH(x);
+    int j = 0;
+    for (int i = 0; i < xlen; ++i) {
+      if (!count[px[i]]) {
+        j++;
+        if (j == len) 
+          break;
+        count[px[i]] = true;
+      }
+    }
+    free(count);
+    return ScalarInteger(j);
+  }
   const R_xlen_t n = xlength(x);
   const SEXPTYPE tx = UTYPEOF(x);
   int K;

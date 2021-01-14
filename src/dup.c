@@ -210,6 +210,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
   const R_xlen_t len_x = ncols(x);
   const R_xlen_t len_i = nrows(x);
   const bool buniq = asLogical(uniq);
+  
   SEXP ans = buniq ? R_NilValue : PROTECT(allocVector(LGLSXP, len_i));
   const size_t n2 = 2U * (size_t) len_i;
   size_t M = 256;
@@ -800,6 +801,32 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
  */
 
 SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
+  const bool buniq = asLogical(uniq);
+  if (isFactor(x) && buniq) {
+    const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
+    UNPROTECT(1);
+    bool *restrict count = (bool*)calloc(len,sizeof(bool));
+    const int *restrict px = INTEGER(x);
+    const int xlen = LENGTH(x);
+    SEXP ans = PROTECT(allocVector(INTSXP, len));
+    copyMostAttrib(x, ans);
+    int *restrict pans = INTEGER(ans);
+    int j = 0;
+    for (int i = 0; i < xlen; ++i) {
+      if (!count[px[i]]) {
+        pans[j++] = px[i];
+        if (j == len) 
+          break;
+        count[px[i]] = true;
+      }
+    }
+    if (j != len) {
+      SETLENGTH(ans, j);
+    }
+    free(count);
+    UNPROTECT(1);
+    return ans;
+   }
   if(!IS_BOOL(fromLast)) {
     error("Argument 'fromLast' must be TRUE or FALSE and length 1.");
   }
@@ -826,7 +853,6 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
     error("Type %s is not supported.", type2char(tx));
   }
   R_xlen_t count = 0;
-  const bool buniq = asLogical(uniq);
   int *h = (int*)calloc(M, sizeof(int));
   SEXP ans = buniq ? R_NilValue : PROTECT(allocVector(LGLSXP, n));
   int *restrict pans = buniq ? (int*)calloc(n, sizeof(int)) : LOGICAL(ans);

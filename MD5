@@ -15,8 +15,8 @@ e0d3b091b5182fdcc8868c93a2c59476 *man/topn.Rd
 5cbe08d5cbbf4968690f18c413ee2a38 *NAMESPACE
 7534da9b920a89b5c443b9dc19037658 *R/call.R
 fa0ca12018176564236efd16b8d8e9d8 *README.md
-2be11923dbf3fb39e3737372d78898a2 *src/dup.c
-05bdac0b6b6b90d1daca992adf237c6b *src/dupLen.c
+a93809deac751f59eb985dc2a29b25a4 *src/dup.c
+02644c0fae65eaeec892580249f77c5b *src/dupLen.c
 84dc17b4330566e5beb69626ad9d268e *src/fpos.c
 c362509861cd6835c1d8adbb0dce02b4 *src/iif.c
 b6d184807563eb8d74a8586c598ed770 *src/init.c
