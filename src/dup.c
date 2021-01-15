@@ -210,7 +210,6 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
   const R_xlen_t len_x = ncols(x);
   const R_xlen_t len_i = nrows(x);
   const bool buniq = asLogical(uniq);
-  
   SEXP ans = buniq ? R_NilValue : PROTECT(allocVector(LGLSXP, len_i));
   const size_t n2 = 2U * (size_t) len_i;
   size_t M = 256;

@@ -1316,6 +1316,7 @@ check("0016.056", attr(funique(x8),"label"),"complex")
 check("0016.057", attr(funique(data.frame(a=x8,b=x8,stringsAsFactors = FALSE))[,1],"label"),"complex")
 check("0016.058", attr(funique(x9),"label"),"logical")
 check("0016.059", attr(funique(data.frame(a=x9,b=x9,stringsAsFactors = FALSE))[,1],"label"),"logical")
+check("0016.060", funique(iris$Species[iris$Species != "setosa"]), unique(iris$Species[iris$Species != "setosa"]))
 
 rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out)
 

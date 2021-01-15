@@ -15,7 +15,7 @@ e0d3b091b5182fdcc8868c93a2c59476 *man/topn.Rd
 5cbe08d5cbbf4968690f18c413ee2a38 *NAMESPACE
 7534da9b920a89b5c443b9dc19037658 *R/call.R
 fa0ca12018176564236efd16b8d8e9d8 *README.md
-a93809deac751f59eb985dc2a29b25a4 *src/dup.c
+1605786372524a0df2f805a34218ef68 *src/dup.c
 02644c0fae65eaeec892580249f77c5b *src/dupLen.c
 84dc17b4330566e5beb69626ad9d268e *src/fpos.c
 c362509861cd6835c1d8adbb0dce02b4 *src/iif.c
@@ -28,5 +28,5 @@ b6d184807563eb8d74a8586c598ed770 *src/init.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
 5b13330006c45b534ede418a9f91c4f4 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
-f3336cc30059001b1d1bd49bdb08d4f9 *tests/test_kit.R
-722437460a359920d92163a82f6bb46a *tests/test_kit.Rout.save
+f4f2a17145dafb3fcc3f99d37e33a17f *tests/test_kit.R
+266e9bc7226a168fcfd8774c4bd39f2e *tests/test_kit.Rout.save
