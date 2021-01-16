@@ -23,7 +23,7 @@
       attention. This has been fixed in \href{https://github.com/2005m/kit/pull/13}{PR#13}.
       
       \item Functions \code{\strong{funique}} and \code{\strong{uniqLen}} should now be faster for 
-      \code{factors} \href{https://github.com/2005m/kit/pull/14}{PR#14}.
+      \code{factor} and \code{logical} vectors \href{https://github.com/2005m/kit/pull/14}{PR#14}.
     }
   }
 }

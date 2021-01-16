@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
 8adf3ce5666c3984f190324b6b89d23d *DESCRIPTION
-547ef44e35ab9c69c4305f8e4fb78586 *inst/NEWS.Rd
+b9027d08c434ec8b5f9ad7e7553d1fe0 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
 d143e1321d840bb810d9648e54e22c9c *man/fpos.Rd
@@ -29,4 +29,4 @@ b6d184807563eb8d74a8586c598ed770 *src/init.c
 5b13330006c45b534ede418a9f91c4f4 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
 6d28d0e0997b7fcc3db14d787ee4cae9 *tests/test_kit.R
-266e9bc7226a168fcfd8774c4bd39f2e *tests/test_kit.Rout.save
+aefa14a57c973d41eef2a093aa1c6541 *tests/test_kit.Rout.save
