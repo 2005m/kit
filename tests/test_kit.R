@@ -1431,6 +1431,7 @@ check("0018.032", uniqLen(matrix(x5[1:100],ncol=10)), dim(unique(matrix(x5[1:100
 check("0018.033", uniqLen(matrix(rdn,ncol=10)), dim(unique(matrix(rdn,ncol=10)))[1])
 check("0018.034", uniqLen(x6),dim(unique(x6))[1])
 check("0018.035", uniqLen(c(TRUE,FALSE,FALSE,FALSE,TRUE)),length(unique(c(TRUE,FALSE,FALSE,FALSE,TRUE))))
+check("0018.036", uniqLen(factor(c("A","C","A"),levels = c("A","B","C"))),2L)
 
 rm(x1, x2, x3, x4, x5, x6, df, rdn)
 

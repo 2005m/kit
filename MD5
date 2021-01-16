@@ -28,5 +28,5 @@ b6d184807563eb8d74a8586c598ed770 *src/init.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
 5b13330006c45b534ede418a9f91c4f4 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
-6d28d0e0997b7fcc3db14d787ee4cae9 *tests/test_kit.R
-aefa14a57c973d41eef2a093aa1c6541 *tests/test_kit.Rout.save
+958bcffae22a60eed2f47a2e8cae27e2 *tests/test_kit.R
+7e4e509abc803b58c7464da685adc640 *tests/test_kit.Rout.save

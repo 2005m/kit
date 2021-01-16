@@ -1451,6 +1451,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0018.033", uniqLen(matrix(rdn,ncol=10)), dim(unique(matrix(rdn,ncol=10)))[1])
 > check("0018.034", uniqLen(x6),dim(unique(x6))[1])
 > check("0018.035", uniqLen(c(TRUE,FALSE,FALSE,FALSE,TRUE)),length(unique(c(TRUE,FALSE,FALSE,FALSE,TRUE))))
+> check("0018.036", uniqLen(factor(c("A","C","A"),levels = c("A","B","C"))),2L)
 > 
 > rm(x1, x2, x3, x4, x5, x6, df, rdn)
 > 
@@ -1553,4 +1554,4 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.134   0.592   4.727 
+  4.155   0.603   4.771 
