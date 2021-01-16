@@ -1206,12 +1206,11 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > # ---------------------------------------------------------------------------------------------------------------------------
 > 
 > x1 = sample(c(1:1000,NA_integer_),1e3,TRUE)
-> x2 = sample(as.logical(c(1:1000,NA_integer_)),1e3,TRUE)
+> x2 = sample(c(TRUE,NA,FALSE),1e3,TRUE)
 > x3 = sample(as.numeric(c(1:1000,NA_integer_)),1e3,TRUE)
 > x4 = sample(as.complex(c(1:1000,NA_complex_,(NaN+0i)/0,NaN)),1e3,TRUE)
 > x5 = sample(as.character(c(1:1000,NA_integer_)),1e3,TRUE)
-> x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),
-+                 b = rep(rnorm(5),4L))
+> x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),b = rep(rnorm(5),4L))
 > 
 > check("0015.001", fduplicated(iris$Species), duplicated(iris$Species))
 > check("0015.002", fduplicated(iris$Petal.Width), duplicated(iris$Petal.Width))
@@ -1276,6 +1275,9 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > attr(x8,"label") = "complex"
 > x9 = c(TRUE,TRUE,FALSE,FALSE)
 > attr(x9,"label") = "logical"
+> f1 = factor(c("A","B","C","C"))
+> f2 = factor(c("A","B","C","A"))
+> f3 = factor(c("A","C","A"),levels = c("A","B","C"))
 > 
 > check("0016.001", funique(iris$Species), unique(iris$Species))
 > check("0016.002", funique(iris$Petal.Width), unique(iris$Petal.Width))
@@ -1337,8 +1339,20 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0016.058", attr(funique(x9),"label"),"logical")
 > check("0016.059", attr(funique(data.frame(a=x9,b=x9,stringsAsFactors = FALSE))[,1],"label"),"logical")
 > check("0016.060", funique(iris$Species[iris$Species != "setosa"]), unique(iris$Species[iris$Species != "setosa"]))
+> check("0016.061", funique(c(FALSE,FALSE,NA,TRUE,NA)),unique(c(FALSE,FALSE,NA,TRUE,NA)))
+> check("0016.062", funique(c(FALSE,FALSE,NA,TRUE,NA),fromLast = TRUE),unique(c(FALSE,FALSE,NA,TRUE,NA),fromLast = TRUE))
+> check("0016.063", funique(c(TRUE,TRUE,NA,FALSE,NA)),unique(c(TRUE,TRUE,NA,FALSE,NA)))
+> check("0016.064", funique(c(TRUE,TRUE,NA,FALSE,NA),fromLast = TRUE),unique(c(TRUE,TRUE,NA,FALSE,NA),fromLast = TRUE))
+> check("0016.065", funique(c(NA,NA,FALSE)),unique(c(NA,NA,FALSE)))
+> check("0016.065", funique(c(NA,NA,FALSE),fromLast = TRUE),unique(c(NA,NA,FALSE),fromLast = TRUE))
+> check("0016.066", funique(f1),unique(f1))
+> check("0016.067", funique(f2),unique(f2))
+> check("0016.068", funique(f3),unique(f3))
+> check("0016.069", funique(f1,fromLast = TRUE),unique(f1,fromLast = TRUE))
+> check("0016.070", funique(f2,fromLast = TRUE),unique(f2,fromLast = TRUE))
+> check("0016.071", funique(f3,fromLast = TRUE),unique(f3,fromLast = TRUE))
 > 
-> rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out)
+> rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out, f1, f2, f3)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   countOccur
@@ -1378,8 +1392,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0017.009", df4[order(df4$Variable),2], as.vector(table(x4,useNA = "always")))
 > check("0017.010", df5[order(df5$Variable),2], as.vector(table(x5,useNA = "always")))
 > check("0017.011", countOccur(rep(as.Date("2020-06-02"),10L))[[2]], 10L)
-> check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
-+       data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
+> check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
 > check("0017.013", countOccur(iris[,5:4]), out)
 > check("0017.014",out3 ,out2)
 > check("0017.015",countOccur(matrix(c(1,1,1,1),nrow = 2)),error = "Array are not yet supported.")
@@ -1397,7 +1410,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > df$Sepal.Length = as.complex(df$Sepal.Length)
 > rdn = sample(c(1,NA_real_,NaN),1e3,TRUE)
 > x1 = sample(c(1:1000,NA_integer_),1e6,TRUE)
-> x2 = sample(as.logical(c(1:1000,NA_integer_)),1e3,TRUE)
+> x2 = sample(c(TRUE,NA,FALSE),1e3,TRUE)
 > x3 = sample(as.numeric(c(1:1000,NA_integer_)),1e3,TRUE)
 > x4 = sample(as.complex(c(1:1000,NA_complex_,(NaN+0i)/0,NaN)),1e3,TRUE)
 > x5 = sample(as.character(c(1:1000,NA_integer_)),1e3,TRUE)
@@ -1437,6 +1450,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0018.032", uniqLen(matrix(x5[1:100],ncol=10)), dim(unique(matrix(x5[1:100],ncol=10)))[1])
 > check("0018.033", uniqLen(matrix(rdn,ncol=10)), dim(unique(matrix(rdn,ncol=10)))[1])
 > check("0018.034", uniqLen(x6),dim(unique(x6))[1])
+> check("0018.035", uniqLen(c(TRUE,FALSE,FALSE,FALSE,TRUE)),length(unique(c(TRUE,FALSE,FALSE,FALSE,TRUE))))
 > 
 > rm(x1, x2, x3, x4, x5, x6, df, rdn)
 > 
@@ -1539,4 +1553,4 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.938   0.977   6.324 
+  4.134   0.592   4.727 

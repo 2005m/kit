@@ -275,9 +275,26 @@ SEXP dupLenVecR(SEXP x) {
     for (int i = 0; i < xlen; ++i) {
       if (!count[px[i]]) {
         j++;
-        if (j == len) 
+        if (j == len)
           break;
         count[px[i]] = true;
+      }
+    }
+    free(count);
+    return ScalarInteger(j);
+  }
+  if (isLogical(x)) {
+    bool *restrict count = (bool*)calloc(3,sizeof(bool));
+    const int *restrict px = LOGICAL(x);
+    const int xlen = LENGTH(x);
+    int j = 0;
+    for (int i = 0; i < xlen; ++i) {
+      const int cs = px[i] == NA_LOGICAL ? 2 : px[i];
+      if (!count[cs]) {
+        j++;
+        if (j == 3)
+          break;
+        count[cs] = true;
       }
     }
     free(count);
@@ -307,7 +324,7 @@ SEXP dupLenVecR(SEXP x) {
   R_xlen_t count = 0;
   int *h = (int*)calloc(M, sizeof(int));
   switch (tx) {
-  case LGLSXP: {
+  /*case LGLSXP: {
     const int *restrict px = LOGICAL(x);
     size_t id = 0;
     for (int i = 0; i < n; ++i) {
@@ -323,7 +340,7 @@ SEXP dupLenVecR(SEXP x) {
       lbl:;
     }
     free(h);
-  } break;
+  } break;*/
   case INTSXP: { // think about factor and levels number
     const int *restrict px = INTEGER(x);
     size_t id = 0;

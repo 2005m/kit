@@ -801,6 +801,10 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
 
 SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
   const bool buniq = asLogical(uniq);
+  if(!IS_BOOL(fromLast)) {
+    error("Argument 'fromLast' must be TRUE or FALSE and length 1.");
+  }
+  const bool pfromLast = asLogical(fromLast);
   if (isFactor(x) && buniq) {
     const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
     UNPROTECT(1);
@@ -810,26 +814,87 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
     SEXP ans = PROTECT(allocVector(INTSXP, len));
     copyMostAttrib(x, ans);
     int *restrict pans = INTEGER(ans);
-    int j = 0;
-    for (int i = 0; i < xlen; ++i) {
-      if (!count[px[i]]) {
-        pans[j++] = px[i];
-        if (j == len) 
-          break;
-        count[px[i]] = true;
+    if (pfromLast) {
+      int j = len-1;
+      for (int i = xlen-1; i >= 0; --i) {
+        if (!count[px[i]]) {
+          pans[j--] = px[i];
+          if (j == -1)
+            break;
+          count[px[i]] = true;
+        }
       }
-    }
-    if (j != len) {
-      SETLENGTH(ans, j);
+      if (j != -1) {
+        SEXP ans2 = PROTECT(allocVector(INTSXP, len-j-1));
+        copyMostAttrib(x, ans2);
+        memcpy(INTEGER(ans2),pans+j+1,(len-j-1)*sizeof(int));
+        free(count);
+        UNPROTECT(2);
+        return ans2;
+      }
+    } else {
+      int j = 0;
+      for (int i = 0; i < xlen; ++i) {
+        if (!count[px[i]]) {
+          pans[j++] = px[i];
+          if (j == len)
+            break;
+          count[px[i]] = true;
+        }
+      }
+      if (j != len) {
+        SETLENGTH(ans, j);
+      }
     }
     free(count);
     UNPROTECT(1);
     return ans;
-   }
-  if(!IS_BOOL(fromLast)) {
-    error("Argument 'fromLast' must be TRUE or FALSE and length 1.");
   }
-  const bool pfromLast = asLogical(fromLast);
+  if (isLogical(x) && buniq) {
+    bool *restrict count = (bool*)calloc(3,sizeof(bool));
+    const int *restrict px = LOGICAL(x);
+    const int xlen = LENGTH(x);
+    SEXP ans = PROTECT(allocVector(LGLSXP, 3));
+    copyMostAttrib(x, ans);
+    int *restrict pans = LOGICAL(ans);
+    if (pfromLast) {
+      int j = 2;
+      for (int i = xlen-1; i >= 0; --i) {
+        const int cs = px[i] == NA_LOGICAL ? 2 : px[i];
+        if (!count[cs]) {
+          pans[j--] = cs == 2 ? NA_LOGICAL : px[i];
+          if (j == -1)
+            break;
+          count[cs] = true;
+        }
+      }
+      if (j != -1) {
+        SEXP ans2 = PROTECT(allocVector(LGLSXP, 2-j));
+        copyMostAttrib(x, ans2);
+        memcpy(LOGICAL(ans2),pans+j+1,(2-j)*sizeof(int));
+        free(count);
+        UNPROTECT(2);
+        return ans2;
+      }
+    } else {
+      int j = 0;
+      for (int i = 0; i < xlen; ++i) {
+        const int cs = px[i] == NA_LOGICAL ? 2 : px[i];
+        if (!count[cs]) {
+          pans[j++] = cs == 2 ? NA_LOGICAL : px[i];
+          if (j == 3)
+            break;
+          count[cs] = true;
+        }
+      }
+      if (j != 3) {
+        SETLENGTH(ans, j);
+      }
+    }
+    free(count);
+    UNPROTECT(1);
+    return ans;
+  }
   const R_xlen_t n = xlength(x);
   const SEXPTYPE tx = UTYPEOF(x);
   int K;
@@ -859,83 +924,38 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
   case LGLSXP: {
     const int *restrict px = LOGICAL(x);
     size_t id = 0;
-    if (buniq) {
-      if (pfromLast) {
-        for (int i = n-1; i > -1; --i) {
-          id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
-          while (h[id]) {
-            if (px[h[id]-1]==px[i]) {
-              goto lblt;
-            }
-            id++; id %= M; // # nocov
+    if (pfromLast) {
+      for (int i = n-1; i > -1; --i) {
+        id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
+        while (h[id]) {
+          if (px[h[id]-1]==px[i]) {
+            pans[i]=1;
+            goto lbldt;
           }
-          h[id] = (int) i + 1;
-          pans[i]++;
-          count++;
-          lblt:;
+          id++; id %= M; // # nocov
         }
-      } else {
-        for (int i = 0; i < n; ++i) {
-          id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
-          while (h[id]) {
-            if (px[h[id]-1]==px[i]) {
-              goto lbl;
-            }
-            id++; id %= M; // # nocov
-          }
-          h[id] = (int) i + 1;
-          pans[i]++;
-          count++;
-          lbl:;
-        }
+        h[id] = (int) i + 1;
+        pans[i] = 0;
+        count++;
+        lbldt:;
       }
-      free(h);
-      SEXP indx = PROTECT(allocVector(tx, count));
-      size_t ct = 0;
-      int *restrict py = LOGICAL(indx);
-      for (int i = 0; ct < count; ++i) {
-        if (pans[i]) {
-          py[ct++] = px[i];
-        }
-      }
-      free(pans);
-      copyMostAttrib(x, indx);
-      UNPROTECT(1);
-      return indx;
     } else {
-      if (pfromLast) {
-        for (int i = n-1; i > -1; --i) {
-          id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
-          while (h[id]) {
-            if (px[h[id]-1]==px[i]) {
-              pans[i]=1;
-              goto lbldt;
-            }
-            id++; id %= M; // # nocov
+      for (int i = 0; i < n; ++i) {
+        id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
+        while (h[id]) {
+          if (px[h[id]-1]==px[i]) {
+            pans[i]=1;
+            goto lbld;
           }
-          h[id] = (int) i + 1;
-          pans[i] = 0;
-          count++;
-          lbldt:;
+          id++; id %= M; // # nocov
         }
-      } else {
-        for (int i = 0; i < n; ++i) {
-          id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
-          while (h[id]) {
-            if (px[h[id]-1]==px[i]) {
-              pans[i]=1;
-              goto lbld;
-            }
-            id++; id %= M; // # nocov
-          }
-          h[id] = (int) i + 1;
-          pans[i] = 0;
-          count++;
-          lbld:;
-        }
+        h[id] = (int) i + 1;
+        pans[i] = 0;
+        count++;
+        lbld:;
       }
-      free(h);
     }
+    free(h);
   } break;
   case INTSXP: { // think about factor and levels number
     const int *restrict px = INTEGER(x);
