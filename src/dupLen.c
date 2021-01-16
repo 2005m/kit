@@ -315,10 +315,10 @@ SEXP dupLenVecR(SEXP x) {
       M *= 2;
       K++;
     }
-  } else if (tx == LGLSXP) {
+  } /*else if (tx == LGLSXP) {
     M = 4;
     K = 2;
-  } else {
+  }*/ else {
     error("Type %s is not supported.", type2char(tx)); // # nocov
   }
   R_xlen_t count = 0;
