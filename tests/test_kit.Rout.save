@@ -1353,7 +1353,6 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0016.071", funique(f3,fromLast = TRUE),unique(f3,fromLast = TRUE))
 > check("0016.072", funique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))),{out = unique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))); row.names(out)<-NULL;out})
 > 
-> 
 > rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out, f1, f2, f3)
 > 
 > # --------------------------------------------------------------------------------------------------
@@ -1556,4 +1555,4 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.156   0.599   4.754 
+  4.113   0.588   4.762 
