@@ -16,7 +16,7 @@ e0d3b091b5182fdcc8868c93a2c59476 *man/topn.Rd
 7534da9b920a89b5c443b9dc19037658 *R/call.R
 fa0ca12018176564236efd16b8d8e9d8 *README.md
 29ff0659a34bc45ef14a34d6bab29965 *src/dup.c
-8d43fb9b2ef69f10e55b4a14fa8389b0 *src/dupLen.c
+68b322b9c40294be8c1aeaa0c2b35b25 *src/dupLen.c
 84dc17b4330566e5beb69626ad9d268e *src/fpos.c
 c362509861cd6835c1d8adbb0dce02b4 *src/iif.c
 b6d184807563eb8d74a8586c598ed770 *src/init.c

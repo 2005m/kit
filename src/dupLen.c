@@ -315,33 +315,13 @@ SEXP dupLenVecR(SEXP x) {
       M *= 2;
       K++;
     }
-  } /*else if (tx == LGLSXP) {
-    M = 4;
-    K = 2;
-  }*/ else {
+  } else {
     error("Type %s is not supported.", type2char(tx)); // # nocov
   }
   R_xlen_t count = 0;
   int *h = (int*)calloc(M, sizeof(int));
   switch (tx) {
-  /*case LGLSXP: {
-    const int *restrict px = LOGICAL(x);
-    size_t id = 0;
-    for (int i = 0; i < n; ++i) {
-      id = (px[i] == NA_LOGICAL) ? 2U : (size_t) px[i];
-      while (h[id]) {
-        if (px[h[id]-1]==px[i]) {
-          goto lbl;
-        }
-        id++; id %= M; // # nocov
-      }
-      h[id] = (int) i + 1;
-      count++;
-      lbl:;
-    }
-    free(h);
-  } break;*/
-  case INTSXP: { // think about factor and levels number
+  case INTSXP: {
     const int *restrict px = INTEGER(x);
     size_t id = 0;
     for (int i = 0; i < n; ++i) {

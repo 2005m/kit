@@ -1331,6 +1331,8 @@ check("0016.068", funique(f3),unique(f3))
 check("0016.069", funique(f1,fromLast = TRUE),unique(f1,fromLast = TRUE))
 check("0016.070", funique(f2,fromLast = TRUE),unique(f2,fromLast = TRUE))
 check("0016.071", funique(f3,fromLast = TRUE),unique(f3,fromLast = TRUE))
+check("0016.072", funique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))),{out = unique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))); row.names(out)<-NULL;out})
+
 
 rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out, f1, f2, f3)
 
