@@ -21,6 +21,9 @@
       \item Function \code{\strong{funique}} was not preserving attributes for character, logical and
       complex vectors/data.frames. Thanks to Sebastian Krantz (@SebKrantz) for bringing that to my
       attention. This has been fixed in \href{https://github.com/2005m/kit/pull/13}{PR#13}.
+      
+      \item Functions \code{\strong{funique}} and \code{\strong{uniqLen}} should now be faster for 
+      \code{factor} and \code{logical} vectors \href{https://github.com/2005m/kit/pull/14}{PR#14}.
     }
   }
 }
