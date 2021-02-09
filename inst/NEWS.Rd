@@ -10,6 +10,11 @@
       \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
       \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning 
       \href{https://github.com/2005m/kit/pull/11}{PR#11}.
+      
+      \item Functions \code{\strong{pall}}, \code{\strong{pany}}, \code{\strong{pmean}},
+      \code{\strong{pprod}} and \code{\strong{psum}} accept \code{data.frame} as input
+      \href{https://github.com/2005m/kit/pull/15}{PR#15}. Please see documentation for more
+      information.
     }
   }
   \subsection{Notes}{
