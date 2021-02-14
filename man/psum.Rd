@@ -18,7 +18,7 @@ Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works
   pcount(..., value)
 }
 \arguments{
-  \item{...}{ Numeric arguments of type integer, double complex. Logical vector for \code{pall} and \code{pany}.}
+  \item{...}{ Numeric arguments of type integer, double complex. Logical vector for \code{pall} and \code{pany}. Functions \code{pall}, \code{pany},\code{pmean},\code{pprod} and \code{psum} also accept a single \code{data.frame} made of the previous types. See example 7 below.}
   \item{na.rm}{ A logical indicating whether missing values should be removed. Default value is \code{FALSE}.}
   \item{value}{ A non \code{NULL} value of length 1. \code{pcount} will count how many times it occurs.}
 }
@@ -58,6 +58,10 @@ pany(x, y, z, na.rm = TRUE)
 
 # Example 6: pcount
 pcount(x, y, z, value = TRUE)
+
+# Example 7: data.frameas an input
+pprod(iris[,1:2])
+psum(iris[,1:2])
 
 # Benchmarks
 # ----------

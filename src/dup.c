@@ -1363,7 +1363,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
   } else {
     error("Type %s is not supported.", type2char(tx)); // # nocov
   }
-  R_xlen_t count = 0;
   int *h = (int*)calloc(M, sizeof(int));
   SEXP ans_i = PROTECT(allocVector(INTSXP, n));
   int *restrict pans_i = INTEGER(ans_i);
@@ -1382,7 +1381,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
       }
       h[id] = (int) i + 1;
       pans_i[i] = h[id];
-      count++;
       lbl:;
     }
   } break;
@@ -1400,7 +1398,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
       }
       h[id] = (int) i + 1;
       pans_i[i] = h[id];
-      count++;
       ibl:;
     }
   } break;
@@ -1420,7 +1417,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
       }
       h[id] = (int) i + 1;
       pans_i[i] = h[id];
-      count++;
       rbl:;
     }
   } break;
@@ -1452,7 +1448,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
       }
       h[id] = (int) i + 1;
       pans_i[i] = h[id];
-      count++;
       cbl:;
     }
   } break;
@@ -1470,7 +1465,6 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
       }
       h[id] = (int) i + 1;
       pans_i[i] = h[id];
-      count++;
       sbl:;
     }
   } break;
