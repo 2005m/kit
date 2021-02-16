@@ -74,6 +74,8 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > countOccur  = kit::countOccur
 > uniqLen     = kit::uniqLen
 > nswitch     = kit::nswitch
+> psort       = kit::psort
+> charToFact  = kit::charToFact
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   topn 
@@ -693,7 +695,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0005.002", psum(x, y, z, na.rm = TRUE), c(6, 7, 8, 7))
 > check("0005.003", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 7L))
 > check("0005.004", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 7L, 8L, 7L))
-> check("0005.005", psum(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.")
+> check("0005.005", psum(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
 > check("0005.006", psum(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0005.007", psum(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0005.008", psum(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
@@ -714,37 +716,40 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0005.023", psum(NA_integer_, na.rm = TRUE), 0L)
 > check("0005.024", psum(NA_real_, na.rm = TRUE), 0)
 > check("0005.025", psum(NA_complex_, na.rm = TRUE), 0+0i)
+> check("0005.026", psum(iris[,1:2]), rowSums(iris[,1:2]))
+> check("0005.027", psum(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   pprod 
 > # --------------------------------------------------------------------------------------------------
 > 
-> 
-> check("0006.016", pprod(x, y, z, na.rm = FALSE), c(6, NA, NA, 5))
-> check("0006.017", pprod(x, y, z, na.rm = TRUE), c(6, 12, 16, 5))
-> check("0006.018", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 5L))
-> check("0006.019", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 12L, 16L, 5L))
-> check("0006.020", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.")
-> check("0006.021", pprod(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
-> check("0006.022", pprod(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
-> check("0006.023", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
-> check("0006.024", pprod(1:10, 1:10, 21:30), 1:10 * 1:10 * 21:30)
-> check("0006.025", pprod(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
-> check("0006.026", pprod(x, na.rm = FALSE), x)
-> check("0006.027", pprod(as.integer(x), y, z, na.rm = TRUE), c(6, 12, 16, 5))
-> check("0006.028", pprod(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), c(2, 3, 4, 5, 1))
-> check("0006.029", pprod(x, y, as.integer(z), na.rm = FALSE), c(6, NA, NA, 5))
-> check("0006.030", pprod(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
-> check("0006.031", pprod(x0, y0, z0), x0*y0*z0)
-> check("0006.032", pprod(as.complex(x0), as.complex(y0), as.complex(z0)), as.complex(x0)*as.complex(y0)*as.complex(z0))
-> check("0006.033", pprod(as.complex(x0), as.complex(y0), z0), as.complex(x0)*as.complex(y0)*z0)
-> check("0006.034", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = FALSE), as.complex(c(6, NA, NA, 5)))
-> check("0006.035", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = TRUE), as.complex(c(6, 12, 16, 5)))
-> check("0006.036", pprod(x, y, z, rep(Inf, 4L), na.rm = FALSE), x*y*z*Inf)
-> check("0006.037", pprod(x, y, z, rep(Inf, 4L), na.rm = TRUE), rep(Inf, 4L))
-> check("0006.038", pprod(NA_integer_, na.rm = TRUE), 1L)
-> check("0006.039", pprod(NA_real_, na.rm = TRUE), 1)
-> check("0006.040", pprod(NA_complex_, na.rm = TRUE), 1+0i)
+> check("0006.001", pprod(x, y, z, na.rm = FALSE), c(6, NA, NA, 5))
+> check("0006.002", pprod(x, y, z, na.rm = TRUE), c(6, 12, 16, 5))
+> check("0006.003", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 5L))
+> check("0006.004", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 12L, 16L, 5L))
+> check("0006.005", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+> check("0006.006", pprod(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+> check("0006.007", pprod(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+> check("0006.008", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
+> check("0006.009", pprod(1:10, 1:10, 21:30), 1:10 * 1:10 * 21:30)
+> check("0006.010", pprod(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
+> check("0006.011", pprod(x, na.rm = FALSE), x)
+> check("0006.012", pprod(as.integer(x), y, z, na.rm = TRUE), c(6, 12, 16, 5))
+> check("0006.013", pprod(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), c(2, 3, 4, 5, 1))
+> check("0006.014", pprod(x, y, as.integer(z), na.rm = FALSE), c(6, NA, NA, 5))
+> check("0006.015", pprod(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
+> check("0006.016", pprod(x0, y0, z0), x0*y0*z0)
+> check("0006.017", pprod(as.complex(x0), as.complex(y0), as.complex(z0)), as.complex(x0)*as.complex(y0)*as.complex(z0))
+> check("0006.018", pprod(as.complex(x0), as.complex(y0), z0), as.complex(x0)*as.complex(y0)*z0)
+> check("0006.019", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = FALSE), as.complex(c(6, NA, NA, 5)))
+> check("0006.020", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = TRUE), as.complex(c(6, 12, 16, 5)))
+> check("0006.021", pprod(x, y, z, rep(Inf, 4L), na.rm = FALSE), x*y*z*Inf)
+> check("0006.022", pprod(x, y, z, rep(Inf, 4L), na.rm = TRUE), rep(Inf, 4L))
+> check("0006.023", pprod(NA_integer_, na.rm = TRUE), 1L)
+> check("0006.024", pprod(NA_real_, na.rm = TRUE), 1)
+> check("0006.025", pprod(NA_complex_, na.rm = TRUE), 1+0i)
+> check("0006.026", pprod(iris[,1:2]), iris$Sepal.Length*iris$Sepal.Width)
+> check("0006.027", pprod(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
 > 
 > rm(x, y, z, x0, y0, z0)
 > 
@@ -1055,11 +1060,12 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0009.006", pall(x, na.rm = FALSE), x)
 > check("0009.007", pall(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0009.008", pall(x, as.integer(z), y, na.rm = TRUE), error = "Argument 2 is of type integer. Only logical type is supported.")
-> check("0009.009", pall(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.")
+> check("0009.009", pall(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.Data.frame (of logical vectors) is also supported as a single input.")
 > check("0009.010", pall(NA, na.rm = TRUE), TRUE)
 > check("0009.011", pall(NA, na.rm = FALSE), NA)
 > check("0009.012", pall(x0, y0, z0, na.rm = FALSE), sapply(1:1e3, function(i) all(x0[i],y0[i],z0[i],na.rm=FALSE)))
 > check("0009.013", pall(x0, y0, z0, na.rm = TRUE), sapply(1:1e3, function(i) all(x0[i],y0[i],z0[i],na.rm=TRUE)))
+> check("0009.014", pall(data.frame(x,y), na.rm = FALSE), pall(x,y, na.rm = FALSE))
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   pany
@@ -1073,11 +1079,12 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0010.006", pany(x, na.rm = FALSE), x)
 > check("0010.007", pany(na.rm = FALSE), error = "Please supply at least 1 argument. (0 argument supplied)")
 > check("0010.008", pany(x, as.integer(z), y, na.rm = TRUE), error = "Argument 2 is of type integer. Only logical type is supported.")
-> check("0010.009", pany(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.")
+> check("0010.009", pany(as.double(z), y, na.rm = TRUE), error = "Argument 1 is of type double. Only logical type is supported.Data.frame (of logical vectors) is also supported as a single input.")
 > check("0010.010", pany(NA, na.rm = TRUE), TRUE)
 > check("0010.011", pany(NA, na.rm = FALSE), NA)
 > check("0010.012", pany(x0, y0, z0, na.rm = FALSE), sapply(1:1e3, function(i) any(x0[i],y0[i],z0[i],na.rm=FALSE)))
 > check("0010.013", pany(x0, y0, z0, na.rm = TRUE), sapply(1:1e3, function(i) any(x0[i],y0[i],z0[i],na.rm=TRUE)))
+> check("0010.014", pany(data.frame(x,y), na.rm = FALSE), pany(x,y, na.rm = FALSE))
 > 
 > rm(x, y, z, x0, y0, z0)
 > 
@@ -1097,7 +1104,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > check("0011.001", pmean(x, y, z, na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = FALSE)))
 > check("0011.002", pmean(x, y, z, na.rm = TRUE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = TRUE)))
-> check("0011.003", pmean(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer and double types are supported.")
+> check("0011.003", pmean(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer and double types are supported.Data.frame (of the previous types) is also supported as a single input.")
 > check("0011.004", pmean(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0011.005", pmean(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0011.006", pmean(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer and double types are supported.")
@@ -1119,6 +1126,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0011.022", pmean(x1, y1, z1, na.rm = TRUE), sapply(1:100, function(i) mean(c(x1[i], y1[i], z1[i]), na.rm = TRUE)))
 > check("0011.023", pmean(NA_integer_, na.rm = TRUE), mean(NA_integer_,na.rm = TRUE))
 > check("0011.024", pmean(NA_real_, na.rm = TRUE), mean(NA_real_,na.rm = TRUE))
+> check("0011.025", pmean(data.frame(x,y,z), na.rm = TRUE), pmean(x,y,z,na.rm = TRUE))
 > 
 > rm(x, y, z, x0, y0, z0, x1, y1, z1)
 > 
@@ -1206,12 +1214,11 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > # ---------------------------------------------------------------------------------------------------------------------------
 > 
 > x1 = sample(c(1:1000,NA_integer_),1e3,TRUE)
-> x2 = sample(as.logical(c(1:1000,NA_integer_)),1e3,TRUE)
+> x2 = sample(c(TRUE,NA,FALSE),1e3,TRUE)
 > x3 = sample(as.numeric(c(1:1000,NA_integer_)),1e3,TRUE)
 > x4 = sample(as.complex(c(1:1000,NA_complex_,(NaN+0i)/0,NaN)),1e3,TRUE)
 > x5 = sample(as.character(c(1:1000,NA_integer_)),1e3,TRUE)
-> x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),
-+                 b = rep(rnorm(5),4L))
+> x6 = data.frame(a = rep(seq.POSIXt(as.POSIXct("2020-01-01"),as.POSIXct("2020-01-30"),length.out = 5),4L),b = rep(rnorm(5),4L))
 > 
 > check("0015.001", fduplicated(iris$Species), duplicated(iris$Species))
 > check("0015.002", fduplicated(iris$Petal.Width), duplicated(iris$Petal.Width))
@@ -1276,6 +1283,9 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > attr(x8,"label") = "complex"
 > x9 = c(TRUE,TRUE,FALSE,FALSE)
 > attr(x9,"label") = "logical"
+> f1 = factor(c("A","B","C","C"))
+> f2 = factor(c("A","B","C","A"))
+> f3 = factor(c("A","C","A"),levels = c("A","B","C"))
 > 
 > check("0016.001", funique(iris$Species), unique(iris$Species))
 > check("0016.002", funique(iris$Petal.Width), unique(iris$Petal.Width))
@@ -1336,8 +1346,23 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0016.057", attr(funique(data.frame(a=x8,b=x8,stringsAsFactors = FALSE))[,1],"label"),"complex")
 > check("0016.058", attr(funique(x9),"label"),"logical")
 > check("0016.059", attr(funique(data.frame(a=x9,b=x9,stringsAsFactors = FALSE))[,1],"label"),"logical")
+> check("0016.060", funique(iris$Species[iris$Species != "setosa"]), unique(iris$Species[iris$Species != "setosa"]))
+> check("0016.061", funique(c(FALSE,FALSE,NA,TRUE,NA)),unique(c(FALSE,FALSE,NA,TRUE,NA)))
+> check("0016.062", funique(c(FALSE,FALSE,NA,TRUE,NA),fromLast = TRUE),unique(c(FALSE,FALSE,NA,TRUE,NA),fromLast = TRUE))
+> check("0016.063", funique(c(TRUE,TRUE,NA,FALSE,NA)),unique(c(TRUE,TRUE,NA,FALSE,NA)))
+> check("0016.064", funique(c(TRUE,TRUE,NA,FALSE,NA),fromLast = TRUE),unique(c(TRUE,TRUE,NA,FALSE,NA),fromLast = TRUE))
+> check("0016.065", funique(c(NA,NA,FALSE)),unique(c(NA,NA,FALSE)))
+> check("0016.065", funique(c(NA,NA,FALSE),fromLast = TRUE),unique(c(NA,NA,FALSE),fromLast = TRUE))
+> check("0016.066", funique(f1),unique(f1))
+> check("0016.067", funique(f2),unique(f2))
+> check("0016.068", funique(f3),unique(f3))
+> check("0016.069", funique(f1,fromLast = TRUE),unique(f1,fromLast = TRUE))
+> check("0016.070", funique(f2,fromLast = TRUE),unique(f2,fromLast = TRUE))
+> check("0016.071", funique(f3,fromLast = TRUE),unique(f3,fromLast = TRUE))
+> check("0016.072", funique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))),{out = unique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))); row.names(out)<-NULL;out})
+> check("0016.073", funique(data.frame(a=as.complex(c(1,NA,NA,NaN,NaN)),b=c(2,2,2,2,2))),{out = unique(data.frame(a=as.complex(c(1,NA,NA,NaN,NaN)),b=c(2,2,2,2,2)));row.names(out)<-NULL;out})
 > 
-> rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out)
+> rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out, f1, f2, f3)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   countOccur
@@ -1377,8 +1402,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0017.009", df4[order(df4$Variable),2], as.vector(table(x4,useNA = "always")))
 > check("0017.010", df5[order(df5$Variable),2], as.vector(table(x5,useNA = "always")))
 > check("0017.011", countOccur(rep(as.Date("2020-06-02"),10L))[[2]], 10L)
-> check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),
-+       data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
+> check("0017.012", countOccur(data.frame(a = c(as.Date("2020-05-01"),as.Date("2020-05-01")), b = c(as.Date("2020-05-01"),as.Date("2020-05-01")))),data.frame(a = c(as.Date("2020-05-01")), b = c(as.Date("2020-05-01")), Count = 2L))
 > check("0017.013", countOccur(iris[,5:4]), out)
 > check("0017.014",out3 ,out2)
 > check("0017.015",countOccur(matrix(c(1,1,1,1),nrow = 2)),error = "Array are not yet supported.")
@@ -1396,7 +1420,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > df$Sepal.Length = as.complex(df$Sepal.Length)
 > rdn = sample(c(1,NA_real_,NaN),1e3,TRUE)
 > x1 = sample(c(1:1000,NA_integer_),1e6,TRUE)
-> x2 = sample(as.logical(c(1:1000,NA_integer_)),1e3,TRUE)
+> x2 = sample(c(TRUE,NA,FALSE),1e3,TRUE)
 > x3 = sample(as.numeric(c(1:1000,NA_integer_)),1e3,TRUE)
 > x4 = sample(as.complex(c(1:1000,NA_complex_,(NaN+0i)/0,NaN)),1e3,TRUE)
 > x5 = sample(as.character(c(1:1000,NA_integer_)),1e3,TRUE)
@@ -1436,6 +1460,8 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0018.032", uniqLen(matrix(x5[1:100],ncol=10)), dim(unique(matrix(x5[1:100],ncol=10)))[1])
 > check("0018.033", uniqLen(matrix(rdn,ncol=10)), dim(unique(matrix(rdn,ncol=10)))[1])
 > check("0018.034", uniqLen(x6),dim(unique(x6))[1])
+> check("0018.035", uniqLen(c(TRUE,FALSE,FALSE,FALSE,TRUE)),length(unique(c(TRUE,FALSE,FALSE,FALSE,TRUE))))
+> check("0018.036", uniqLen(factor(c("A","C","A"),levels = c("A","B","C"))),2L)
 > 
 > rm(x1, x2, x3, x4, x5, x6, df, rdn)
 > 
@@ -1526,11 +1552,121 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > rm(x1,x2,x3,x4,x5,x6,s1,s2,class2133, enc1, enc2)
 > 
 > # --------------------------------------------------------------------------------------------------
+> #                                   psort
+> # --------------------------------------------------------------------------------------------------
+> 
+> x1 = c("a","ab","c","b","a","c")
+> x2 = c("aaaba","dfjasdlifjai","jiifjeogiejogp","aabaaaa","gsgj","gerph","aaaaaaa","htjltjlrth",
++        "joasdjfisdjfdo","hthe","aaaaaba","j","a","jrykpjl","hkoptjltp","aaaaaa","lprrjt")
+> x3 = sample(c(letters,LETTERS),1e4,TRUE)
+> x4 = c("a","ab","c","b","a",NA,"c")
+> x5 = c("a","ab","c","b"," ","a",NA,"c")
+> x6 = c("a","ab","c","b"," "," ","a",NA," d","c")
+> x7 = c("a","ab","c","b"," ","a","",NA," ","c")
+> x8 = c("b","a","d","c",NA,"")
+> x9 = sample(c("a","ab","c","b"," ","","a",NA," d","c"), 1e4, TRUE)
+> x10 = c("b","a","A","B","\xe4","d","c",NA)
+> Encoding(x10) = "UTF-8"
+> Encoding(x10[5]) = "latin1"
+> x11 = rep(x10,3L)
+> 
+> check("0020.001", psort(c(2L,1L,3L),c.locale = FALSE),sort(c(2L,1L,3L)),warning = "Function 'psort' was only implemented for character vectors. Defaulting to base::sort.")
+> check("0020.002", psort(x1),sort(x1))
+> check("0020.003", psort(x1,decreasing = TRUE),sort(x1,decreasing = TRUE))
+> check("0020.004", psort(x2),sort(x2))
+> check("0020.005", psort(x2,decreasing = TRUE),sort(x2,decreasing = TRUE))
+> check("0020.006", psort(x3,c.locale = FALSE),sort(x3))
+> check("0020.007", psort(x3,decreasing = TRUE,c.locale = FALSE),sort(x3,decreasing = TRUE))
+> check("0020.008", psort(x4,na.last = TRUE), sort(x4,na.last = TRUE))
+> check("0020.009", psort(x4,na.last = FALSE),sort(x4,na.last = FALSE))
+> check("0020.010", psort(x5,na.last = TRUE), sort(x5,na.last = TRUE))
+> check("0020.011", psort(x5,na.last = FALSE),sort(x5,na.last = FALSE))
+> check("0020.012", psort(x6,na.last = TRUE), sort(x6,na.last = TRUE))
+> check("0020.013", psort(x6,na.last = FALSE),sort(x6,na.last = FALSE))
+> check("0020.014", psort(x7,na.last = TRUE),sort(x7,na.last = TRUE))
+> check("0020.015", psort(x7,na.last = FALSE), sort(x7,na.last = FALSE))
+> check("0020.016", psort(x4,na.last = TRUE,decreasing = TRUE), sort(x4,na.last = TRUE,decreasing = TRUE))
+> check("0020.017", psort(x4,na.last = FALSE,decreasing = TRUE),sort(x4,na.last = FALSE,decreasing = TRUE))
+> check("0020.018", psort(x5,na.last = TRUE,decreasing = TRUE), sort(x5,na.last = TRUE,decreasing = TRUE))
+> check("0020.019", psort(x5,na.last = FALSE,decreasing = TRUE),sort(x5,na.last = FALSE,decreasing = TRUE))
+> check("0020.020", psort(x6,na.last = TRUE,decreasing = TRUE), sort(x6,na.last = TRUE,decreasing = TRUE))
+> check("0020.021", psort(x6,na.last = FALSE,decreasing = TRUE),sort(x6,na.last = FALSE,decreasing = TRUE))
+> check("0020.022", psort(x7,na.last = TRUE,decreasing = TRUE),sort(x7,na.last = TRUE,decreasing = TRUE))
+> check("0020.023", psort(x7,na.last = FALSE,decreasing = TRUE), sort(x7,na.last = FALSE,decreasing = TRUE))
+> check("0020.024", psort(x4,na.last = NA), sort(x4,na.last = NA))
+> check("0020.025", psort(x5,na.last = NA), sort(x5,na.last = NA))
+> check("0020.026", psort(x6,na.last = NA), sort(x6,na.last = NA))
+> check("0020.027", psort(x7,na.last = NA),sort(x7,na.last = NA))
+> check("0020.028", psort(x4,na.last = NA,decreasing = TRUE), sort(x4,na.last = NA,decreasing = TRUE))
+> check("0020.029", psort(x5,na.last = NA,decreasing = TRUE), sort(x5,na.last = NA,decreasing = TRUE))
+> check("0020.030", psort(x6,na.last = NA,decreasing = TRUE), sort(x6,na.last = NA,decreasing = TRUE))
+> check("0020.031", psort(x7,na.last = NA,decreasing = TRUE), sort(x7,na.last = NA,decreasing = TRUE))
+> check("0020.032", psort(x8,na.last = TRUE),sort(x8,na.last = TRUE))
+> check("0020.033", psort(x8,na.last = FALSE), sort(x8,na.last = FALSE))
+> check("0020.034", psort(x8,na.last = TRUE,decreasing = TRUE),sort(x8,na.last = TRUE,decreasing = TRUE))
+> check("0020.035", psort(x8,na.last = FALSE,decreasing = TRUE), sort(x8,na.last = FALSE,decreasing = TRUE))
+> check("0020.036", psort(x8,na.last = NA),sort(x8,na.last = NA))
+> check("0020.037", psort(x8,na.last = NA,decreasing = TRUE),sort(x8,na.last = NA,decreasing = TRUE))
+> # check("0020.038", psort(x9,index.return = TRUE,na.last = TRUE),order(x9,na.last = TRUE))
+> # check("0020.039", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = TRUE),order(x9,decreasing = TRUE,na.last = TRUE))
+> # check("0020.040", psort(x9,index.return = TRUE,na.last = FALSE),order(x9,na.last = FALSE))
+> # check("0020.041", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = FALSE),order(x9,decreasing = TRUE,na.last = FALSE))
+> # check("0020.042", psort(x9,index.return = TRUE,na.last = NA),order(x9,na.last = NA))
+> # check("0020.043", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = NA),order(x9,decreasing = TRUE,na.last = NA))
+> # check("0020.044", psort(x8,index.return = TRUE,na.last = TRUE),order(x8,na.last = TRUE))
+> # check("0020.045", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = TRUE),order(x8,decreasing = TRUE,na.last = TRUE))
+> # check("0020.046", psort(x8,index.return = TRUE,na.last = FALSE),order(x8,na.last = FALSE))
+> # check("0020.047", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = FALSE),order(x8,decreasing = TRUE,na.last = FALSE))
+> # check("0020.048", psort(x8,index.return = TRUE,na.last = NA),order(x8,na.last = NA))
+> # check("0020.049", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = NA),order(x8,decreasing = TRUE,na.last = NA))
+> check("0020.050", psort(x10,c.locale = FALSE),sort(x10))
+> check("0020.051", psort(x10,decreasing = TRUE,c.locale = FALSE),sort(x10,decreasing = TRUE))
+> check("0020.052", psort(x1,na.last = 2),error = "Argument 'na.last' must be TRUE, FALSE or NA.")
+> check("0020.053", psort(x1,decreasing = 2),error = "Argument 'decreasing' must be TRUE or FALSE.")
+> # check("0020.054", psort(x1,na.last = 2,index.return = TRUE),error = "Argument 'na.last' must be TRUE, FALSE or NA.")
+> # check("0020.055", psort(x1,decreasing = 2,index.return = TRUE),error = "Argument 'decreasing' must be TRUE or FALSE.")
+> check("0020.056", psort(c("2L","1L","3L"),nThread=1), error="Argument 'nThread' (double) must be of type integer.")
+> # check("0020.057", psort(c("2L","1L","3L"),index.return=1), error="Argument 'index.return' must be TRUE or FALSE.")
+> check("0020.058", psort(x1,c.locale = NA),error = "Argument 'c.locale' must be TRUE or FALSE.")
+> check("0020.059", psort(x1,c.locale = TRUE),sort(x1,method="radix"))
+> check("0020.060", psort(x1,decreasing = TRUE,c.locale = TRUE),sort(x1,decreasing = TRUE,method="radix"))
+> check("0020.061", psort(x2,c.locale = TRUE),sort(x2,method="radix"))
+> check("0020.062", psort(x2,decreasing = TRUE,c.locale = TRUE),sort(x2,decreasing = TRUE,method="radix"))
+> check("0020.063", psort(x6,c.locale = TRUE),sort(x6,method="radix"))
+> check("0020.064", psort(x6,decreasing = TRUE,c.locale = TRUE),sort(x6,decreasing = TRUE,method="radix"))
+> check("0020.065", psort(x6,c.locale = TRUE,na.last = TRUE),sort(x6,method="radix",na.last = TRUE))
+> check("0020.066", psort(x6,decreasing = TRUE,c.locale = TRUE,na.last = TRUE),sort(x6,decreasing = TRUE,method="radix",na.last = TRUE))
+> check("0020.067", psort(x6,c.locale = TRUE,na.last = FALSE),sort(x6,method="radix",na.last = FALSE))
+> check("0020.068", psort(x6,decreasing = TRUE,c.locale = TRUE,na.last = FALSE),sort(x6,decreasing = TRUE,method="radix",na.last = FALSE))
+> check("0020.069", psort(x10,c.locale = TRUE),sort(x10,method="radix"))
+> check("0020.070", psort(x10,decreasing = TRUE,c.locale = TRUE),sort(x10,decreasing = TRUE,method="radix"))
+> check("0020.071", psort(x11,c.locale = TRUE),sort(x11,method="radix"))
+> check("0020.072", psort(x11,decreasing = TRUE,c.locale = TRUE),sort(x11,decreasing = TRUE,method="radix"))
+> check("0020.073", psort(x11,c.locale = FALSE),sort(x11))
+> check("0020.074", psort(x11,decreasing = TRUE,c.locale = FALSE),sort(x11,decreasing = TRUE))
+> 
+> rm(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11)
+> 
+> # --------------------------------------------------------------------------------------------------
+> #                                   charToFact
+> # --------------------------------------------------------------------------------------------------
+> 
+> x1 = sample(c(letters,LETTERS),1e2,TRUE)
+> 
+> check("0021.001", charToFact(c("a","b")), as.factor(c("a","b")))
+> check("0021.002", charToFact(c("a","b","a")), as.factor(c("a","b","a")))
+> check("0021.003", charToFact(x1), as.factor(x1))
+> check("0021.004", charToFact(c("2L","1L","3L"),nThread=1), error="Argument 'nThread' (double) must be of type integer.")
+> check("0021.005", charToFact(1L), error="Argument 'x' must be of type character.")
+> 
+> rm(x1)
+> 
+> # --------------------------------------------------------------------------------------------------
 > #                                   CLEAN FUNCTIONS
 > # --------------------------------------------------------------------------------------------------
 > 
-> rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif, nswitch,
-+    nif,pall,pany,pcount,pmean,pprod,psum,setlevels,topn,uniqLen,vswitch)
+> rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,
++    pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   END
@@ -1538,4 +1674,4 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.312   0.738   5.278 
+  4.132   0.593   4.715 

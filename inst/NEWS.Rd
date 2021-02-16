@@ -7,9 +7,22 @@
 \section{version 0.0.6 (2021-02-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
+      \item Function \code{\strong{funique}} and \code{\strong{fduplicated}} gain an additional argument
       \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning 
       \href{https://github.com/2005m/kit/pull/11}{PR#11}.
+      
+      \item Functions \code{\strong{pall}}, \code{\strong{pany}}, \code{\strong{pmean}},
+      \code{\strong{pprod}} and \code{\strong{psum}} accept \code{data.frame} as input
+      \href{https://github.com/2005m/kit/pull/15}{PR#15}. Please see documentation for more
+      information.
+      
+      \item Function \code{\strong{charToFact}} is equivalent to to base R \code{as.factor} but is much
+      quicker and only converts character vector to factor. Note that it is parallelised. For more
+      details and benchmark please see \code{?kit::charToFact}.
+      
+      \item Function \code{\strong{psort}} is \strong{experimental} and equivalent to to base R \code{sort} 
+      but is only for character vector. It can sort by "C locale" or by "R session locale".
+      For more details and benchmark please see \code{?kit::psort}.
     }
   }
   \subsection{Notes}{
@@ -21,6 +34,9 @@
       \item Function \code{\strong{funique}} was not preserving attributes for character, logical and
       complex vectors/data.frames. Thanks to Sebastian Krantz (@SebKrantz) for bringing that to my
       attention. This has been fixed in \href{https://github.com/2005m/kit/pull/13}{PR#13}.
+      
+      \item Functions \code{\strong{funique}} and \code{\strong{uniqLen}} should now be faster for 
+      \code{factor} and \code{logical} vectors \href{https://github.com/2005m/kit/pull/14}{PR#14}.
     }
   }
 }
