@@ -32,4 +32,4 @@ fd6cda120996057e4520025e191ddaab *src/kit.h
 5b13330006c45b534ede418a9f91c4f4 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
 64c176306690524deaa2c2c2755c1e5d *tests/test_kit.R
-20ee3afd80e8a15e3ef5fd301c58c2e0 *tests/test_kit.Rout.save
+028bf7a0f60ab9300f746975885dee9f *tests/test_kit.Rout.save
