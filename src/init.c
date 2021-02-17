@@ -1,9 +1,11 @@
 #include "kit.h"
 
 static const R_CallMethodDef CallEntries[] = {
-  {"CcountNAR",    (DL_FUNC) &countNAR,    -1},
+  {"CcharToFactR", (DL_FUNC) &charToFactR, -1},
+  {"CcountNAR",    (DL_FUNC) &countNAR,     1},
   {"CcountOccurR", (DL_FUNC) &countOccurR, -1},
   {"CcountR",      (DL_FUNC) &countR,      -1},
+  {"CcpsortR",     (DL_FUNC) &cpsortR,     -1},
   {"CdupR",        (DL_FUNC) &dupR,        -1},
   {"CdupLenR",     (DL_FUNC) &dupLenR,     -1},
   {"CfposR",       (DL_FUNC) &fposR,       -1},
@@ -26,9 +28,11 @@ static const R_CallMethodDef CallEntries[] = {
 void R_init_kit(DllInfo *dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+  R_RegisterCCallable("kit", "CcharToFactR", (DL_FUNC) &charToFactR);
   R_RegisterCCallable("kit", "CcountNAR",    (DL_FUNC) &countNAR);
   R_RegisterCCallable("kit", "CcountOccurR", (DL_FUNC) &countOccurR);
   R_RegisterCCallable("kit", "CcountR",      (DL_FUNC) &countR);
+  R_RegisterCCallable("kit", "CcpsortR",     (DL_FUNC) &cpsortR);
   R_RegisterCCallable("kit", "CdupR",        (DL_FUNC) &dupR);
   R_RegisterCCallable("kit", "CdupLenR",     (DL_FUNC) &dupLenR);
   R_RegisterCCallable("kit", "CfposR",       (DL_FUNC) &fposR);

@@ -1,7 +1,7 @@
 
-R version 3.6.1 (2019-07-05) -- "Action of the Toes"
-Copyright (C) 2019 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -74,6 +74,8 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > countOccur  = kit::countOccur
 > uniqLen     = kit::uniqLen
 > nswitch     = kit::nswitch
+> psort       = kit::psort
+> charToFact  = kit::charToFact
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   topn 
@@ -1358,6 +1360,7 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > check("0016.070", funique(f2,fromLast = TRUE),unique(f2,fromLast = TRUE))
 > check("0016.071", funique(f3,fromLast = TRUE),unique(f3,fromLast = TRUE))
 > check("0016.072", funique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))),{out = unique(data.frame(a=c(1,NA,NA,NaN,NaN),b=c(2,2,2,2,2))); row.names(out)<-NULL;out})
+> check("0016.073", funique(data.frame(a=as.complex(c(1,NA,NA,NaN,NaN)),b=c(2,2,2,2,2))),{out = unique(data.frame(a=as.complex(c(1,NA,NA,NaN,NaN)),b=c(2,2,2,2,2)));row.names(out)<-NULL;out})
 > 
 > rm(x1, x2, x3, x4, x5, x6, x7, x8, x9, adf, df, rdn, out, f1, f2, f3)
 > 
@@ -1549,11 +1552,122 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > rm(x1,x2,x3,x4,x5,x6,s1,s2,class2133, enc1, enc2)
 > 
 > # --------------------------------------------------------------------------------------------------
+> #                                   psort
+> # --------------------------------------------------------------------------------------------------
+> 
+> x1 = c("a","ab","c","b","a","c")
+> x2 = c("aaaba","dfjasdlifjai","jiifjeogiejogp","aabaaaa","gsgj","gerph","aaaaaaa","htjltjlrth",
++        "joasdjfisdjfdo","hthe","aaaaaba","j","a","jrykpjl","hkoptjltp","aaaaaa","lprrjt")
+> x3 = sample(c(letters,LETTERS),1e4,TRUE)
+> x4 = c("a","ab","c","b","a",NA,"c")
+> x5 = c("a","ab","c","b"," ","a",NA,"c")
+> x6 = c("a","ab","c","b"," "," ","a",NA," d","c")
+> x7 = c("a","ab","c","b"," ","a","",NA," ","c")
+> x8 = c("b","a","d","c",NA,"")
+> x9 = sample(c("a","ab","c","b"," ","","a",NA," d","c"), 1e4, TRUE)
+> x10 = c("b","a","A","B","\xe4","d","c",NA)
+> Encoding(x10) = "UTF-8"
+> Encoding(x10[5]) = "latin1"
+> x11 = rep(x10,3L)
+> 
+> check("0020.001", psort(c(2L,1L,3L),c.locale = FALSE),sort(c(2L,1L,3L)),warning = "Function 'psort' was only implemented for character vectors. Defaulting to base::sort.")
+> check("0020.002", psort(x1),sort(x1))
+> check("0020.003", psort(x1,decreasing = TRUE),sort(x1,decreasing = TRUE))
+> check("0020.004", psort(x2),sort(x2))
+> check("0020.005", psort(x2,decreasing = TRUE),sort(x2,decreasing = TRUE))
+> check("0020.006", psort(x3,c.locale = FALSE),sort(x3))
+> check("0020.007", psort(x3,decreasing = TRUE,c.locale = FALSE),sort(x3,decreasing = TRUE))
+> check("0020.008", psort(x4,na.last = TRUE), sort(x4,na.last = TRUE))
+> check("0020.009", psort(x4,na.last = FALSE),sort(x4,na.last = FALSE))
+> check("0020.010", psort(x5,na.last = TRUE), sort(x5,na.last = TRUE))
+> check("0020.011", psort(x5,na.last = FALSE),sort(x5,na.last = FALSE))
+> check("0020.012", psort(x6,na.last = TRUE), sort(x6,na.last = TRUE))
+> check("0020.013", psort(x6,na.last = FALSE),sort(x6,na.last = FALSE))
+> check("0020.014", psort(x7,na.last = TRUE),sort(x7,na.last = TRUE))
+> check("0020.015", psort(x7,na.last = FALSE), sort(x7,na.last = FALSE))
+> check("0020.016", psort(x4,na.last = TRUE,decreasing = TRUE), sort(x4,na.last = TRUE,decreasing = TRUE))
+> check("0020.017", psort(x4,na.last = FALSE,decreasing = TRUE),sort(x4,na.last = FALSE,decreasing = TRUE))
+> check("0020.018", psort(x5,na.last = TRUE,decreasing = TRUE), sort(x5,na.last = TRUE,decreasing = TRUE))
+> check("0020.019", psort(x5,na.last = FALSE,decreasing = TRUE),sort(x5,na.last = FALSE,decreasing = TRUE))
+> check("0020.020", psort(x6,na.last = TRUE,decreasing = TRUE), sort(x6,na.last = TRUE,decreasing = TRUE))
+> check("0020.021", psort(x6,na.last = FALSE,decreasing = TRUE),sort(x6,na.last = FALSE,decreasing = TRUE))
+> check("0020.022", psort(x7,na.last = TRUE,decreasing = TRUE),sort(x7,na.last = TRUE,decreasing = TRUE))
+> check("0020.023", psort(x7,na.last = FALSE,decreasing = TRUE), sort(x7,na.last = FALSE,decreasing = TRUE))
+> check("0020.024", psort(x4,na.last = NA), sort(x4,na.last = NA))
+> check("0020.025", psort(x5,na.last = NA), sort(x5,na.last = NA))
+> check("0020.026", psort(x6,na.last = NA), sort(x6,na.last = NA))
+> check("0020.027", psort(x7,na.last = NA),sort(x7,na.last = NA))
+> check("0020.028", psort(x4,na.last = NA,decreasing = TRUE), sort(x4,na.last = NA,decreasing = TRUE))
+> check("0020.029", psort(x5,na.last = NA,decreasing = TRUE), sort(x5,na.last = NA,decreasing = TRUE))
+> check("0020.030", psort(x6,na.last = NA,decreasing = TRUE), sort(x6,na.last = NA,decreasing = TRUE))
+> check("0020.031", psort(x7,na.last = NA,decreasing = TRUE), sort(x7,na.last = NA,decreasing = TRUE))
+> check("0020.032", psort(x8,na.last = TRUE),sort(x8,na.last = TRUE))
+> check("0020.033", psort(x8,na.last = FALSE), sort(x8,na.last = FALSE))
+> check("0020.034", psort(x8,na.last = TRUE,decreasing = TRUE),sort(x8,na.last = TRUE,decreasing = TRUE))
+> check("0020.035", psort(x8,na.last = FALSE,decreasing = TRUE), sort(x8,na.last = FALSE,decreasing = TRUE))
+> check("0020.036", psort(x8,na.last = NA),sort(x8,na.last = NA))
+> check("0020.037", psort(x8,na.last = NA,decreasing = TRUE),sort(x8,na.last = NA,decreasing = TRUE))
+> # check("0020.038", psort(x9,index.return = TRUE,na.last = TRUE),order(x9,na.last = TRUE))
+> # check("0020.039", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = TRUE),order(x9,decreasing = TRUE,na.last = TRUE))
+> # check("0020.040", psort(x9,index.return = TRUE,na.last = FALSE),order(x9,na.last = FALSE))
+> # check("0020.041", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = FALSE),order(x9,decreasing = TRUE,na.last = FALSE))
+> # check("0020.042", psort(x9,index.return = TRUE,na.last = NA),order(x9,na.last = NA))
+> # check("0020.043", psort(x9,index.return = TRUE,decreasing = TRUE,na.last = NA),order(x9,decreasing = TRUE,na.last = NA))
+> # check("0020.044", psort(x8,index.return = TRUE,na.last = TRUE),order(x8,na.last = TRUE))
+> # check("0020.045", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = TRUE),order(x8,decreasing = TRUE,na.last = TRUE))
+> # check("0020.046", psort(x8,index.return = TRUE,na.last = FALSE),order(x8,na.last = FALSE))
+> # check("0020.047", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = FALSE),order(x8,decreasing = TRUE,na.last = FALSE))
+> # check("0020.048", psort(x8,index.return = TRUE,na.last = NA),order(x8,na.last = NA))
+> # check("0020.049", psort(x8,index.return = TRUE,decreasing = TRUE,na.last = NA),order(x8,decreasing = TRUE,na.last = NA))
+> check("0020.050", psort(x10,c.locale = FALSE),sort(x10))
+> check("0020.051", psort(x10,decreasing = TRUE,c.locale = FALSE),sort(x10,decreasing = TRUE))
+> check("0020.052", psort(x1,na.last = 2),error = "Argument 'na.last' must be TRUE, FALSE or NA.")
+> check("0020.053", psort(x1,decreasing = 2),error = "Argument 'decreasing' must be TRUE or FALSE.")
+> # check("0020.054", psort(x1,na.last = 2,index.return = TRUE),error = "Argument 'na.last' must be TRUE, FALSE or NA.")
+> # check("0020.055", psort(x1,decreasing = 2,index.return = TRUE),error = "Argument 'decreasing' must be TRUE or FALSE.")
+> check("0020.056", psort(c("2L","1L","3L"),nThread=1), error="Argument 'nThread' (double) must be of type integer.")
+> # check("0020.057", psort(c("2L","1L","3L"),index.return=1), error="Argument 'index.return' must be TRUE or FALSE.")
+> check("0020.058", psort(x1,c.locale = NA),error = "Argument 'c.locale' must be TRUE or FALSE.")
+> check("0020.059", psort(x1,c.locale = TRUE),sort(x1,method="radix"))
+> check("0020.060", psort(x1,decreasing = TRUE,c.locale = TRUE),sort(x1,decreasing = TRUE,method="radix"))
+> check("0020.061", psort(x2,c.locale = TRUE),sort(x2,method="radix"))
+> check("0020.062", psort(x2,decreasing = TRUE,c.locale = TRUE),sort(x2,decreasing = TRUE,method="radix"))
+> check("0020.063", psort(x6,c.locale = TRUE),sort(x6,method="radix"))
+> check("0020.064", psort(x6,decreasing = TRUE,c.locale = TRUE),sort(x6,decreasing = TRUE,method="radix"))
+> check("0020.065", psort(x6,c.locale = TRUE,na.last = TRUE),sort(x6,method="radix",na.last = TRUE))
+> check("0020.066", psort(x6,decreasing = TRUE,c.locale = TRUE,na.last = TRUE),sort(x6,decreasing = TRUE,method="radix",na.last = TRUE))
+> check("0020.067", psort(x6,c.locale = TRUE,na.last = FALSE),sort(x6,method="radix",na.last = FALSE))
+> check("0020.068", psort(x6,decreasing = TRUE,c.locale = TRUE,na.last = FALSE),sort(x6,decreasing = TRUE,method="radix",na.last = FALSE))
+> check("0020.069", psort(x10,c.locale = TRUE),sort(x10,method="radix"))
+> check("0020.070", psort(x10,decreasing = TRUE,c.locale = TRUE),sort(x10,decreasing = TRUE,method="radix"))
+> check("0020.071", psort(x11,c.locale = TRUE),sort(x11,method="radix"))
+> check("0020.072", psort(x11,decreasing = TRUE,c.locale = TRUE),sort(x11,decreasing = TRUE,method="radix"))
+> check("0020.073", psort(x11,c.locale = FALSE),sort(x11))
+> check("0020.074", psort(x11,decreasing = TRUE,c.locale = FALSE),sort(x11,decreasing = TRUE))
+> 
+> rm(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11)
+> 
+> # --------------------------------------------------------------------------------------------------
+> #                                   charToFact
+> # --------------------------------------------------------------------------------------------------
+> 
+> x1 = sample(c(letters,LETTERS),1e2,TRUE)
+> 
+> check("0021.001", charToFact(c("a","b")), as.factor(c("a","b")))
+> check("0021.002", charToFact(c("a","b","a")), as.factor(c("a","b","a")))
+> check("0021.003", charToFact(x1), as.factor(x1))
+> check("0021.004", charToFact(c("2L","1L","3L"),nThread=1), error="Argument 'nThread' (double) must be of type integer.")
+> check("0021.005", charToFact(1L), error="Argument 'x' must be of type character.")
+> check("0021.006", charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a"))))
+> 
+> rm(x1)
+> 
+> # --------------------------------------------------------------------------------------------------
 > #                                   CLEAN FUNCTIONS
 > # --------------------------------------------------------------------------------------------------
 > 
-> rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif, nswitch,
-+    nif,pall,pany,pcount,pmean,pprod,psum,setlevels,topn,uniqLen,vswitch)
+> rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,
++    pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   END
@@ -1561,4 +1675,4 @@ Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.141   0.621   4.827 
+  4.233   0.517   4.749 

@@ -1,4 +1,5 @@
 # Function calls
+charToFact  = function(x, nThread=getOption("kit.nThread")) .Call(CcharToFactR, x, FALSE,nThread, NA, parent.frame())
 count       = function(x, value) .Call(CcountR, x, value)
 countNA     = function(x) .Call(CcountNAR, x)
 countOccur  = function(x) .Call(CcountOccurR, x)
@@ -22,3 +23,11 @@ vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.6 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
+
+psort = function(x, decreasing = FALSE, na.last = NA, nThread=getOption("kit.nThread"), c.locale = TRUE) {
+  if (typeof(x) == "character") {
+    return(.Call(CcpsortR, x, decreasing, nThread, na.last,parent.frame(), FALSE, c.locale))
+  }
+  warning("Function 'psort' was only implemented for character vectors. Defaulting to base::sort.")
+  sort(x, decreasing = decreasing, na.last = na.last,method = if(c.locale) "radix" else "quick")
+}

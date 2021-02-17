@@ -269,8 +269,8 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       SET_VECTOR_ELT(dfo, i, TYPECOL);
       UNPROTECT(1);
     } break;
-    default:
-      error("Type %s is not supported.", type2char(UTYPEOF(pdf[i]))); // add Raw type ?
+    default: // # nocov
+      error("Type %s is not supported.", type2char(UTYPEOF(pdf[i]))); // # nocov
     }
   }
   UNPROTECT(3);
@@ -333,8 +333,8 @@ SEXP subSetRowMatrix(SEXP mat, SEXP rws) {
       }
     }
   } break;
-  default:
-    error("Type %s is not supported.", type2char(UTYPEOF(mat))); // add Raw type ?
+  default: // # nocov
+    error("Type %s is not supported.", type2char(UTYPEOF(mat))); // # nocov
   }
   UNPROTECT(1);
   return mato;
@@ -436,7 +436,7 @@ SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
     INTEGER(rownam)[1] = -(int)len_col;
 	  setAttrib(dfo, R_RowNamesSymbol, rownam);
   } else {
-    const R_xlen_t len_row = xlength(VECTOR_ELT(df, 0));
+    const R_xlen_t len_row = xlength(VECTOR_ELT(df, 0));// # nocov start
 	  dfo = PROTECT(allocVector(VECSXP, len_df + len_col));
     for (int i = 0; i < len_df; ++i) {
       SET_VECTOR_ELT(dfo, i, VECTOR_ELT(df, i));
@@ -457,7 +457,7 @@ SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
     SEXP rownam = PROTECT(allocVector(INTSXP, 2));
     INTEGER(rownam)[0] = NA_INTEGER;
     INTEGER(rownam)[1] = -(int)len_row;
-	  setAttrib(dfo, R_RowNamesSymbol, rownam);
+	  setAttrib(dfo, R_RowNamesSymbol, rownam);// # nocov end
   }
   UNPROTECT(4);
   return dfo;

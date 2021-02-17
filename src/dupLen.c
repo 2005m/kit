@@ -136,7 +136,7 @@ SEXP dupLenMatrixR(SEXP x) {
           }
         }
         goto labelml2;
-        labelml1:;
+        labelml1:;// # nocov
         id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;
@@ -245,7 +245,7 @@ SEXP dupLenMatrixR(SEXP x) {
           }
         }
         goto labelms2;
-        labelms1:;
+        labelms1:; // # nocov
         id++; id %= M; // # nocov
       }
       h[id] = (int) i + 1;

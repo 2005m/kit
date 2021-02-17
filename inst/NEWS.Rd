@@ -7,7 +7,7 @@
 \section{version 0.0.6 (2021-02-21)}{
   \subsection{New Features}{
     \itemize{
-      \item Function \code{\strong{funique}} and \code{\strong{fdplicated}} gain an additional argument
+      \item Function \code{\strong{funique}} and \code{\strong{fduplicated}} gain an additional argument
       \code{fromLast=FALSE} to indicate whether the search should start from the end or beginning 
       \href{https://github.com/2005m/kit/pull/11}{PR#11}.
       
@@ -15,6 +15,14 @@
       \code{\strong{pprod}} and \code{\strong{psum}} accept \code{data.frame} as input
       \href{https://github.com/2005m/kit/pull/15}{PR#15}. Please see documentation for more
       information.
+      
+      \item Function \code{\strong{charToFact}} is equivalent to to base R \code{as.factor} but is much
+      quicker and only converts character vector to factor. Note that it is parallelised. For more
+      details and benchmark please see \code{?kit::charToFact}.
+      
+      \item Function \code{\strong{psort}} is \strong{experimental} and equivalent to to base R \code{sort} 
+      but is only for character vector. It can sort by "C locale" or by "R session locale".
+      For more details and benchmark please see \code{?kit::psort}.
     }
   }
   \subsection{Notes}{
