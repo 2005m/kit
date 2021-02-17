@@ -1638,6 +1638,7 @@ check("0021.002", charToFact(c("a","b","a")), as.factor(c("a","b","a")))
 check("0021.003", charToFact(x1), as.factor(x1))
 check("0021.004", charToFact(c("2L","1L","3L"),nThread=1), error="Argument 'nThread' (double) must be of type integer.")
 check("0021.005", charToFact(1L), error="Argument 'x' must be of type character.")
+check("0021.006", charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a"))))
 
 rm(x1)
 
