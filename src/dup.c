@@ -240,7 +240,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
               }
             }
             goto labelml2t;
-            labelml1t:;
+            labelml1t:; // # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
@@ -262,7 +262,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
               }
             }
             goto labelml2;
-            labelml1:;
+            labelml1:;// # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
@@ -287,7 +287,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
             }
             pans[i] = 1;
             goto labelml2bt;
-            labelml1bt:;
+            labelml1bt:;// # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
@@ -310,7 +310,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
             }
             pans[i] = 1;
             goto labelml2b;
-            labelml1b:;
+            labelml1b:;// # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
@@ -684,12 +684,12 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
           while (h[id]) {
             for (R_xlen_t j = 0; j < len_x; ++j) {
               if (px[h[id]-1+j*len_i] != px[i+j*len_i]) {
-                goto labelms1t;
+                goto labelms1t;// # nocov
               }
             }
             goto labelms2t; // # nocov
-            labelms1t:;
-            id++; id %= M;
+            labelms1t:;// # nocov
+            id++; id %= M;// # nocov
           }
           h[id] = (int) i + 1;
           pans[i]++;
@@ -706,12 +706,12 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
           while (h[id]) {
             for (R_xlen_t j = 0; j < len_x; ++j) {
               if (px[h[id]-1+j*len_i] != px[i+j*len_i]) {
-                goto labelms1;
+                goto labelms1;// # nocov
               }
             }
             goto labelms2;
-            labelms1:;
-            id++; id %= M;
+            labelms1:;// # nocov
+            id++; id %= M;// # nocov
           }
           h[id] = (int) i + 1;
           pans[i]++;
@@ -735,7 +735,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
             }
             pans[i] = 1;
             goto labelms2bt;
-            labelms1bt:;
+            labelms1bt:;// # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
@@ -758,7 +758,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
             }
             pans[i] = 1;
             goto labelms2b;
-            labelms1b:;
+            labelms1b:;// # nocov
             id++; id %= M; // # nocov
           }
           h[id] = (int) i + 1;
