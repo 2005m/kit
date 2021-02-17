@@ -12,12 +12,13 @@ charToFact(x, nThread=getOption("kit.nThread"))
   \item{nThread}{ Number of thread to use.}
 }
 \value{
-  The character vector input as a factor.
+  The character vector input as a factor. Please note that, unlike \code{as.factor}, \code{NA} levels are preserved.
 }
 \examples{
 x = c("b","A","B","a","\xe4","a")
 Encoding(x) = "latin1"
 identical(charToFact(x), as.factor(x))
+identical(charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a"))))
 
 # Benchmarks
 # ----------
