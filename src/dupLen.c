@@ -268,7 +268,7 @@ SEXP dupLenVecR(SEXP x) {
   if (isFactor(x)) {
     const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
     UNPROTECT(1);
-    bool *restrict count = (bool*)calloc(len,sizeof(bool));
+    bool *restrict count = (bool*)calloc(len+1,sizeof(bool));
     const int *restrict px = INTEGER(x);
     const int xlen = LENGTH(x);
     int j = 0;

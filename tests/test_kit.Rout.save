@@ -53,7 +53,7 @@ Type 'q()' to quit R.
 + }
 > 
 > library(kit); unloadNamespace("kit")
-Attaching kit 0.0.6 (OPENMP enabled using 1 thread)
+Attaching kit 0.0.7 (OPENMP enabled using 1 thread)
 > 
 > topn        = kit::topn
 > setlevels   = kit::setlevels

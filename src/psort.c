@@ -443,7 +443,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   
   if (early) {
     if (na_pos == NA_LOGICAL && cl) {
-      const SEXP *restrict pa = STRING_PTR(valSorted);
+      const SEXP *restrict pa = STRING_PTR(valSorted); // already used pvalSorted
       int ct = 0;
       for (int i = xlen-1; i >= 0; --i) {
         if(pa[i] == NA_STRING) {
