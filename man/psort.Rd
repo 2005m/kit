@@ -25,4 +25,18 @@ x = c("b","A","B","a","\xe4")
 Encoding(x) = "latin1"
 identical(psort(x, c.locale=FALSE), sort(x))
 identical(psort(x, c.locale=TRUE), sort(x, method="radix"))
+
+# Benchmarks
+# ----------
+# strings = as.character(as.hexmode(1:1000))
+# x = sample(strings, 1e8, replace=TRUE)
+# system.time({kit::psort(x, na.last = TRUE, nThread = 1L)})
+#   user  system elapsed 
+#  2.833   0.434   3.277
+# system.time({sort(x,method="radix",na.last = TRUE)})
+#   user  system elapsed 
+#  5.597   0.559   6.176
+# system.time({x[order(x,method="radix",na.last = TRUE)]})
+#   user  system elapsed 
+#  5.561   0.563   6.143
 }
