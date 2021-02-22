@@ -9,7 +9,7 @@
     \itemize{
       \item Some tests of memory access errors using valgrind and AddressSanitizer were reported by CRAN.
       An attempt to fix these errors has been submitted as part of this package version. It also seems that
-      these same errors were causing some tests to fail on some platforms.
+      these same errors were causing some tests to fail for \code{funique} and \code{psort} on some platforms.
     }
   }
 }

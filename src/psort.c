@@ -407,9 +407,10 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   }*/
   
   SEXP *restrict pvalSorted = STRING_PTR(valSorted);
+  const int nlen = LENGTH(valSorted);
   
   int NAidx = -1;
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < nlen; ++i) {
     if (pvalSorted[i] == NA_STRING) {
       NAidx = i;
       break;
@@ -418,8 +419,8 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   if (cl) {
     if ( (na_pos != 0 && !dcr) || (na_pos == 0 && dcr && !early) || (na_pos != 0 && dcr && early)) {
       if (NAidx >= 0) {
-        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (n - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
-        pvalSorted[n-1] = NA_STRING;
+        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
+        pvalSorted[nlen-1] = NA_STRING;
       }
     } else if ( (na_pos == 0 && !dcr) || (na_pos != 0 && dcr) || (na_pos == 0 && dcr && early)){
       if (NAidx > 0 ) {
@@ -430,7 +431,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   } else {
     if ( (na_pos != 0 && !dcr) || (na_pos == 0 && dcr) ) {
       if (NAidx >= 0) {
-        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (n - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
+        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
         pvalSorted[n-1] = NA_STRING;
       }
     } else if ( (na_pos == 0 && !dcr) || (na_pos != 0 && dcr) ){
@@ -445,7 +446,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
     if (na_pos == NA_LOGICAL && cl) {
       const SEXP *restrict pa = STRING_PTR(valSorted); // already used pvalSorted
       int ct = 0;
-      for (int i = xlen-1; i >= 0; --i) {
+      for (int i = nlen-1; i >= 0; --i) {
         if(pa[i] == NA_STRING) {
           ct++;
         } else {
@@ -453,7 +454,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
         }
       }
       if (ct > 0) {
-        SETLENGTH(valSorted, xlen-ct);
+        SETLENGTH(valSorted, nlen-ct);
       }
     }
     UNPROTECT(2);
