@@ -4,6 +4,16 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.7 (2021-02-27)}{
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Some tests of memory access errors using valgrind and AddressSanitizer were reported by CRAN.
+      An attempt to fix these errors has been submitted as part of this package version. It also seems that
+      these same errors were causing some tests to fail on some platforms.
+    }
+  }
+}
+
 \section{version 0.0.6 (2021-02-21)}{
   \subsection{New Features}{
     \itemize{
