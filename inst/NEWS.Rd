@@ -18,6 +18,12 @@
       these same errors were causing some tests to fail for \code{funique} and \code{psort} on some platforms.
     }
   }
+  \subsection{Notes}{
+    \itemize{
+      \item Functions \code{\strong{pmean}}, \code{\strong{pprod}} and \code{\strong{psum}} will result
+      in error if used with factors. Documentation has been updated.
+    }
+  }
 }
 
 \section{version 0.0.6 (2021-02-21)}{

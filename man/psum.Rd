@@ -24,6 +24,7 @@ Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works
 }
 \value{
 Return the sum, product or mean of all numeric arguments. The value returned will be of the type of the highest argument types (integer < double < complex). For \code{pall} and \code{pany}, a logical vector is returned.
+Functions \code{psum}, \code{pprod} and \code{pmean} will result in error if used with factors.
 }
 \author{Morgan Jacob}
 \examples{

@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
 ecb8de8da05728052e6c83046fd1dffd *DESCRIPTION
-4df07c46428de45eec4989b035672987 *inst/NEWS.Rd
+1bda559315940c42889d83303fc0fa19 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 5df28320757432a550ff962f2f1aed20 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -10,7 +10,7 @@ d143e1321d840bb810d9648e54e22c9c *man/fpos.Rd
 3e0b7c90f2f4a9c4be404cbc6ac69b16 *man/iif.Rd
 578fe4903cc4f5d7bc5a6f346be1e9e9 *man/nif.Rd
 ef4ce6330a0f6a2ec63ccfd365729963 *man/psort.Rd
-d4d3e5eb9266703d533ef42053474ac6 *man/psum.Rd
+d4128b3f90218c0efd0d4bbf0f84d6a5 *man/psum.Rd
 14e3add07190fd18d0161f4f0b0b5257 *man/setlevels.Rd
 e0d3b091b5182fdcc8868c93a2c59476 *man/topn.Rd
 3c628c2a27764ec5df2b4980921c310f *man/vswitch.Rd
@@ -27,9 +27,9 @@ fd6cda120996057e4520025e191ddaab *src/kit.h
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 8e997b5d5d44af5cea7eafb48a4b9745 *src/nswitch.c
 c30207c8b3b6368935af102da8dea563 *src/psort.c
-0f6ed50990a4fe1cc541c964ae1a7ecd *src/psum.c
+44018b12fca6cccaabcd0f10deb421e4 *src/psum.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
 c70104d7de206d29dc3efcf82d36c4de *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
-adf322048b54eb5564c3e0baaef4a47b *tests/test_kit.R
-3285a138fb66fb9919642a88b2dec366 *tests/test_kit.Rout.save
+3cd12c2c6e4c85ff071e311b2fefa844 *tests/test_kit.R
+d0540a60ac5f686ad605f64037e8e8c8 *tests/test_kit.Rout.save

@@ -698,6 +698,7 @@ check("0005.024", psum(NA_real_, na.rm = TRUE), 0)
 check("0005.025", psum(NA_complex_, na.rm = TRUE), 0+0i)
 check("0005.026", psum(iris[,1:2]), rowSums(iris[,1:2]))
 check("0005.027", psum(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0005.028", psum(1:150,iris$Species, na.rm = FALSE), error="Function 'psum' is not meaningful for factors.")
 
 # --------------------------------------------------------------------------------------------------
 #                                   pprod 
@@ -730,6 +731,7 @@ check("0006.024", pprod(NA_real_, na.rm = TRUE), 1)
 check("0006.025", pprod(NA_complex_, na.rm = TRUE), 1+0i)
 check("0006.026", pprod(iris[,1:2]), iris$Sepal.Length*iris$Sepal.Width)
 check("0006.027", pprod(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0005.028", pprod(1:150,iris$Species, na.rm = FALSE), error="Function 'pprod' is not meaningful for factors.")
 
 rm(x, y, z, x0, y0, z0)
 
@@ -1107,6 +1109,7 @@ check("0011.022", pmean(x1, y1, z1, na.rm = TRUE), sapply(1:100, function(i) mea
 check("0011.023", pmean(NA_integer_, na.rm = TRUE), mean(NA_integer_,na.rm = TRUE))
 check("0011.024", pmean(NA_real_, na.rm = TRUE), mean(NA_real_,na.rm = TRUE))
 check("0011.025", pmean(data.frame(x,y,z), na.rm = TRUE), pmean(x,y,z,na.rm = TRUE))
+check("0005.026", pmean(1:150,iris$Species, na.rm = FALSE), error="Function 'pmean' is not meaningful for factors.")
 
 rm(x, y, z, x0, y0, z0, x1, y1, z1)
 

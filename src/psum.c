@@ -30,6 +30,7 @@ SEXP psumR(SEXP na, SEXP args) {
   SEXPTYPE anstype = UTYPEOF(args0);
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
+  Rboolean hasFactor = isFactor(args0);
   if (anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
     error("Argument %d is of type %s. Only integer, double and complex types are supported."
           "Data.frame (of the previous types) is also supported as a single input. ",
@@ -49,9 +50,13 @@ SEXP psumR(SEXP na, SEXP args) {
     if (type > anstype) {
       anstype = type;
     }
+    hasFactor = hasFactor ? TRUE : isFactor(PTR_ETL(args, i));
+  }
+  if (hasFactor) {
+    error("Function 'psum' is not meaningful for factors.");
   }
   int nprotect=1;
-  SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
+  SEXP ans = (anstype != type0) ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
   const bool narm = asLogical(na);
   switch(anstype) {
   case INTSXP: {
@@ -158,6 +163,7 @@ SEXP pprodR(SEXP na, SEXP args) {
   SEXPTYPE anstype = UTYPEOF(args0);
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
+  Rboolean hasFactor = isFactor(args0);
   if (anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
     error("Argument %d is of type %s. Only integer, double and complex types are supported."
           "Data.frame (of the previous types) is also supported as a single input. ",
@@ -177,6 +183,10 @@ SEXP pprodR(SEXP na, SEXP args) {
     if (type > anstype) {
       anstype = type;
     }
+    hasFactor = hasFactor ? TRUE : isFactor(PTR_ETL(args, i));
+  }
+  if (hasFactor) {
+    error("Function 'pprod' is not meaningful for factors.");
   }
   int nprotect=1;
   SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
@@ -402,6 +412,7 @@ SEXP pmeanR(SEXP na, SEXP args) {
   SEXPTYPE anstype = UTYPEOF(args0);
   SEXPTYPE type0 = REALSXP;
   const R_xlen_t len0 = xlength(args0);
+  Rboolean hasFactor = isFactor(args0);
   if (anstype != INTSXP && anstype != REALSXP) {
     error("Argument %d is of type %s. Only integer and double types are supported."
           "Data.frame (of the previous types) is also supported as a single input. ",
@@ -418,6 +429,10 @@ SEXP pmeanR(SEXP na, SEXP args) {
               "If you wish to 'recycle' your argument, please use rep() to make this intent "
               "clear to the readers of your code.", i+1, len1, 1, len0);
     }
+    hasFactor = hasFactor ? TRUE : isFactor(PTR_ETL(args, i));
+  }
+  if (hasFactor) {
+    error("Function 'pmean' is not meaningful for factors.");
   }
   int nprotect=2;
   SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, type0)) : PROTECT(duplicate(args0));
