@@ -1,5 +1,5 @@
 # Function calls
-charToFact  = function(x, nThread=getOption("kit.nThread")) .Call(CcharToFactR, x, FALSE,nThread, NA, parent.frame())
+charToFact  = function(x, decreasing=FALSE, nThread=getOption("kit.nThread")) .Call(CcharToFactR, x, decreasing, nThread, NA, parent.frame())
 count       = function(x, value) .Call(CcountR, x, value)
 countNA     = function(x) .Call(CcountNAR, x)
 countOccur  = function(x) .Call(CcountOccurR, x)

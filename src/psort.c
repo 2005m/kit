@@ -312,7 +312,7 @@ static SEXP callToSort (SEXP x, SEXP method, SEXP env) {
   return out;
 }
 
-static SEXP callToSort2 (SEXP x, SEXP method, bool desc, Rboolean na, SEXP env) {
+static SEXP callToSort2 (SEXP x, SEXP method, const int desc, const int na, SEXP env) {
   SEXP call = PROTECT(allocVector(LANGSXP, 5));
   SETCAR(call, STR_SORT);
   
@@ -547,10 +547,10 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
 
 SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) {
   
-  /*if (!IS_BOOL(decreasing)) {
+  if (!IS_BOOL(decreasing)) {
     error("Argument 'decreasing' must be TRUE or FALSE.");
   }
-  if (!IS_LOGICAL(nalast)) {
+  /*if (!IS_LOGICAL(nalast)) {
     error("Argument 'na.last' must be TRUE, FALSE or NA.");
   }*/
   if (TYPEOF(x) != STRSXP) {
@@ -567,7 +567,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
   SEXP uVals = PROTECT(dupVecSort(x));
   const int n = LENGTH(uVals);
   
-  SEXP valSorted = PROTECT(callToSort(uVals, STR_QUICK, env));
+  SEXP valSorted = PROTECT(callToSort2(uVals, STR_QUICK, dcr, 1, env));
   SEXP *restrict pvalSorted = STRING_PTR(valSorted);
   
   int NAidx = -1;

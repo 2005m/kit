@@ -5,10 +5,11 @@
   Similar to \code{base::as.factor} but much faster and only for converting character vector to factor.
 }
 \usage{
-charToFact(x, nThread=getOption("kit.nThread"))
+charToFact(x, decreasing=FALSE, nThread=getOption("kit.nThread"))
 }
 \arguments{
   \item{x}{ A vectorof type character}
+  \item{decreasing}{ A boolean. Whether to order levels in decreasing order or not. Default is \code{FALSE}.}
   \item{nThread}{ Number of thread to use.}
 }
 \value{

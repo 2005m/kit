@@ -5,6 +5,12 @@
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
 \section{version 0.0.7 (2021-02-27)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{charToFact}} gains a new argument \code{decreasing=FALSE} to be used
+      to order levels of the output in decreasing or increasing order.
+    }
+  }
   \subsection{Bug Fixes}{
     \itemize{
       \item Some tests of memory access errors using valgrind and AddressSanitizer were reported by CRAN.
