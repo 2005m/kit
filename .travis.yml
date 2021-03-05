@@ -26,7 +26,7 @@ after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && 
     test $TRAVIS_OS_NAME = 'linux' && 
     Rscript -e 'covr::codecov(quiet=FALSE)'
-  - test $TRAVIS_R_VERSION_STRING = 'release' && 
+  - test $TRAVIS_R_VERSION_STRING = 'devel' && 
     test $TRAVIS_OS_NAME = 'linux' && 
     R -e "install.packages('${PKG_TARBALL}', repo=NULL, type='source')" && 
     cd tests && 
