@@ -9,6 +9,9 @@
     \itemize{
       \item Function \code{\strong{charToFact}} gains a new argument \code{decreasing=FALSE} to be used
       to order levels of the output in decreasing or increasing order.
+      
+      \item Function \code{\strong{topn}} gains a new argument \code{index=TRUE} to be used return
+      index (\code{TRUE}) or values (\code{FALSE}) of input vector.
     }
   }
   \subsection{Bug Fixes}{

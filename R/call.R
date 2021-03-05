@@ -16,7 +16,7 @@ pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, if (length(a <- l
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, if (length(a <- list(...)) == 1 && is.data.frame(a[[1]])) a[[1]] else a)
 psum        = function(..., na.rm=FALSE) .Call(CpsumR,  na.rm, if (length(a <- list(...)) == 1 && is.data.frame(a[[1]])) a[[1]] else a)
 setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Call(CsetlevelsR, x, old, new, skip_absent))
-topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE) .Call(CtopnR, vec, n, decreasing, hasna)
+topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(index) .Call(CtopnR, vec, n, decreasing, hasna) else vec[.Call(CtopnR, vec, n, decreasing, hasna)]
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
 

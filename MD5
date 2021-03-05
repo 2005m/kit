@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
 9d9e977ed49308e2651e608d529519a0 *DESCRIPTION
-77b0684b53ea5c3c9384450205f86021 *inst/NEWS.Rd
+c5bf03c9da2e03f8ee238160512ee141 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 5df28320757432a550ff962f2f1aed20 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -12,10 +12,10 @@ d143e1321d840bb810d9648e54e22c9c *man/fpos.Rd
 ef4ce6330a0f6a2ec63ccfd365729963 *man/psort.Rd
 d4128b3f90218c0efd0d4bbf0f84d6a5 *man/psum.Rd
 14e3add07190fd18d0161f4f0b0b5257 *man/setlevels.Rd
-e0d3b091b5182fdcc8868c93a2c59476 *man/topn.Rd
+827ec1bb4ab2c5764717d8866d1a1585 *man/topn.Rd
 3c628c2a27764ec5df2b4980921c310f *man/vswitch.Rd
 8960e9e411b8ff99c638d49e3f28e334 *NAMESPACE
-5dccd70d0654bd9ce1b57eda2e4b6456 *R/call.R
+852eb36564defdafb9f53c0700d69a12 *R/call.R
 fa0ca12018176564236efd16b8d8e9d8 *README.md
 c8b66ed8ebc22f5af194fd12b517cb53 *src/dup.c
 5e71dad4ea42b327b06727664fcb74c7 *src/dupLen.c
