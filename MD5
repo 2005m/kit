@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
-9d9e977ed49308e2651e608d529519a0 *DESCRIPTION
-c5bf03c9da2e03f8ee238160512ee141 *inst/NEWS.Rd
+6110a9348799ed05278dfa5362906246 *DESCRIPTION
+0f71fae4ba25ebd4aa9e2a39f64ab056 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 5df28320757432a550ff962f2f1aed20 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -26,7 +26,7 @@ fd6cda120996057e4520025e191ddaab *src/kit.h
 63b898312ccf39a20bd7fbd8dcca5621 *src/Makevars.in
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 8e997b5d5d44af5cea7eafb48a4b9745 *src/nswitch.c
-2f2fff920eff0e29b0d135f6b1f52be5 *src/psort.c
+5d7ddc59fe1ca377d0899b582cfd3a8b *src/psort.c
 44018b12fca6cccaabcd0f10deb421e4 *src/psum.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
 c70104d7de206d29dc3efcf82d36c4de *src/utils.c

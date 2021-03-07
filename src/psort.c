@@ -419,7 +419,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   if (cl) {
     if ( ((na_pos != 0 && !dcr) || (na_pos == 0 && dcr && !early) || (na_pos != 0 && dcr && early)) && NAidx != nlen-1 ) {
       if (NAidx >= 0) {
-        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
+        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx + 1))*sizeof(SEXP));
         pvalSorted[nlen-1] = NA_STRING;
       }
     } else if ( (na_pos == 0 && !dcr) || (na_pos != 0 && dcr) || (na_pos == 0 && dcr && early)){
@@ -431,7 +431,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   } else {
     if ( ((na_pos != 0 && !dcr) || (na_pos == 0 && dcr)) && NAidx != nlen-1) {
       if (NAidx >= 0) {
-        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
+        memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (nlen - (NAidx + 1))*sizeof(SEXP));
         pvalSorted[nlen-1] = NA_STRING;
       }
     } else if ( (na_pos == 0 && !dcr) || (na_pos != 0 && dcr) ){
@@ -578,7 +578,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
   }
   if ( ((na_pos != 0 && !dcr) || (na_pos == 0 && dcr)) && NAidx != n-1) {
     if (NAidx >= 0) {
-      memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (n - (NAidx == 0 ? 1 : NAidx))*sizeof(SEXP));
+      memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (n - ((NAidx + 1)))*sizeof(SEXP));
       pvalSorted[n-1] = NA_STRING;
     }
   } else if ( (na_pos == 0 && !dcr) || (na_pos != 0 && dcr) ){
