@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
-d8dc8516cd9a36b9f0db1b0f0b851709 *DESCRIPTION
-c429b2587821d6d7d7b174eb268f8f41 *inst/NEWS.Rd
+cad112e8e53af0dfd84b3ee1edf2f9f7 *DESCRIPTION
+70390ced738cdda5ec3fd81d4cc57b25 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 5df28320757432a550ff962f2f1aed20 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -29,7 +29,7 @@ fd6cda120996057e4520025e191ddaab *src/kit.h
 5d7ddc59fe1ca377d0899b582cfd3a8b *src/psort.c
 44018b12fca6cccaabcd0f10deb421e4 *src/psum.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
-c70104d7de206d29dc3efcf82d36c4de *src/utils.c
+9d88810d9c3e35d1047205dcd0f8b628 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
 3cd12c2c6e4c85ff071e311b2fefa844 *tests/test_kit.R
 b93b412681e553032721458cd31d5811 *tests/test_kit.Rout.save

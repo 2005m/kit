@@ -4,8 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.8}{
-  
+\section{version 0.0.8 (2021-04-11)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{funique}} now preserves the attributes if the input is a 
+      \code{data.table}, \code{tibble} or similar objects. Thanks to Sebastian Krantz for the request.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item Few \code{calloc} functions at C level have been replaced by R C API function 
+      \code{Calloc} to avoid valgrind errors/warnings in Travis CI.
+    }
+  }
 }
 
 \section{version 0.0.7 (2021-03-07)}{

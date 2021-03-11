@@ -206,7 +206,7 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
   const R_xlen_t len_df = xlength(df);
   const R_xlen_t len_rws = xlength(rws);
   SEXP dfo = PROTECT(allocVector(VECSXP, len_df));
-  classgets(dfo, STR_DF);
+  DUPLICATE_ATTRIB(dfo, df);
   setAttrib(dfo, R_NamesSymbol, PROTECT(getAttrib(df, R_NamesSymbol)));
   SEXP rownam = PROTECT(allocVector(INTSXP, 2));
   INTEGER(rownam)[0] = NA_INTEGER;
@@ -370,7 +370,7 @@ SEXP subSetColDataFrame(SEXP df, SEXP str) { // # nocov start
 	    i = -1;
 	  }
   }
-  classgets(dfo, STR_DF);
+  DUPLICATE_ATTRIB(dfo, df);
   namesgets(dfo, str);
   SEXP rownam = PROTECT(allocVector(INTSXP, 2));
   INTEGER(rownam)[0] = NA_INTEGER;
