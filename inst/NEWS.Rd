@@ -4,6 +4,10 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.8}{
+  
+}
+
 \section{version 0.0.7 (2021-03-07)}{
   \subsection{New Features}{
     \itemize{

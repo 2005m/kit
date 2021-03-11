@@ -81,9 +81,9 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast) { // move to matrix if poss
     K++;
   }
   R_xlen_t count = 0;
-  int *h = (int*) calloc(M, sizeof(int));
+  int *restrict h = (int*) Calloc(M, int);
   const int *restrict v = INTEGER(mlv);
-  int *restrict pans = buniq ? (int*) calloc(len_i, sizeof(int)) : LOGICAL(ans);
+  int *restrict pans = buniq ? (int*) Calloc(len_i, int) : LOGICAL(ans);
   size_t id = 0;
   if (buniq) {
     if (pfromLast) {
@@ -131,7 +131,7 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast) { // move to matrix if poss
         label2:;
       }
     }
-    free(h);
+    Free(h);
     UNPROTECT(1);
     SEXP indx = PROTECT(allocVector(INTSXP, count));
     int ct = 0;
@@ -142,7 +142,7 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast) { // move to matrix if poss
       }
     }
     SEXP output = PROTECT(subSetRowDataFrame(x, indx));
-    free(pans);
+    Free(pans);
     UNPROTECT(2);
     return output;
   }
@@ -193,7 +193,7 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast) { // move to matrix if poss
       label2b:;
     }
   }
-  free(h);
+  Free(h);
   UNPROTECT(2);
   return ans;
 }
@@ -219,8 +219,8 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
     K++;
   }
   R_xlen_t count = 0;
-  int *h = (int*) calloc(M, sizeof(int));
-  int *restrict pans = buniq ? (int*) calloc(len_i, sizeof(int)) : LOGICAL(ans);
+  int *restrict h = (int*) Calloc(M, int);
+  int *restrict pans = buniq ? (int*) Calloc(len_i, int) : LOGICAL(ans);
   size_t id = 0;
   switch(UTYPEOF(x)) {
   case LGLSXP : {
@@ -769,10 +769,14 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
       }
     }
   } break;
-  default:
+  default: {
+    Free(h);
+    if (buniq)
+      Free(pans);
     error("Matrix of type %s are not supported.", type2char(UTYPEOF(x)));
   }
-  free(h);
+  }
+  Free(h);
   if (buniq) {
     SEXP indx = PROTECT(allocVector(INTSXP, count));
     int ct = 0;
@@ -782,7 +786,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
         py[ct++] = i;
       }
     }
-    free(pans);
+    Free(pans);
     if (idx) {
       UNPROTECT(1);
       return indx;
@@ -808,7 +812,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
   if (isFactor(x) && buniq) {
     const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
     UNPROTECT(1);
-    bool *restrict count = (bool*)calloc(len+1,sizeof(bool));
+    bool *restrict count = (bool*)Calloc(len+1,bool);
     const int *restrict px = INTEGER(x);
     const int xlen = LENGTH(x);
     SEXP ans = PROTECT(allocVector(INTSXP, len));
@@ -828,7 +832,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         SEXP ans2 = PROTECT(allocVector(INTSXP, len-j-1));
         copyMostAttrib(x, ans2);
         memcpy(INTEGER(ans2),pans+j+1,(len-j-1)*sizeof(int));
-        free(count);
+        Free(count);
         UNPROTECT(2);
         return ans2;
       }
@@ -846,12 +850,12 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         SETLENGTH(ans, j);
       }
     }
-    free(count);
+    Free(count);
     UNPROTECT(1);
     return ans;
   }
   if (isLogical(x) && buniq) {
-    bool *restrict count = (bool*)calloc(3,sizeof(bool));
+    bool *restrict count = (bool*)Calloc(3,bool);
     const int *restrict px = LOGICAL(x);
     const int xlen = LENGTH(x);
     SEXP ans = PROTECT(allocVector(LGLSXP, 3));
@@ -872,7 +876,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         SEXP ans2 = PROTECT(allocVector(LGLSXP, 2-j));
         copyMostAttrib(x, ans2);
         memcpy(LOGICAL(ans2),pans+j+1,(2-j)*sizeof(int));
-        free(count);
+        Free(count);
         UNPROTECT(2);
         return ans2;
       }
@@ -891,7 +895,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         SETLENGTH(ans, j);
       }
     }
-    free(count);
+    Free(count);
     UNPROTECT(1);
     return ans;
   }
@@ -917,9 +921,9 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
     error("Type %s is not supported.", type2char(tx));
   }
   R_xlen_t count = 0;
-  int *h = (int*)calloc(M, sizeof(int));
+  int *restrict h = (int*)Calloc(M, int);
   SEXP ans = buniq ? R_NilValue : PROTECT(allocVector(LGLSXP, n));
-  int *restrict pans = buniq ? (int*)calloc(n, sizeof(int)) : LOGICAL(ans);
+  int *restrict pans = buniq ? (int*)Calloc(n, int) : LOGICAL(ans);
   switch (tx) {
   case LGLSXP: {
     const int *restrict px = LOGICAL(x);
@@ -955,7 +959,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         lbld:;
       }
     }
-    free(h);
+    Free(h);
   } break;
   case INTSXP: { // think about factor and levels number
     const int *restrict px = INTEGER(x);
@@ -990,7 +994,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           ibl:;
         }
       }
-      free(h);
+      Free(h);
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
       int *restrict py = INTEGER(indx);
@@ -999,7 +1003,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           py[ct++] = px[i];
         }
       }
-      free(pans);
+      Free(pans);
       copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
@@ -1035,7 +1039,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           ibld:;
         }
       }
-      free(h);
+      Free(h);
     }
   } break;
   case REALSXP: {
@@ -1074,7 +1078,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           rbl:;
         }
       }
-      free(h);
+      Free(h);
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
       double *restrict py = REAL(indx);
@@ -1083,7 +1087,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           py[ct++] = px[i];
         }
       }
-      free(pans);
+      Free(pans);
       copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
@@ -1121,7 +1125,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           rbld:;
         }
       }
-      free(h);
+      Free(h);
     }
   } break;
   case CPLXSXP: {
@@ -1182,7 +1186,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           cbl:;
         }
       }
-      free(h);
+      Free(h);
       SEXP indx = PROTECT(allocVector(tx, count));
       size_t ct = 0;
       Rcomplex *restrict py = COMPLEX(indx);
@@ -1191,7 +1195,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           py[ct++] = px[i];
         }
       }
-      free(pans);
+      Free(pans);
       copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
@@ -1249,7 +1253,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           cbld:;
         }
       }
-      free(h);
+      Free(h);
     }
   } break;
   case STRSXP: {
@@ -1285,7 +1289,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           sbl:;
         }
       }
-      free(h);
+      Free(h);
       SEXP indx = PROTECT(allocVector(tx, count));
       R_xlen_t ct = 0;
       for (int i = 0; ct < count; ++i) {
@@ -1293,7 +1297,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           SET_STRING_ELT(indx, ct++, px[i]);
         }
       }
-      free(pans);
+      Free(pans);
       copyMostAttrib(x, indx);
       UNPROTECT(1);
       return indx;
@@ -1329,7 +1333,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
           sbld:;
         }
       }
-      free(h);
+      Free(h);
     }
   } break;
   }
@@ -1363,7 +1367,7 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
   } else {
     error("Type %s is not supported.", type2char(tx)); // # nocov
   }
-  int *h = (int*)calloc(M, sizeof(int));
+  int *restrict h = (int*)Calloc(M, int);
   SEXP ans_i = PROTECT(allocVector(INTSXP, n));
   int *restrict pans_i = INTEGER(ans_i);
   switch (tx) {
@@ -1469,7 +1473,7 @@ SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
     }
   } break;
   }
-  free(h);
+  Free(h);
   UNPROTECT(1);
   return ans_i;
 }
