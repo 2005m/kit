@@ -1,7 +1,7 @@
 # kit
 R Package: Basic functions implemented in C (and for some missing from base R)
 
-[![CRAN](https://www.r-pkg.org/badges/version-last-release/kit?color=blue)](https://www.r-pkg.org/badges/version-last-release/kit)
+[![CRAN](https://www.r-pkg.org/badges/version-last-release/kit?color=blue)](https://cran.r-project.org/package=kit)
 [![CRAN](https://cranchecks.info/badges/flavor/devel/kit)](https://cran.r-project.org/web/checks/check_results_kit.html)
 [![License: GPL v3](https://img.shields.io/github/license/2005m/kit)](https://www.gnu.org/licenses/gpl-3.0)
 [![Travis build status](https://travis-ci.org/2005m/kit.svg?branch=master)](https://travis-ci.org/2005m/kit)
