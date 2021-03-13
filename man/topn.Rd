@@ -11,13 +11,13 @@
 }
 \arguments{
   \item{vec}{ A numeric vector of type numeric or integer. Other types are not supported yet. }
-  \item{n}{ A positive integer value greater or equal to 1. Maximum value is 1000. }
+  \item{n}{ A positive integer value greater or equal to 1. }
   \item{decreasing}{ A logical value (default \code{TRUE}) to indicate whether to sort \code{vec} in decreasing or increasing order. Equivalent to argument \code{decreasing} in function \code{base::order}. Please note that unlike \code{topn} default value in \code{base::order} is \code{FALSE}.}
   \item{hasna}{ A logical value (default \code{TRUE}) to indicate whether \code{vec} contains \code{NA} values. }
   \item{index}{ A logical value (default \code{TRUE}) to indicate whether indexes or values of \code{vec}. }
 }
 \value{
-  \code{integer} vector of indices of the most extreme (according to \code{decreasing}) \code{n} values in vector \code{vec}.
+  \code{integer} vector of indices of the most extreme (according to \code{decreasing}) \code{n} values in vector \code{vec}. Please note that for large value of \code{n}, i.e. 1500 or 2000 (depending on the value of \code{hasna}), \code{topn} will default to base R function \code{order}.
 }
 \author{Morgan Jacob}
 \examples{

@@ -335,7 +335,7 @@ static SEXP callToSort2 (SEXP x, const char* method, const int desc, const int n
   return out;
 }
 
-static SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEXP env) { // # nocov start
+SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEXP env) {
   SEXP call = PROTECT(allocVector(LANGSXP, 5));
   SETCAR(call, STR_ORDER);
   
@@ -358,7 +358,7 @@ static SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEX
   SEXP out = PROTECT(eval(call, env));
   UNPROTECT(3);
   return out;
-} // # nocov end
+}
 
 /*
  *  Character sorting

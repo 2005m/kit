@@ -53,6 +53,7 @@
 #define IS_LOGICAL(x) (isLogical(x) && LENGTH(x)==1)
 
 extern SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln);
+extern SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEXP env);
 extern SEXP charToFactR(SEXP x, SEXP decreasingArg, SEXP nthread, SEXP nalast, SEXP env);
 extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
@@ -88,7 +89,7 @@ extern SEXP subSetColDataFrame(SEXP df, SEXP str);
 extern SEXP subSetColMatrix(SEXP x, R_xlen_t idx);
 extern SEXP subSetRowDataFrame(SEXP df, SEXP rws);
 extern SEXP subSetRowMatrix(SEXP mat, SEXP rws);
-extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna);
+extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna, SEXP env);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP chkenc);
 
 union uno { double d; unsigned int u[2]; };

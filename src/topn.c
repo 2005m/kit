@@ -18,16 +18,11 @@
 
 #include "kit.h"
 
-SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
+SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna, SEXP env) {
   int len0 = asInteger(n);
   const R_xlen_t len1 = xlength(vec);
   if (isS4(vec)) {
     error("S4 class objects are not supported.");
-  }
-  if (len0 > 1000) {
-    error("Function 'topn' is not built for large value of 'n'. "
-          "The algorithm is made for small values. Please prefer the 'order' "
-          "function if you want to proceed with such large value.");
   }
   if (len0 > len1) {
     warning("'n' is larger than length of 'vec'. 'n' will be set to length of 'vec'.");
@@ -42,16 +37,25 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
   if (!IS_BOOL(hasna)) {
     error("Argument 'hasna' must be TRUE or FALSE and length 1.");
   }
+  const Rboolean dcr = asLogical(dec);
+  const SEXPTYPE tvec = UTYPEOF(vec);
+  const Rboolean vhasna = asLogical(hasna);
+  if ( ((len0 > 2000 && vhasna == FALSE) || (len0 > 1500 && vhasna == TRUE)) && (tvec == INTSXP || tvec == REALSXP)) {
+    SEXP ans = PROTECT(callToOrder(vec, "radix", dcr, TRUE, env));
+    SETLENGTH(ans, len0);
+    UNPROTECT(1);
+    return ans;
+  }
   SEXP ans = PROTECT(allocVector(INTSXP, len0));
   int *restrict pans = INTEGER(ans);
   int tmp;
-  if (asLogical(dec)) {
-    switch(UTYPEOF(vec)) {
+  if (dcr) {
+    switch(tvec) {
     case INTSXP: {
       int i, j, idx = 0;
       const int *restrict pvec = INTEGER(vec);
       int min_value = pvec[0];
-      if (asLogical(hasna)) {
+      if (vhasna) {
         for (i = 0; i < len0; ++i) {
           pans[i] = i;
           if (pvec[i] <= min_value || pvec[i] == NA_INTEGER) {
@@ -120,7 +124,7 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
       int i, j, idx = 0;
       const double *restrict pvec = REAL(vec);
       double min_value = pvec[0];
-      if (asLogical(hasna)) {
+      if (vhasna) {
         for (i = 0; i < len0; ++i) {
           pans[i] = i;
           if (pvec[i] <= min_value || ISNAN(pvec[i])) {
@@ -186,15 +190,15 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
       }
     } break;
     default:
-      error("Type %s is not supported.", type2char(UTYPEOF(vec)));
+      error("Type %s is not supported.", type2char(tvec));
     }
   } else {
-    switch(UTYPEOF(vec)) {
+    switch(tvec) {
     case INTSXP: {
       int i, j, idx = 0;
       const int *restrict pvec = INTEGER(vec);
       int min_value = pvec[0];
-      if (asLogical(hasna)) {
+      if (vhasna) {
         for (i = 0; i < len0; ++i) {
           pans[i] = i;
           if ((pvec[i] >= min_value && min_value != NA_INTEGER) || pvec[i] == NA_INTEGER) {
@@ -266,7 +270,7 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
       int i, j, idx = 0;
       const double *restrict pvec = REAL(vec);
       double min_value = pvec[0];
-      if (asLogical(hasna)) {
+      if (vhasna) {
         for (i = 0; i < len0; ++i) {
           pans[i] = i;
           if (pvec[i] >= min_value || ISNAN(pvec[i])) {
@@ -332,7 +336,7 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna) {
       }
     } break;
     default:
-      error("Type %s is not supported.", type2char(UTYPEOF(vec)));
+      error("Type %s is not supported.", type2char(tvec));
     }
   }
   UNPROTECT(1);

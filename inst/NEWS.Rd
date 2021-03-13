@@ -9,6 +9,9 @@
     \itemize{
       \item Function \code{\strong{funique}} now preserves the attributes if the input is a 
       \code{data.table}, \code{tibble} or similar objects. Thanks to Sebastian Krantz for the request.
+      
+      \item Function \code{\strong{topn}} now defaults to base R \code{order} for large value of \code{n}.
+      Please see updated documentation for more information \code{?kit::topn}.
     }
   }
   \subsection{Notes}{
