@@ -26,8 +26,6 @@
 #define STR_METHOD install("method")
 #define STR_NALAST install("na.last")
 #define STR_DECREA install("decreasing")
-#define STR_QUICK  mkString("quick")
-#define STR_SHELL  mkString("shell")
 #define STR_FACTOR mkChar("factor")
 
 static int K = 8;
@@ -291,7 +289,7 @@ static inline int getIndex(SEXP ptr, const SEXP *restrict cmp, int *lkpTbl) {
   }
 }
 
-static SEXP callToSort (SEXP x, SEXP method, SEXP env) {
+static SEXP callToSort (SEXP x, const char* method, SEXP env) {
   SEXP call = PROTECT(allocVector(LANGSXP, 4));
   SETCAR(call, STR_SORT);
   
@@ -300,7 +298,7 @@ static SEXP callToSort (SEXP x, SEXP method, SEXP env) {
   SET_TAG(s, install("x"));
   
   s = CDR(s);
-  SETCAR(s, method);
+  SETCAR(s, PROTECT(mkString(method)));
   SET_TAG(s, STR_METHOD);
   
   s = CDR(s);
@@ -308,11 +306,11 @@ static SEXP callToSort (SEXP x, SEXP method, SEXP env) {
   SET_TAG(s, STR_NALAST);
   
   SEXP out = PROTECT(eval(call, env));
-  UNPROTECT(2);
+  UNPROTECT(3);
   return out;
 }
 
-static SEXP callToSort2 (SEXP x, SEXP method, const int desc, const int na, SEXP env) {
+static SEXP callToSort2 (SEXP x, const char* method, const int desc, const int na, SEXP env) {
   SEXP call = PROTECT(allocVector(LANGSXP, 5));
   SETCAR(call, STR_SORT);
   
@@ -321,7 +319,7 @@ static SEXP callToSort2 (SEXP x, SEXP method, const int desc, const int na, SEXP
   SET_TAG(s, install("x"));
   
   s = CDR(s);
-  SETCAR(s, method);
+  SETCAR(s, PROTECT(mkString(method)));
   SET_TAG(s, STR_METHOD);
   
   s = CDR(s);
@@ -333,11 +331,11 @@ static SEXP callToSort2 (SEXP x, SEXP method, const int desc, const int na, SEXP
   SET_TAG(s, STR_DECREA);
   
   SEXP out = PROTECT(eval(call, env));
-  UNPROTECT(2);
+  UNPROTECT(3);
   return out;
 }
 
-static SEXP callToOrder (SEXP x, SEXP method, bool desc, Rboolean na, SEXP env) { // # nocov start
+static SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEXP env) { // # nocov start
   SEXP call = PROTECT(allocVector(LANGSXP, 5));
   SETCAR(call, STR_ORDER);
   
@@ -346,7 +344,7 @@ static SEXP callToOrder (SEXP x, SEXP method, bool desc, Rboolean na, SEXP env) 
   SET_TAG(s, install("..."));
   
   s = CDR(s);
-  SETCAR(s, method);
+  SETCAR(s, PROTECT(mkString(method)));
   SET_TAG(s, STR_METHOD);
   
   s = CDR(s);
@@ -358,7 +356,7 @@ static SEXP callToOrder (SEXP x, SEXP method, bool desc, Rboolean na, SEXP env) 
   SET_TAG(s, STR_DECREA);
   
   SEXP out = PROTECT(eval(call, env));
-  UNPROTECT(2);
+  UNPROTECT(3);
   return out;
 } // # nocov end
 
@@ -395,11 +393,11 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   
   const int early = xlen == n;
   SEXP valSorted = early ? (
-    cindex ? PROTECT(callToOrder(uVals, STR_SHELL, dcr, na_pos, env)) : 
+    cindex ? PROTECT(callToOrder(uVals, "shell", dcr, na_pos, env)) : 
              (cl ? (dcr ? PROTECT(rsortrev(uVals)) : PROTECT(rsort(uVals))) :
-                   PROTECT(callToSort2(uVals, STR_QUICK, dcr, na_pos, env)))
+                   PROTECT(callToSort2(uVals, "quick", dcr, na_pos, env)))
   ) : ( cl ? PROTECT(rsort(uVals)) : 
-             PROTECT(callToSort(uVals, STR_QUICK, env)));
+             PROTECT(callToSort(uVals, "quick", env)));
 
   /*if (early && cindex) {
     UNPROTECT(2);
@@ -567,7 +565,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
   SEXP uVals = PROTECT(dupVecSort(x));
   const int n = LENGTH(uVals);
   
-  SEXP valSorted = PROTECT(callToSort2(uVals, STR_QUICK, dcr, 1, env));
+  SEXP valSorted = PROTECT(callToSort2(uVals, "quick", dcr, 1, env));
   SEXP *restrict pvalSorted = STRING_PTR(valSorted);
   
   int NAidx = -1;

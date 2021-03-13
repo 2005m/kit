@@ -15,6 +15,8 @@
     \itemize{
       \item Few \code{calloc} functions at C level have been replaced by R C API function 
       \code{Calloc} to avoid valgrind errors/warnings in Travis CI.
+      
+      \item Errors reported by \code{rchk} on CRAN have been fixed.
     }
   }
 }

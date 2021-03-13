@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 30a444c58adaf9b99783d22d75d60c61 *configure
 cad112e8e53af0dfd84b3ee1edf2f9f7 *DESCRIPTION
-70390ced738cdda5ec3fd81d4cc57b25 *inst/NEWS.Rd
+69f274874e425894f9bfe67896354bdc *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 5df28320757432a550ff962f2f1aed20 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -26,10 +26,10 @@ fd6cda120996057e4520025e191ddaab *src/kit.h
 63b898312ccf39a20bd7fbd8dcca5621 *src/Makevars.in
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 8e997b5d5d44af5cea7eafb48a4b9745 *src/nswitch.c
-5d7ddc59fe1ca377d0899b582cfd3a8b *src/psort.c
+786acb6d41d5041bd895a25211fa4cdd *src/psort.c
 44018b12fca6cccaabcd0f10deb421e4 *src/psum.c
 75f88aa2b5fbc936c6de93efaa8ff236 *src/topn.c
-9d88810d9c3e35d1047205dcd0f8b628 *src/utils.c
+c0f3fe6fca4e8492277a0d5f87528ce5 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
 3cd12c2c6e4c85ff071e311b2fefa844 *tests/test_kit.R
 b93b412681e553032721458cd31d5811 *tests/test_kit.Rout.save

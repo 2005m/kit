@@ -743,8 +743,8 @@ SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash a
     }
   }
   free(pans_l);
-  SEXP output = PROTECT(addColToDataFrame(PROTECT(subSetRowDataFrame(x, indx)),cntr, mkString("Count")));
-  UNPROTECT(6);
+  SEXP output = PROTECT(addColToDataFrame(PROTECT(subSetRowDataFrame(x, indx)),cntr, PROTECT(mkString("Count"))));
+  UNPROTECT(7);
   return output;
 }
 
