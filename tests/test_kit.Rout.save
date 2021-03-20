@@ -1664,6 +1664,7 @@ Attaching kit 0.0.8 (OPENMP enabled using 1 thread)
 > check("0021.005", charToFact(1L), error="Argument 'x' must be of type character.")
 > check("0021.006", charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a"))))
 > check("0021.007", levels(charToFact(x1,decreasing = TRUE)), sort(levels(as.factor(x1)),decreasing = TRUE))
+> check("0021.008", charToFact(c("a","b"),addNA=NA), error="Argument 'addNA' must be TRUE or FALSE.")
 > 
 > rm(x1)
 > 
@@ -1680,4 +1681,4 @@ Attaching kit 0.0.8 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.331   0.724   5.302 
+  4.231   0.561   4.790 

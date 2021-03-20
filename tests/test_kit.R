@@ -1644,6 +1644,7 @@ check("0021.004", charToFact(c("2L","1L","3L"),nThread=1), error="Argument 'nThr
 check("0021.005", charToFact(1L), error="Argument 'x' must be of type character.")
 check("0021.006", charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a"))))
 check("0021.007", levels(charToFact(x1,decreasing = TRUE)), sort(levels(as.factor(x1)),decreasing = TRUE))
+check("0021.008", charToFact(c("a","b"),addNA=NA), error="Argument 'addNA' must be TRUE or FALSE.")
 
 rm(x1)
 

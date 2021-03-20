@@ -12,6 +12,9 @@
       
       \item Function \code{\strong{topn}} now defaults to base R \code{order} for large value of \code{n}.
       Please see updated documentation for more information \code{?kit::topn}.
+      
+      \item Function \code{\strong{charToFact}} gains a new argument \code{addNA=TRUE} to be used
+      to include (or not) \code{NA} in levels of the output.
     }
   }
   \subsection{Notes}{

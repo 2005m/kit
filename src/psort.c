@@ -543,10 +543,13 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
  *  Character to factor conversion
  */
 
-SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) {
+SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP addNA) {
   
   if (!IS_BOOL(decreasing)) {
     error("Argument 'decreasing' must be TRUE or FALSE.");
+  }
+  if (!IS_BOOL(addNA)) {
+    error("Argument 'addNA' must be TRUE or FALSE.");
   }
   /*if (!IS_LOGICAL(nalast)) {
     error("Argument 'na.last' must be TRUE, FALSE or NA.");
@@ -560,6 +563,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
 
   const int na_pos = asLogical(nalast);
   const int dcr = asLogical(decreasing);
+  const int addNAv = asLogical(addNA);
   const int xlen = LENGTH(x);
   
   SEXP uVals = PROTECT(dupVecSort(x));
@@ -594,9 +598,16 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
   SEXP ans = PROTECT(allocVector(INTSXP, xlen));
   int *restrict pans = INTEGER(ans);
   
-  OMP_PARALLEL_FOR(nth)
-  for (int j=0; j<xlen; ++j) {
-    pans[j] = LOOKUP_VAL(px[j]) + 1;
+  if (addNAv == 0) {
+    OMP_PARALLEL_FOR(nth)
+    for (int j=0; j<xlen; ++j) {
+      pans[j] = px[j] == NA_STRING ? NA_INTEGER : LOOKUP_VAL(px[j]) + 1;
+    }
+  } else {
+    OMP_PARALLEL_FOR(nth)
+    for (int j=0; j<xlen; ++j) {
+      pans[j] = LOOKUP_VAL(px[j]) + 1;
+    }
   }
 
   if (na_pos == NA_LOGICAL) {
@@ -614,6 +625,9 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env) 
   }
   
   free(lookupTable);
+  if (addNAv == 0) {
+    SETLENGTH(valSorted, LENGTH(valSorted)-1);
+  }
   setAttrib(ans, R_LevelsSymbol, valSorted);
   SEXP classV = PROTECT(allocVector(STRSXP,1));
   SET_STRING_ELT(classV, 0, STR_FACTOR);

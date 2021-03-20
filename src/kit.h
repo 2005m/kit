@@ -54,7 +54,7 @@
 
 extern SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln);
 extern SEXP callToOrder (SEXP x, const char* method, bool desc, Rboolean na, SEXP env);
-extern SEXP charToFactR(SEXP x, SEXP decreasingArg, SEXP nthread, SEXP nalast, SEXP env);
+extern SEXP charToFactR(SEXP x, SEXP decreasingArg, SEXP nthread, SEXP nalast, SEXP env, SEXP addNA);
 extern SEXP countR(SEXP x, SEXP y);
 extern SEXP countNAR(SEXP x);
 extern SEXP countOccurR(SEXP x);
