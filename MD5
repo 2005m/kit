@@ -31,5 +31,5 @@ ab9528d1b24d71ed2080743331b8a012 *src/psort.c
 e998e820fea6aa677e78a8cb1f7ba74c *src/topn.c
 c0f3fe6fca4e8492277a0d5f87528ce5 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
-26ba1d22f1256442535c287bade79be3 *tests/test_kit.R
-837d5d2f1781439182c1590a9d1cfc89 *tests/test_kit.Rout.save
+dd1bdbee7bed7d3e62333fd99a05c5e0 *tests/test_kit.R
+56fa5d59333914a61e80d9fab4120d41 *tests/test_kit.Rout.save
