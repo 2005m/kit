@@ -158,7 +158,7 @@ SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP v
   }
   if (verbose) Rprintf("* Map view file...OK\n");
 #ifdef WIN32
-  CopyMemory((LPVOID)foo->lpMapAddress, &RAW(DataObject), BUF_SIZE);
+  CopyMemory((LPVOID)foo->lpMapAddress, RAW(DataObject), BUF_SIZE);
   CopyMemory((LPVOID)foo->lpMapLength, &len, sizeof(size_t));
 #else
   memcpy(foo->addr, RAW(DataObject), BUF_SIZE);
@@ -216,7 +216,7 @@ SEXP getMappingObjectR (SEXP MapName, SEXP MapLength, SEXP verboseArg) {
   size_t len = *(size_t*)lpMapLength;
   LPCTSTR lpMapAddress = (LPCTSTR) MapViewOfFile (hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, len*sizeof(Rbyte));
   if (lpMapAddress == NULL) {
-    CloseHandle(hMapAddress);
+    CloseHandle(hMapFile);
 #else
   size_t len = *(size_t*)length;  
   void *addr = mmap(NULL, len*sizeof(Rbyte), PROT_READ, MAP_SHARED, fd_addr, 0);
