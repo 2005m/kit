@@ -27,6 +27,16 @@
   #define SSIZE_MAX LLONG_MAX
 #endif
 
+#ifdef WIN32
+  #include <windows.h>
+#else
+  #include <sys/mman.h>
+  #include <sys/stat.h>
+  #include <sys/types.h>
+  #include <fcntl.h>
+  #include <unistd.h>
+#endif
+
 #define UTYPEOF(x) ((unsigned)TYPEOF(x))
 #define IS_BOOL(x) (LENGTH(x)==1 && TYPEOF(x)==LGLSXP && LOGICAL(x)[0]!=NA_LOGICAL)
 #define IS_VALID_TYPE(x) ((x) == LGLSXP || (x)==INTSXP || (x)==REALSXP || (x)==CPLXSXP || (x)==STRSXP || (x)==VECSXP)
@@ -91,6 +101,10 @@ extern SEXP subSetRowDataFrame(SEXP df, SEXP rws);
 extern SEXP subSetRowMatrix(SEXP mat, SEXP rws);
 extern SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna, SEXP env);
 extern SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP chkenc);
+
+extern SEXP createMappingObjectR(SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP verboseArg);
+extern SEXP getMappingObjectR(SEXP MapName, SEXP MapLength, SEXP verboseArg);
+extern SEXP clearMappingObjectR(SEXP ext, SEXP verboseArg);
 
 union uno { double d; unsigned int u[2]; };
 bool isMixEnc(SEXP x);

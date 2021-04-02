@@ -31,3 +31,25 @@ psort = function(x, decreasing = FALSE, na.last = NA, nThread=getOption("kit.nTh
   warning("Function 'psort' was only implemented for character vectors. Defaulting to base::sort.")
   sort(x, decreasing = decreasing, na.last = na.last,method = if(c.locale) "radix" else "quick")
 }
+
+clearData = function(x, verbose=FALSE) .Call("CclearMappingObjectR", x, verbose)
+
+shareData = function(data, map_name, verbose=FALSE) {
+  conn = rawConnection(raw(0L), "w")
+  serialize(data, conn)
+  seek(conn, 0L)
+  x = .Call(
+    "CcreateMappingObjectR", map_name, paste0(map_name,"_key"),
+    rawConnectionValue(conn), verbose
+  )
+  close(conn)
+  x
+}
+
+getData = function(map_name, verbose=FALSE) {
+  output = .Call("CgetMappingObjectR", map_name, paste0(map_name,"_key"), verbose)
+  conn = rawConnection(output,"r")
+  obj = unserialize(conn)
+  close(conn)
+  obj
+}
