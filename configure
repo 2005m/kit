@@ -9,15 +9,20 @@ if [ "$R_NO_OPENMP" = "1" ]; then
   printf "#include <omp.h>\nint main () { return omp_get_num_threads(); }" | ${CC} ${CFLAGS} -Xpreprocessor -fopenmp -lomp -xc ->/dev/null 2>&1 || R_NO_OPENMP=2;
   rm a.out >/dev/null 2>&1
   if [ "$R_NO_OPENMP" = "2" ]; then
-    echo "*** OpenMP not supported!"
-    sed -e "s|@openmp_cflags@||g; s|@openmp_libslags@||g;" src/Makevars.in > src/Makevars
+    if [ "`uname`" = "Linux" ] ;then
+      echo "*** On Linux and OpenMP not supported!"
+      sed -e "s|@openmp_cflags@||g; s|@openmp_libslags@||g; s|@realtime_libslags@|-lrt|g;" src/Makevars.in > src/Makevars
+    else
+      echo "*** Not on Linux and OpenMP not supported!"
+      sed -e "s|@openmp_cflags@||g; s|@openmp_libslags@||g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
+    fi
   else
     echo "*** OpenMP supported (-Xpreprocessor)!"
-    sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lomp|g;" src/Makevars.in > src/Makevars
+    sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lomp|g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
   fi
 else
-  echo "*** OpenMP supported!"
-  sed -e "s|@openmp_cflags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@openmp_libslags@|\$(SHLIB_OPENMP_CFLAGS)|g;" src/Makevars.in > src/Makevars
+  echo "*** On Linux and OpenMP supported!"
+  sed -e "s|@openmp_cflags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@openmp_libslags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@realtime_libslags@|-lrt|g;" src/Makevars.in > src/Makevars
 fi
 
 exit 0

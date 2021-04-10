@@ -56,6 +56,9 @@ uniqLen     = kit::uniqLen
 nswitch     = kit::nswitch
 psort       = kit::psort
 charToFact  = kit::charToFact
+shareData   = kit:::shareData
+getData     = kit:::getData
+clearData   = kit:::clearData
 
 # --------------------------------------------------------------------------------------------------
 #                                   topn 
@@ -1650,11 +1653,22 @@ check("0021.009", charToFact(c("a","b",NA,"a"), addNA=FALSE), as.factor(c("a","b
 rm(x1)
 
 # --------------------------------------------------------------------------------------------------
+#                                   shareData
+# --------------------------------------------------------------------------------------------------
+
+x = shareData(mtcars,"share1")
+
+check("0022.001", getData("share1"), mtcars)
+check("0022.002", clearData(x), TRUE)
+
+rm(x)
+
+# --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS
 # --------------------------------------------------------------------------------------------------
 
 rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,
-   pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact)
+   pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact,shareData,getData,clearData)
 
 # --------------------------------------------------------------------------------------------------
 #                                   END

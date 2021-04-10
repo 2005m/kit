@@ -41,25 +41,6 @@ struct OBJECT {
 };
 
 /*
- *  Utility Function
- */
-
-/*int get_pid () {
-#ifdef WIN32
-  return GetCurrentProcessId();
-#else
-  return getpid();
-#endif
-}*/
-/*int get_tid () {
-#ifdef WIN32
-  return GetCurrentThreadId();
-#else
-  return gettid();
-#endif
-}*/
-
-/*
  *  Function to finalize memory map pointer
  */
 
@@ -92,11 +73,11 @@ static void map_finalizer (SEXP ext) {
  *  Function to create data
  */
 
-SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP verboseArg) {
-  if (TYPEOF(MapName) != STRSXP || LENGTH(MapName) != 1) {
-    error("Argument 'MapName' must be of type character and length 1.");
+SEXP createMappingObjectR (SEXP MapObjectName, SEXP MapLengthName, SEXP DataObject, SEXP verboseArg) {
+  if (TYPEOF(MapObjectName) != STRSXP || LENGTH(MapObjectName) != 1) {
+    error("Argument 'MapObjectName' must be of type character and length 1.");
   }
-  if (TYPEOF(verboseArg) != LGLSXP || LENGTH(verboseArg) != 1 || LOGICAL(verboseArg)[0] == NA_LOGICAL) {
+  if (!IS_BOOL(verboseArg)) {
     error("Argument 'verbose' must be TRUE or FALSE.");
   }
   const bool verbose = asLogical(verboseArg);
@@ -106,15 +87,18 @@ SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP v
   if (verbose) Rprintf("* Data object size: %zu\n",len*sizeof(Rbyte));
   if (verbose) Rprintf("* Start mapping object...OK\n");
   struct OBJECT *foo = Calloc(1, struct OBJECT);
+  SEXP ext = PROTECT(R_MakeExternalPtr(foo, R_NilValue, R_NilValue));
+  R_RegisterCFinalizerEx(ext, map_finalizer, TRUE);
+  if (verbose) Rprintf("* Register finalizer...OK\n");
 #ifdef WIN32 
-  LPSTR pMN = (LPSTR) CHAR(STRING_PTR(MapName)[0]);
-  LPSTR pML = (LPSTR) CHAR(STRING_PTR(MapLength)[0]);
+  LPSTR pMN = (LPSTR) CHAR(STRING_PTR(MapObjectName)[0]);
+  LPSTR pML = (LPSTR) CHAR(STRING_PTR(MapLengthName)[0]);
   foo->hMapFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, BUF_SIZE, pMN);
   foo->hMapLength = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 256, pML);
   if (foo->hMapFile == INVALID_HANDLE_VALUE || foo->hMapLength == INVALID_HANDLE_VALUE) {
 #else
-  const char *pMN = CHAR(STRING_PTR(MapName)[0]);
-  const char *pML = CHAR(STRING_PTR(MapLength)[0]);
+  const char *pMN = CHAR(STRING_PTR(MapObjectName)[0]);
+  const char *pML = CHAR(STRING_PTR(MapLengthName)[0]);
   foo->STORAGE_ID = pMN; 
   foo->LENGTH_ID = pML;
   foo->STORAGE_SIZE = BUF_SIZE;
@@ -145,14 +129,10 @@ SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP v
   foo->lpMapAddress = (LPCTSTR) MapViewOfFile (foo->hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, BUF_SIZE);
   foo->lpMapLength = (LPCTSTR) MapViewOfFile (foo->hMapLength, FILE_MAP_ALL_ACCESS, 0, 0, 256);
   if (foo->lpMapAddress == NULL || foo->lpMapLength == NULL) {
-    CloseHandle(foo->hMapFile);
-    CloseHandle(foo->hMapLength);
 #else
     foo->addr = mmap(NULL, BUF_SIZE, PROT_WRITE, MAP_SHARED, foo->fd_addr, 0);
     foo->length = mmap(NULL, 256, PROT_WRITE, MAP_SHARED, foo->fd_length, 0);
     if (foo->addr == MAP_FAILED || foo->length == MAP_FAILED) {
-      shm_unlink(foo->STORAGE_ID);
-      shm_unlink(foo->LENGTH_ID);
 #endif
     error("* Map view file...ERROR");
   }
@@ -165,9 +145,6 @@ SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP v
   memcpy(foo->length, &len, sizeof(size_t));
 #endif
   if (verbose) Rprintf("* Copy memory...OK\n");
-  SEXP ext = PROTECT(R_MakeExternalPtr(foo, R_NilValue, R_NilValue));
-  R_RegisterCFinalizerEx(ext, map_finalizer, TRUE);
-  if (verbose) Rprintf("* Register finalizer...OK\n");
   UNPROTECT(1);
   return ext;
 }
@@ -176,23 +153,23 @@ SEXP createMappingObjectR (SEXP MapName, SEXP MapLength, SEXP DataObject, SEXP v
  *  Function to retrieve data
  */
 
-SEXP getMappingObjectR (SEXP MapName, SEXP MapLength, SEXP verboseArg) {
-  if (TYPEOF(MapName) != STRSXP || LENGTH(MapName) != 1) {
-    error("Argument 'MapName' must be of type character and length 1.");
+SEXP getMappingObjectR (SEXP MapObjectName, SEXP MapLengthName, SEXP verboseArg) {
+  if (TYPEOF(MapObjectName) != STRSXP || LENGTH(MapObjectName) != 1) {
+    error("Argument 'MapObjectName' must be of type character and length 1.");
   }
-  if (TYPEOF(verboseArg) != LGLSXP || LENGTH(verboseArg) != 1 || LOGICAL(verboseArg)[0] == NA_LOGICAL) {
+  if (!IS_BOOL(verboseArg)) {
     error("Argument 'verbose' must be TRUE or FALSE.");
   }
   const bool verbose = asLogical(verboseArg);
 #ifdef WIN32
-  LPSTR pMN = (LPSTR) CHAR(STRING_PTR(MapName)[0]);
-  LPSTR pML = (LPSTR) CHAR(STRING_PTR(MapLength)[0]);
+  LPSTR pMN = (LPSTR) CHAR(STRING_PTR(MapObjectName)[0]);
+  LPSTR pML = (LPSTR) CHAR(STRING_PTR(MapLengthName)[0]);
   HANDLE hMapFile = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, pMN);
   HANDLE hMapLength = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, pML);
   if (hMapFile == INVALID_HANDLE_VALUE || hMapLength == INVALID_HANDLE_VALUE) {
 #else
-  const char *pMN = CHAR(STRING_PTR(MapName)[0]);
-  const char *pML = CHAR(STRING_PTR(MapLength)[0]);
+  const char *pMN = CHAR(STRING_PTR(MapObjectName)[0]);
+  const char *pML = CHAR(STRING_PTR(MapLengthName)[0]);
   int fd_addr = shm_open(pMN, O_RDONLY, S_IRUSR | S_IWUSR);
   int fd_length = shm_open(pML, O_RDONLY, S_IRUSR | S_IWUSR);
   if (fd_addr == -1 || fd_length == -1) {
@@ -272,30 +249,18 @@ SEXP getMappingObjectR (SEXP MapName, SEXP MapLength, SEXP verboseArg) {
   return ans;
 }
 
+/*
+ *  Function to clear mapping object
+ */
+
 SEXP clearMappingObjectR  (SEXP ext, SEXP verboseArg) {
-  if (TYPEOF(verboseArg) != LGLSXP || LENGTH(verboseArg) != 1 || LOGICAL(verboseArg)[0] == NA_LOGICAL) {
+  if (!IS_BOOL(verboseArg)) {
     error("Argument 'verbose' must be TRUE or FALSE.");
   }
-  const bool verbose = asLogical(verboseArg);
-  if (verbose) Rprintf("* Finalize...\n");
+  verbose_finalizer = asLogical(verboseArg);
   if (NULL == R_ExternalPtrAddr(ext)) {
     return ScalarLogical(FALSE);
   }
-  if (verbose) Rprintf("* Clear external pointer...\n");
-  struct OBJECT *ptr = (struct OBJECT*) R_ExternalPtrAddr(ext);
-#ifdef WIN32  
-  UnmapViewOfFile(ptr->lpMapAddress);
-  CloseHandle(ptr->hMapFile);
-  UnmapViewOfFile(ptr->lpMapLength);
-  CloseHandle(ptr->hMapLength);
-#else
-  munmap(ptr->addr, ptr->STORAGE_SIZE);
-  shm_unlink(ptr->STORAGE_ID);
-  munmap(ptr->length, 256);
-  shm_unlink(ptr->LENGTH_ID);
-#endif
-  Free(ptr);
-  R_ClearExternalPtr(ext);
-  if (verbose) Rprintf("* Clear external pointer...OK\n");
+  map_finalizer(ext);
   return ScalarLogical(TRUE);
 }

@@ -1,2 +1,2 @@
 PKG_CFLAGS = @openmp_cflags@
-PKG_LIBS = @openmp_libslags@
+PKG_LIBS = @openmp_libslags@ @realtime_libslags@
