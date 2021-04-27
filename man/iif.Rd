@@ -1,6 +1,5 @@
 \name{iif}
 \alias{iif}
-\alias{iif}
 \title{ Fast if else }
 \description{
 \code{iif} is a faster and more robust replacement of \code{\link[base]{ifelse}}. It is comparable to \code{dplyr::if_else}, \code{hutils::if_else} and \code{data.table::fifelse}. It returns a value with the same length as \code{test} filled with corresponding values from \code{yes}, \code{no} or eventually \code{na}, depending on \code{test}. It does not support S4 classes.
