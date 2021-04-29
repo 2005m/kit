@@ -15,6 +15,10 @@
       
       \item Function \code{\strong{charToFact}} gains a new argument \code{addNA=TRUE} to be used
       to include (or not) \code{NA} in levels of the output.
+      
+      \item Function \code{\strong{shareData}}, \code{\strong{getData}} and \code{\strong{clearData}} implemented
+      to share data objects between \R sessions. These functions are experimental and might change in the future.
+      Feedback is welcome. Please see \code{?kit::shareData} for more information.
     }
   }
   \subsection{Notes}{

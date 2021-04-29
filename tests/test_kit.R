@@ -56,9 +56,9 @@ uniqLen     = kit::uniqLen
 nswitch     = kit::nswitch
 psort       = kit::psort
 charToFact  = kit::charToFact
-shareData   = kit:::shareData
-getData     = kit:::getData
-clearData   = kit:::clearData
+shareData   = kit::shareData
+getData     = kit::getData
+clearData   = kit::clearData
 
 # --------------------------------------------------------------------------------------------------
 #                                   topn 
