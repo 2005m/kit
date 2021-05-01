@@ -4,7 +4,7 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.8 (2021-04-11)}{
+\section{version 0.0.8 (2021-05-09)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{funique}} now preserves the attributes if the input is a 
