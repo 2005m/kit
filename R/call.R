@@ -38,6 +38,7 @@ shareData = function(data, map_name, verbose=FALSE) {
   conn = rawConnection(raw(0L), "w")
   serialize(data, conn)
   seek(conn, 0L)
+  if (grepl('SunOS',Sys.info()['sysname'])) map_name = paste0("/",map_name)
   x = .Call(
     "CcreateMappingObjectR", map_name, paste0(map_name,"_key"),
     rawConnectionValue(conn), verbose
@@ -47,6 +48,7 @@ shareData = function(data, map_name, verbose=FALSE) {
 }
 
 getData = function(map_name, verbose=FALSE) {
+  if (grepl('SunOS',Sys.info()['sysname'])) map_name = paste0("/",map_name)
   output = .Call("CgetMappingObjectR", map_name, paste0(map_name,"_key"), verbose)
   conn = rawConnection(output,"r")
   obj = unserialize(conn)

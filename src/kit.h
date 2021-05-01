@@ -35,6 +35,7 @@
   #include <sys/types.h>
   #include <fcntl.h>
   #include <unistd.h>
+  #include <errno.h>
 #endif
 
 #define UTYPEOF(x) ((unsigned)TYPEOF(x))

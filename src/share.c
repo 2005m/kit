@@ -105,6 +105,7 @@ SEXP createMappingObjectR (SEXP MapObjectName, SEXP MapLengthName, SEXP DataObje
   foo->fd_addr = shm_open(foo->STORAGE_ID, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   foo->fd_length = shm_open(foo->LENGTH_ID, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (foo->fd_addr == -1 || foo->fd_length == -1) {
+    Rprintf("shm_open error, errno(%d): %s\n", errno, strerror(errno));
 #endif
     error("* Creating file mapping...ERROR");
   }
