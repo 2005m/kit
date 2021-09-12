@@ -4,6 +4,14 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.9 (2021-09-12)}{
+  \subsection{Notes}{
+    \itemize{
+      \item Re-organise header to prevent compilation errors with new version of Clang due to conflicts between R C headers and OpenMP.
+    }
+  }
+}
+
 \section{version 0.0.8 (2021-08-21)}{
   \subsection{New Features}{
     \itemize{
