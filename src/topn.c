@@ -41,9 +41,17 @@ SEXP topnR(SEXP vec, SEXP n, SEXP dec, SEXP hasna, SEXP env) {
   const SEXPTYPE tvec = UTYPEOF(vec);
   const Rboolean vhasna = asLogical(hasna);
   if ( ((len0 > 2000 && vhasna == FALSE) || (len0 > 1500 && vhasna == TRUE)) && (tvec == INTSXP || tvec == REALSXP)) {
-    SEXP ans = PROTECT(callToOrder(vec, "radix", dcr, TRUE, env));
-    SETLENGTH(ans, len0);
-    UNPROTECT(1);
+    SEXP prem = PROTECT(callToOrder(vec, "radix", dcr, TRUE, env));
+    SEXP ans = PROTECT(allocVector(UTYPEOF(prem), len0));
+    switch(UTYPEOF(prem)) {
+    case INTSXP: {
+      memcpy(INTEGER(ans), INTEGER(prem), len0 *sizeof(int));
+    } break;
+    case REALSXP: {
+      memcpy(REAL(ans), REAL(prem), len0 *sizeof(double));
+    } break;
+    }
+    UNPROTECT(2);
     return ans;
   }
   SEXP ans = PROTECT(allocVector(INTSXP, len0));

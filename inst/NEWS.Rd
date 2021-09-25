@@ -4,6 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.10 (2021-09-25)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{psum}}, \code{\strong{pmean}}, \code{\strong{pprod}}, \code{\strong{pany}} and \code{\strong{pall}} now support lists. Thanks to Sebastian Krantz for the request and code suggestion.
+    }
+  }
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Function \code{\strong{topn}} should now work for ALTREP object. Thanks to @ben-schwen for raising an issue.
+    }
+  }
+}
+
 \section{version 0.0.9 (2021-09-12)}{
   \subsection{Notes}{
     \itemize{

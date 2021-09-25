@@ -53,7 +53,7 @@ Type 'q()' to quit R.
 + }
 > 
 > library(kit); unloadNamespace("kit")
-Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
+Attaching kit 0.0.10 (OPENMP enabled using 1 thread)
 > 
 > topn        = kit::topn
 > setlevels   = kit::setlevels
@@ -93,6 +93,7 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > x6 = sample(as.numeric(c(1:1000)),1e3,TRUE)
 > class2134 = setClass("class2134", slots=list(x="numeric"))
 > s1 = class2134(x=20191231)
+> x7 = seq.int(1e4)
 > 
 > check("0001.001", topn(x0, 1L, decreasing=FALSE), order(x0)[1:1])
 > check("0001.002", topn(x0, 2L, decreasing=FALSE), order(x0)[1:2])
@@ -222,8 +223,10 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > check("0001.127", topn(x4, 2L, decreasing=FALSE,hasna = FALSE), error = "Type raw is not supported.")
 > check("0001.128", topn(c(1,2,4,10,2,3), 2L, hasna=c(FALSE,TRUE)), error = "Argument 'hasna' must be TRUE or FALSE and length 1.")
 > check("0001.129", topn(x5, 2001L,decreasing = FALSE), order(x5, decreasing=FALSE)[1:2001])
+> check("0001.130", topn(x7,1e4,decreasing=FALSE), order(x7, decreasing=FALSE))
+> check("0001.131", topn(as.numeric(x7),1e4,decreasing=FALSE), order(as.numeric(x7), decreasing=FALSE))
 > 
-> rm(s1, class2134, x0, x1, x2, x3, x4, x5, x6)
+> rm(s1, class2134, x0, x1, x2, x3, x4, x5, x6, x7)
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   iif 
@@ -723,6 +726,7 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > check("0005.026", psum(iris[,1:2]), rowSums(iris[,1:2]))
 > check("0005.027", psum(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
 > check("0005.028", psum(1:150,iris$Species, na.rm = FALSE), error="Function 'psum' is not meaningful for factors.")
+> check("0005.029", psum(unclass(mtcars)),psum(mtcars))
 > 
 > # --------------------------------------------------------------------------------------------------
 > #                                   pprod 
@@ -755,7 +759,8 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > check("0006.025", pprod(NA_complex_, na.rm = TRUE), 1+0i)
 > check("0006.026", pprod(iris[,1:2]), iris$Sepal.Length*iris$Sepal.Width)
 > check("0006.027", pprod(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
-> check("0005.028", pprod(1:150,iris$Species, na.rm = FALSE), error="Function 'pprod' is not meaningful for factors.")
+> check("0006.028", pprod(1:150,iris$Species, na.rm = FALSE), error="Function 'pprod' is not meaningful for factors.")
+> check("0006.029", pprod(unclass(mtcars)),pprod(mtcars))
 > 
 > rm(x, y, z, x0, y0, z0)
 > 
@@ -1133,7 +1138,8 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > check("0011.023", pmean(NA_integer_, na.rm = TRUE), mean(NA_integer_,na.rm = TRUE))
 > check("0011.024", pmean(NA_real_, na.rm = TRUE), mean(NA_real_,na.rm = TRUE))
 > check("0011.025", pmean(data.frame(x,y,z), na.rm = TRUE), pmean(x,y,z,na.rm = TRUE))
-> check("0005.026", pmean(1:150,iris$Species, na.rm = FALSE), error="Function 'pmean' is not meaningful for factors.")
+> check("0011.026", pmean(1:150,iris$Species, na.rm = FALSE), error="Function 'pmean' is not meaningful for factors.")
+> check("0011.027", pmean(unclass(mtcars)),pmean(mtcars))
 > 
 > rm(x, y, z, x0, y0, z0, x1, y1, z1)
 > 
@@ -1696,4 +1702,4 @@ Attaching kit 0.0.9 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.169   0.504   4.671 
+  4.251   0.614   4.957 
