@@ -4,7 +4,7 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.10 (2021-09-25)}{
+\section{version 0.0.10 (2021-11-28)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{psum}}, \code{\strong{pmean}}, \code{\strong{pprod}}, \code{\strong{pany}} and \code{\strong{pall}} now support lists. Thanks to Sebastian Krantz for the request and code suggestion.
