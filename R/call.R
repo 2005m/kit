@@ -11,7 +11,6 @@ nif         = function(..., default=NULL) .Call(CnifR, default, parent.frame(), 
 nswitch     = function(x, ..., default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CnswitchR, x, default, nThread, checkEnc, list(...))
 pall        = function(..., na.rm=FALSE) .Call(CpallR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pany        = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
-pcount      = function(..., value) .Call(CpcountR, value, list(...))
 pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 psum        = function(..., na.rm=FALSE) .Call(CpsumR,  na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
@@ -20,9 +19,17 @@ topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(ind
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
 
-.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.10 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
+.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.11 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
+
+pcount      = function(..., value) {
+  if(is.na(value[1])) {
+    .Call(CpcountNAR, value, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+  } else {
+    .Call(CpcountR, value, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+  }
+}
 
 psort = function(x, decreasing = FALSE, na.last = NA, nThread=getOption("kit.nThread"), c.locale = TRUE) {
   if (typeof(x) == "character") {

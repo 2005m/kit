@@ -4,6 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.11 (2022-03-19)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{pcount}} now supports data.frame.
+    }
+  }
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Function \code{\strong{pcount}} now works with specific NA values, i.e. NA_real_, NA_character_ etc...
+    }
+  }
+}
+
 \section{version 0.0.10 (2021-11-28)}{
   \subsection{New Features}{
     \itemize{
