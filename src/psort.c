@@ -560,15 +560,12 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
   if (TYPEOF(nthread) != INTSXP) {
     error("Argument 'nThread' (%s) must be of type integer.",type2char(TYPEOF(nthread)));
   }
-
   const int na_pos = asLogical(nalast);
   const int dcr = asLogical(decreasing);
   const int addNAv = asLogical(addNA);
   const int xlen = LENGTH(x);
-  
   SEXP uVals = PROTECT(dupVecSort(x));
   const int n = LENGTH(uVals);
-  
   SEXP valSorted = PROTECT(callToSort2(uVals, "quick", dcr, 1, env));
   SEXP *restrict pvalSorted = STRING_PTR(valSorted);
   
@@ -578,6 +575,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
       NAidx = i; break;
     }
   }
+
   if ( ((na_pos != 0 && !dcr) || (na_pos == 0 && dcr)) && NAidx != n-1) {
     if (NAidx >= 0) {
       memmove(pvalSorted+NAidx, pvalSorted+NAidx+1, (n - ((NAidx + 1)))*sizeof(SEXP));
@@ -589,7 +587,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
       pvalSorted[0] = NA_STRING;
     }
   }
-  
+
   int *restrict lookupTable = buildTable(valSorted);
   const SEXP *restrict px = STRING_PTR(x);
   int nth = asInteger(nthread);
@@ -607,20 +605,6 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
     OMP_PARALLEL_FOR(nth)
     for (int j=0; j<xlen; ++j) {
       pans[j] = LOOKUP_VAL(px[j]) + 1;
-    }
-  }
-
-  if (na_pos == NA_LOGICAL) {
-    int ct = 0;
-    for (int i = xlen-1; i >= 0; --i) {
-      if( px[pans[i]-1] == NA_STRING) {
-        ct++;
-      } else {
-        break;
-      }
-    }
-    if (ct > 0) {
-      SETLENGTH(ans, xlen-ct);
     }
   }
   

@@ -1655,6 +1655,12 @@ check("0021.006", charToFact(c("a","b",NA,"a")), addNA(as.factor(c("a","b",NA,"a
 check("0021.007", levels(charToFact(x1,decreasing = TRUE)), sort(levels(as.factor(x1)),decreasing = TRUE))
 check("0021.008", charToFact(c("a","b"),addNA=NA), error="Argument 'addNA' must be TRUE or FALSE.")
 check("0021.009", charToFact(c("a","b",NA,"a"), addNA=FALSE), as.factor(c("a","b",NA,"a")))
+check("0021.010", charToFact(c("a","b",NA,"c")), addNA(as.factor(c("a","b",NA,"c"))))
+check("0021.011", charToFact(c("a","b",NA,"c"),addNA=FALSE), as.factor(c("a","b",NA,"c")))
+check("0021.012", charToFact(c("a",NA,"b")), addNA(as.factor(c("a",NA,"b"))))
+check("0021.013", charToFact(c("a",NA,"a","b")), addNA(as.factor(c("a",NA,"a","b"))))
+check("0021.014", charToFact(c("a",NA,"aa","b")), addNA(as.factor(c("a",NA,"aa","b"))))
+check("0021.015", charToFact(c("a",NA,"aa")), addNA(as.factor(c("a",NA,"aa"))))
 
 rm(x1)
 

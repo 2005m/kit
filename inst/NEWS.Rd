@@ -4,6 +4,14 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.12 (2022-04-10)}{
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Function \code{\strong{charToFact}} was not returning proper results. Thanks to @alex-raw for raising an issue.
+    }
+  }
+}
+
 \section{version 0.0.11 (2022-03-19)}{
   \subsection{New Features}{
     \itemize{
