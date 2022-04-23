@@ -4,7 +4,14 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.12 (2022-04-10)}{
+\section{version 0.0.12 (2022-04-23)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
+      
+      \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}).
+    }
+  }
   \subsection{Bug Fixes}{
     \itemize{
       \item Function \code{\strong{charToFact}} was not returning proper results. Thanks to @alex-raw for raising an issue.

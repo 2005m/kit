@@ -679,10 +679,8 @@ SEXP pcountR(SEXP x, SEXP args) {
   return ans;
 }
 
-SEXP pcountNAR(SEXP x, SEXP args) {
-  if (xlength(x) != 1 || isNull(x)) {
-    error("Argument 'value' must be non NULL and length 1.");
-  }
+SEXP pcountNAR(SEXP args) {
+  
   const int n=length(args);
   if (n < 1) {
     error("Please supply at least 1 argument. (%d argument supplied)", n);
@@ -695,169 +693,112 @@ SEXP pcountNAR(SEXP x, SEXP args) {
     error("Argument %d is of type %s. Only logical, integer, double, complex and"
             " character types are supported.", 1, type2char(anstype));
   }
-  SEXPTYPE tx = UTYPEOF(x);
-  if (anstype != tx) {
-    error("Type of 'value' (%s) is different than type of Argument %d (%s). "
-            "Please make sure both have the same type.", type2char(tx), 1, type2char(anstype));
-  }
-  SEXP classx = PROTECT(getAttrib(x, R_ClassSymbol));
-  if(!R_compute_identical(PROTECT(getAttrib(args0, R_ClassSymbol)), classx, 0)) {
-    error("Class of 'value' is different than class of Argument %d. "
-            "Please make sure both have the same class.", 1);
-  }
-  UNPROTECT(1);
-  int nprotect = 0;
-  const bool xf = isFactor(x);
-  SEXP levelsx;
-  if (xf) {
-    levelsx = PROTECT(getAttrib(x, R_LevelsSymbol)); nprotect++;
-    if (!R_compute_identical(levelsx, PROTECT(getAttrib(args0, R_LevelsSymbol)), 0)) {
-      error("Levels of 'value' are different than levels of Argument %d. "
-              "Please make sure both have the same levels.", 1);
-    }
-    UNPROTECT(1);
-  }
   for (int i = 1; i < n; ++i) {
-    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
-    if (type != anstype) {
-      error("Type of argument %d is %s but argument %d is of type %s. "
-              "Please make sure both have the same type.", i+1,
-              type2char(type), 1, type2char(anstype));
-    }
-    if(!R_compute_identical(PROTECT(getAttrib(PTR_ETL(args, i), R_ClassSymbol)), classx, 0)) {
-      error("Class of 'value' is different than class of Argument %d. "
-              "Please make sure both have the same class.", i+1);
-    }
-    UNPROTECT(1);
-    if (xf) {
-      if (!R_compute_identical(levelsx, PROTECT(getAttrib(PTR_ETL(args, i), R_LevelsSymbol)), 0)) {
-        error("Levels of 'value' are different than levels of Argument %d. "
-                "Please make sure both have the same levels.", i + 1);
-      }
-      UNPROTECT(1);
-    }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
               "If you wish to 'recycle' your argument, please use rep() to make this intent "
               "clear to the readers of your code.", i+1, len1, 1, len0);
     }
   }
-  UNPROTECT(1 + nprotect);
   SEXP ans;
   if (len0 > INT_MAX) {
     ans = PROTECT(allocVector(REALSXP, len0)); // # nocov start
     double *restrict pans = REAL(ans);
     memset(pans, 0, (unsigned)len0*sizeof(double));
-    switch(anstype) {
+    for (int i = 0; i < n; ++i) {
+    switch(UTYPEOF(PTR_ETL(args, i))) {
     case LGLSXP: {
-      for (int i = 0; i < n; ++i) {
-        int *pa = LOGICAL(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (pa[j] == NA_LOGICAL) {
-            pans[j]++;
-          }
+      int *pa = LOGICAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == NA_LOGICAL) {
+          pans[j]++;
         }
       }
     } break;
     case INTSXP: {
-      for (int i = 0; i < n; ++i) {
-        int *pa = INTEGER(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (pa[j] == NA_INTEGER) {
-            pans[j]++;
-          }
+      int *pa = INTEGER(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == NA_INTEGER) {
+          pans[j]++;
         }
       }
     } break;
     case REALSXP: {
-      for (int i = 0; i < n; ++i) {
-        double *pa = REAL(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (ISNAN(pa[j])) {
-            pans[j]++;
-          }
+      double *pa = REAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (ISNAN(pa[j])) {
+          pans[j]++;
         }
       }
     } break;
     case CPLXSXP: {
-      for (int i = 0; i < n; ++i) {
-        Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (ISNAN_COMPLEX(pa[j])) {
-            pans[j]++;
-          }
+      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (ISNAN_COMPLEX(pa[j])) {
+          pans[j]++;
         }
       }
     } break;
     case STRSXP: {
-      for (int i = 0; i < n; ++i) {
-        const SEXP pa = PTR_ETL(args, i);
-        const SEXP *restrict px = STRING_PTR(pa);
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (px[j] == NA_STRING) {
-            pans[j]++;
-          }
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = STRING_PTR(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (px[j] == NA_STRING) {
+          pans[j]++;
         }
       }
     } break;
     } // # nocov end
+    }
   } else {
     ans = PROTECT(allocVector(INTSXP, len0));
     int *restrict pans = INTEGER(ans);
     memset(pans, 0, (unsigned)len0*sizeof(int));
-    switch(anstype) {
+    for (int i = 0; i < n; ++i) {
+    switch(UTYPEOF(PTR_ETL(args, i))) {
     case LGLSXP: {
-      for (int i = 0; i < n; ++i) {
-        int *pa = LOGICAL(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (pa[j] == NA_LOGICAL) {
-            pans[j]++;
-          }
+      int *pa = LOGICAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == NA_LOGICAL) {
+          pans[j]++;
         }
       }
     } break;
     case INTSXP: {
-      for (int i = 0; i < n; ++i) {
-        int *pa = INTEGER(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (pa[j] == NA_INTEGER) {
-            pans[j]++;
-          }
+      int *pa = INTEGER(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (pa[j] == NA_INTEGER) {
+          pans[j]++;
         }
       }
     } break;
     case REALSXP: {
-      for (int i = 0; i < n; ++i) {
-        double *pa = REAL(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (ISNAN(pa[j])) {
-            pans[j]++;
-          }
+      double *pa = REAL(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (ISNAN(pa[j])) {
+          pans[j]++;
         }
       }
     } break;
     case CPLXSXP: {
-      for (int i = 0; i < n; ++i) {
-        Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (ISNAN_COMPLEX(pa[j])) {
-            pans[j]++;
-          }
+      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (ISNAN_COMPLEX(pa[j])) {
+          pans[j]++;
         }
       }
     } break;
     case STRSXP: {
-      for (int i = 0; i < n; ++i) {
-        const SEXP pa = PTR_ETL(args, i);
-        const SEXP *restrict px = STRING_PTR(pa);
-        for (ssize_t j = 0; j < len0; ++j) {
-          if (px[j] == NA_STRING) {
-            pans[j]++;
-          }
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = STRING_PTR(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (px[j] == NA_STRING) {
+          pans[j]++;
         }
       }
     } break;
+    }
     }
   }
   UNPROTECT(1);
