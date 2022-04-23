@@ -38,15 +38,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "weights"))
+          install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr")
         shell: Rscript {0}
 
       - name: Test coverage
-        run: |
-          library(covr)
-          options(covr.flags = c(CXXFLAGS = "-O2", LDFLAGS=""))
-          Sys.setenv(NCRAN = TRUE, NMAC = TRUE)
-          codecov(type = "all")
+        run: covr::codecov()
         shell: Rscript {0}
