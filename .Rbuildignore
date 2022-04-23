@@ -1,4 +1,4 @@
-^\.travis\.yml$
+^\.github$
 ^\.appveyor\.yml$
 ^README\.md$
 LICENSE
