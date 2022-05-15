@@ -49,6 +49,7 @@ pmean       = kit::pmean
 countNA     = kit::countNA
 count       = kit::count
 pcount      = kit::pcount
+pcountNA    = kit::pcountNA
 fduplicated = kit::fduplicated
 funique     = kit::funique
 countOccur  = kit::countOccur
@@ -1676,10 +1677,32 @@ check("0022.002", clearData(x), TRUE)
 rm(x)
 
 # --------------------------------------------------------------------------------------------------
+#                                   pcountNA
+# --------------------------------------------------------------------------------------------------
+
+v = c("hello",NA,"bye","john")
+w = c(NA_integer_,2L,8L,9L)
+x = c(1, 3, NA, 5)
+y = c(2, NA, 4, 1)
+z = c(3, 4, 4, 1)
+
+d1 = c(as.Date("2020-06-22"),as.Date("2020-06-23"),as.Date("2020-06-22"),NA)
+f1 = factor(c("a","b","c",NA), c("a","b","c",NA))
+
+check("0023.001", pcountNA(x), c(0L,0L,1L,0L))
+check("0023.002", pcountNA(x, y), c(0L,1L,1L,0L))
+check("0023.003", pcountNA(x, y, z), c(0L,1L,1L,0L))
+check("0023.004", pcountNA(x, y, z, v), c(0L,2L,1L,0L))
+check("0023.005", pcountNA(x, y, z, v, w), c(1L,2L,1L,0L))
+check("0023.006", pcountNA(data.frame(x, y, z, v, w, f1, d1)), c(1L,2L,1L,2L))
+
+rm(v,w,x,y,z,f1,d1)
+
+# --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS
 # --------------------------------------------------------------------------------------------------
 
-rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,
+rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,pcountNA,
    pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact,shareData,getData,clearData)
 
 # --------------------------------------------------------------------------------------------------

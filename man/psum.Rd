@@ -5,9 +5,11 @@
 \alias{pany}
 \alias{pmean}
 \alias{pcount}
+\alias{pcountNA}
 \title{ Sum, Product, Mean and more}
 \description{
 Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works for integer, double and complex types. These functions do not recycle vectors. \code{pany} and \code{pall} are derived from base functions \code{all} and \code{any}. Note that \code{pmean} only works with integer and double types.
+Finally \code{pcountNA} is equivalent to \code{pcount} with the argument \code{value} set to \code{NA} and they both allow \code{NA} counting in the case of mixed data type.
 }
 \usage{
   psum(..., na.rm=FALSE)
@@ -16,6 +18,7 @@ Similar to \code{pmin} and \code{pmax} but for sum, product and mean. Only works
   pany(..., na.rm=FALSE)
   pmean(..., na.rm=FALSE)
   pcount(..., value)
+  pcountNA(...)
 }
 \arguments{
   \item{...}{ Numeric arguments of type integer, double complex. Logical vector for \code{pall} and \code{pany}. Functions \code{pall}, \code{pany},\code{pmean},\code{pprod} and \code{psum} also accept a single \code{data.frame} made of the previous types. See example 7 below.}
