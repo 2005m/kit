@@ -12,6 +12,7 @@ nif         = function(..., default=NULL) .Call(CnifR, default, parent.frame(), 
 nswitch     = function(x, ..., default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CnswitchR, x, default, nThread, checkEnc, list(...))
 pall        = function(..., na.rm=FALSE) .Call(CpallR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pany        = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+panyNA      = function(...) as.logical(pcountNA(...))
 pcountNA    = function(...) .Call(CpcountNAR, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
@@ -20,11 +21,17 @@ setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Ca
 topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(index) .Call(CtopnR, vec, n, decreasing, hasna, parent.frame()) else vec[.Call(CtopnR, vec, n, decreasing, hasna, parent.frame())]
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
-
+  
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.12 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
 
+pallNA      = function(...) {
+   # unclass(..1) because if X is a data.frame, length() is more expensive 
+   X = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...) 
+   .Call(CpcountNAR, X) == length(X) 
+}
+                                                                     
 pcount      = function(..., value) {
   if(is.na(value[1])) {
     .Call(CpcountNAR, if (...length() == 1L && is.list(..1)) ..1 else list(...))
