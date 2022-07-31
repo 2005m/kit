@@ -2,7 +2,9 @@
 \alias{psum}
 \alias{pprod}
 \alias{pall}
+\alias{pallNA}
 \alias{pany}
+\alias{panyNA}
 \alias{pmean}
 \alias{pcount}
 \alias{pcountNA}
@@ -15,7 +17,9 @@ Finally \code{pcountNA} is equivalent to \code{pcount} with the argument \code{v
   psum(..., na.rm=FALSE)
   pprod(..., na.rm=FALSE)
   pall(..., na.rm=FALSE)
+  pallNA(...)
   pany(..., na.rm=FALSE)
+  panyNA(...)
   pmean(..., na.rm=FALSE)
   pcount(..., value)
   pcountNA(...)
