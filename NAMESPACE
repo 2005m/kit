@@ -2,6 +2,6 @@ useDynLib(kit, .registration = TRUE)
 
 export(
   charToFact, count, countNA, countOccur, fduplicated, fpos, funique, iif, nif, nswitch,
-  pall, pallNA, pany, panyNA, pcount, pcountNA, pmean, pprod, psum, setlevels, topn, uniqLen, vswitch, psort,
+  pall, pallNA, pallv, pany, panyNA, panyv, pcount, pcountNA, pmean, pprod, psum, setlevels, topn, uniqLen, vswitch, psort,
   getData, shareData, clearData
 )
