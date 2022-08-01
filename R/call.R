@@ -26,12 +26,10 @@ vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
 
-pallNA      = function(...) {
-   # unclass(..1) because if X is a data.frame, length() is more expensive 
-   X = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...) 
-   .Call(CpcountNAR, X) == length(X) 
-}
-                                                                     
+pallNA      = function(...) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); .Call(CpcountNAR, x) == length(x) }
+pallv       = function(..., value) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); pcount(..., value = value) == length(x) }                                                                     
+panyv       = function(..., value) pcount(..., value = value) > 0
+
 pcount      = function(..., value) {
   if(is.na(value[1])) {
     .Call(CpcountNAR, if (...length() == 1L && is.list(..1)) ..1 else list(...))
