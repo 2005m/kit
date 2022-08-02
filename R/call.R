@@ -21,14 +21,14 @@ setlevels   = function(x, old = levels(x), new, skip_absent=FALSE) invisible(.Ca
 topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(index) .Call(CtopnR, vec, n, decreasing, hasna, parent.frame()) else vec[.Call(CtopnR, vec, n, decreasing, hasna, parent.frame())]
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
-  
+
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.12 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
 
 pallNA      = function(...) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); .Call(CpcountNAR, x) == length(x) }
 pallv       = function(..., value) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); pcount(..., value = value) == length(x) }                                                                     
-panyv       = function(..., value) pcount(..., value = value) > 0
+panyv       = function(..., value) as.logical(pcount(..., value = value))
 
 pcount      = function(..., value) {
   if(is.na(value[1])) {
