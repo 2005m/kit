@@ -18,7 +18,7 @@
 
 #include "kit.h"
 
-SEXP ompEnabledR() {
+SEXP ompEnabledR(void) {
   return omp_enabled ? ScalarLogical(TRUE) : ScalarLogical(FALSE);
 }
 
