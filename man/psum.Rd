@@ -94,7 +94,7 @@ pany(x, y, z, na.rm = TRUE)
 pcount(x, y, z, value = TRUE)
 pcountNA(x, y, z)
 
-# Example 8: data.frameas an input
+# Example 8: list/data.frame as an input
 pprod(iris[,1:2])
 psum(iris[,1:2])
 pmean(iris[,1:2])
