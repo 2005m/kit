@@ -9,7 +9,7 @@ charToFact(x, decreasing=FALSE, addNA=TRUE,
            nThread=getOption("kit.nThread"))
 }
 \arguments{
-  \item{x}{ A vectorof type character}
+  \item{x}{ A vector of type character}
   \item{decreasing}{ A boolean. Whether to order levels in decreasing order or not. Default is \code{FALSE}.}
   \item{addNA}{ A boolean. Whether to include \code{NA} in levels of the output or not. Default is \code{TRUE}.}
   \item{nThread}{ Number of thread to use.}
