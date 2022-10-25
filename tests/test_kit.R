@@ -1698,6 +1698,75 @@ check("0023.006", pcountNA(data.frame(x, y, z, v, w, f1, d1)), c(1L,2L,1L,2L))
 
 rm(v,w,x,y,z,f1,d1)
 
+
+
+# --------------------------------------------------------------------------------------------------
+#                                   pfirst and plast
+# --------------------------------------------------------------------------------------------------
+
+x = c(1, 3, NA, 5)
+y = c(2, NA, 4, 1)
+z = c(3, 4, 4, NA)
+x1 = sample(c("a","b",NA),1e2,TRUE)
+y1 = sample(c("c","d",NA),1e2,TRUE)
+z1 = sample(c("e","f",NA),1e2,TRUE)
+
+base_pfirst <- function(...) {
+  x = if(...length() == 1L && is.list(..1)) unclass(..1) else list(...)
+  res = x[[1]]
+  if(length(x) == 1L) return(res)
+  for(i in 2:length(x)) {
+    miss <- is.na(res)
+    res[miss] <- x[[i]][miss]
+  }
+  res
+}
+
+base_plast <- function(...) {
+  x = if(...length() == 1L && is.list(..1)) unclass(..1) else list(...)
+  n = length(x)
+  res = x[[n]]
+  if(n == 1L) return(res)
+  for(i in (n-1):1) {
+    miss <- is.na(res)
+    res[miss] <- x[[i]][miss]
+  }
+  res
+}
+
+check("0024.001", pfirst(x, y, z), base_pfirst(x, y, z))
+check("0024.002", plast(x, y, z), base_plast(x, y, z))
+check("0024.003", pfirst(y, z, x), base_pfirst(y, z, x))
+check("0024.004", plast(y, z, x), base_plast(y, z, x))
+
+check("0024.005", pfirst(x1, y1, z1), base_pfirst(x1, y1, z1))
+check("0024.006", plast(x1, y1, z1), base_plast(x1, y1, z1))
+check("0024.007", pfirst(y1, z1, x1), base_pfirst(y1, z1, x1))
+check("0024.008", plast(y1, z1, x1), base_plast(y1, z1, x1))
+
+check("0024.009", pfirst(list(x1, y1, z1)), base_pfirst(list(x1, y1, z1)))
+check("0024.010", plast(list(x1, y1, z1)), base_plast(list(x1, y1, z1)))
+check("0024.011", pfirst(data.frame(y1, z1, x1)), base_pfirst(data.frame(y1, z1, x1)))
+check("0024.012", plast(data.frame(y1, z1, x1)), base_plast(data.frame(y1, z1, x1)))
+
+check("0024.013", pfirst(list(1, NULL), list(NULL, 2)), list(1, 2))
+check("0024.014", plast(list(1, NULL), list(NULL, 2)), list(1, 2))
+
+check("0024.015", pfirst(as.character(z), y), error = "All arguments need to have the same data type, except for numeric and logical types")
+check("0024.016", pfirst(x, y, 1:2), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+check("0024.017", pfirst(1:10, 1:5), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+check("0024.018", pfirst(x, as.list(z), y), error = "All arguments need to have the same data type, except for numeric and logical types")
+
+check("0024.019", typeof(pfirst(1:4, x)), "double")
+check("0024.020", typeof(pfirst(x, 1:4)), "double")
+
+check("0024.021", pfirst(as.factor(x), x), error = "If one argument is a factor, all arguments need to be factors")
+check("0024.022", pfirst(x, as.factor(x)), error = "If one argument is a factor, all arguments need to be factors")
+check("0024.023", pfirst(as.factor(x), as.factor(y)), error = "All factors need to have identical levels")
+check("0024.024", class(pfirst(as.factor(x1), as.factor(x1))), "factor")
+
+rm(x, y, z, x1, y1, z1, base_pfirst, base_plast)
+
 # --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS
 # --------------------------------------------------------------------------------------------------
