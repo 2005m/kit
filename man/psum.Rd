@@ -14,7 +14,7 @@
 \alias{plast}
 \title{Parallel (Statistical) Functions}
 \description{
-Vector-valued (statistical) functions operating in parallel over argument vectors or a single list of vectors (such as a data frame). Similar to \code{\link{pmin}} and \code{\link{pmax}}, except that these functions do not recycle vectors. 
+Vector-valued (statistical) functions operating in parallel over vectors passed as arguments, or a single list of vectors (such as a data frame). Similar to \code{\link{pmin}} and \code{\link{pmax}}, except that these functions do not recycle vectors. 
 }
 \usage{
   psum(..., na.rm = FALSE)
@@ -51,6 +51,9 @@ None of these functions recycle vectors i.e. all input vectors need to have the 
 }
 \value{
 \code{psum/pprod/pmean} return the sum, product or mean of all arguments. The value returned will be of the highest argument type (integer < double < complex). \code{pall[v/NA]} and \code{pany[v/NA]} return a logical vector. \code{pcount[NA]} returns an integer vector. \code{pfirst/plast} return a vector of the same type as the inputs. 
+}
+\seealso{
+Package 'collapse' provides column-wise and scalar-valued analogues to many of these functions.
 }
 \author{Morgan Jacob and Sebastian Krantz}
 \examples{
