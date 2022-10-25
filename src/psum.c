@@ -691,13 +691,17 @@ SEXP pcountNAR(SEXP args) {
   const SEXP args0 = PTR_ETL(args, 0);
   SEXPTYPE anstype = UTYPEOF(args0);
   const R_xlen_t len0 = xlength(args0);
-  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP &&
-      anstype != CPLXSXP && anstype != STRSXP) {
-    error("Argument %d is of type %s. Only logical, integer, double, complex and"
-            " character types are supported.", 1, type2char(anstype));
+  if (!IS_VALID_TYPE(anstype)) {
+    error("Argument %d is of type %s. Only logical, integer, double, complex, "
+          "character and list types are supported.", 1, type2char(anstype));
   }
   for (int i = 1; i < n; ++i) {
+    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
+    if (!IS_VALID_TYPE(type)) {
+      error("Argument %d is of type %s. Only logical, integer, double, complex, "
+            "character and list types are supported.", i+1, type2char(type));
+    }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
               "If you wish to 'recycle' your argument, please use rep() to make this intent "
@@ -752,6 +756,15 @@ SEXP pcountNAR(SEXP args) {
         }
       }
     } break;
+    case VECSXP: {
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = SEXPPTR_RO(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (xlength(px[j]) == 0) {
+          pans[j]++;
+        }
+      }
+    } break;
     } // # nocov end
     }
   } else {
@@ -797,6 +810,15 @@ SEXP pcountNAR(SEXP args) {
       const SEXP *restrict px = STRING_PTR(pa);
       for (ssize_t j = 0; j < len0; ++j) {
         if (px[j] == NA_STRING) {
+          pans[j]++;
+        }
+      }
+    } break;
+    case VECSXP: {
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = SEXPPTR_RO(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (xlength(px[j]) == 0) {
           pans[j]++;
         }
       }

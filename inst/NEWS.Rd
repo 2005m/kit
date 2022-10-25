@@ -10,7 +10,7 @@
     
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
       
-      \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}).
+      \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}). \code{\strong{pcountNA}} also supports list-vectors as inputs and counts empty or \code{NULL} elements as \code{NA}.
       
       \item Functions \code{\strong{panyv}}, \code{\strong{panyNA}}, \code{\strong{pallv}} and \code{\strong{pallNA}} are added as efficient wrappers around \code{\strong{pcount}} and \code{\strong{pcountNA}}. They are parallel equivalents of scalar functions \code{anyv}, \code{allv} and \code{allNA} in the 'collapse' R package. 
       
