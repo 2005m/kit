@@ -44,8 +44,14 @@ iif         = kit::iif
 fpos        = kit::fpos
 vswitch     = kit::vswitch
 pall        = kit::pall
+pallNA      = kit::pallNA
+pallv       = kit::pallv
 pany        = kit::pany
+panyNA      = kit::panyNA
+panyv       = kit::panyv
 pmean       = kit::pmean
+pfirst      = kit::pfirst
+plast       = kit::plast
 countNA     = kit::countNA
 count       = kit::count
 pcount      = kit::pcount
@@ -1696,6 +1702,60 @@ check("0023.004", pcountNA(x, y, z, v), c(0L,2L,1L,0L))
 check("0023.005", pcountNA(x, y, z, v, w), c(1L,2L,1L,0L))
 check("0023.006", pcountNA(data.frame(x, y, z, v, w, f1, d1)), c(1L,2L,1L,2L))
 
+# --------------------------------------------------------------------------------------------------
+#                                   pallNA
+# --------------------------------------------------------------------------------------------------
+
+check("0024.001", pallNA(data.frame(x, y, z, v, w, f1, d1)), c(FALSE, FALSE, FALSE, FALSE))
+check("0024.002", pallNA(data.frame(x, x, x, x)), c(FALSE, FALSE, TRUE, FALSE))
+check("0024.003", pallNA(v), c(FALSE, TRUE, FALSE, FALSE))
+check("0024.004", pallNA(w), c(TRUE, FALSE, FALSE, FALSE))
+check("0024.005", pallNA(x), c(FALSE, FALSE, TRUE, FALSE))
+
+# --------------------------------------------------------------------------------------------------
+#                                   pallv
+# --------------------------------------------------------------------------------------------------
+
+check("0025.001", pallv(data.frame(a=c(1,1,2,2),b=c(1,2,1,2)),value=1), c(TRUE, FALSE, FALSE, FALSE))
+check("0025.002", pallv(v, value = "bye"), c(FALSE, FALSE, TRUE, FALSE))
+check("0025.003", pallv(x, x, value = 3), c(FALSE, TRUE, FALSE, FALSE))
+check("0025.004", pallv(w, value = 8L), c(FALSE, FALSE, TRUE, FALSE))
+
+# --------------------------------------------------------------------------------------------------
+#                                   panyv
+# --------------------------------------------------------------------------------------------------
+
+check("0026.001", panyv(data.frame(a=c(1,1,2,2),b=c(1,2,1,2)),value=1), c(TRUE, TRUE, TRUE, FALSE))
+check("0026.002", panyv(v, value = "bye"), c(FALSE, FALSE, TRUE, FALSE))
+check("0026.003", panyv(x, y, value = 1), c(TRUE, FALSE, FALSE, TRUE))
+check("0026.004", panyv(w, value = 8L), c(FALSE, FALSE, TRUE, FALSE))
+
+# --------------------------------------------------------------------------------------------------
+#                                   panyNA
+# --------------------------------------------------------------------------------------------------
+
+check("0027.001", panyNA(data.frame(x, y, z, v, w, f1, d1)), c(TRUE, TRUE, TRUE, TRUE))
+check("0027.002", panyNA(data.frame(y, z, v, w, f1, d1)), c(TRUE, TRUE, FALSE, TRUE))
+check("0027.003", panyNA(v), c(FALSE, TRUE, FALSE, FALSE))
+check("0027.004", panyNA(w), c(TRUE, FALSE, FALSE, FALSE))
+check("0027.005", panyNA(x), c(FALSE, FALSE, TRUE, FALSE))
+
+# --------------------------------------------------------------------------------------------------
+#                                   pfirst
+# --------------------------------------------------------------------------------------------------
+
+check("0028.001", pfirst(v), v)
+check("0028.002", pfirst(x, y), c(1, 3, 4, 5))
+check("0028.003", pfirst(w), w)
+
+# --------------------------------------------------------------------------------------------------
+#                                   plast
+# --------------------------------------------------------------------------------------------------
+
+check("0029.001", plast(v), v)
+check("0029.002", plast(x, y), c(2, 3, 4, 1))
+check("0029.003", plast(w), w)
+
 rm(v,w,x,y,z,f1,d1)
 
 
@@ -1772,7 +1832,8 @@ rm(x, y, z, x1, y1, z1, base_pfirst, base_plast)
 # --------------------------------------------------------------------------------------------------
 
 rm(check,count,countNA,countOccur,fduplicated,fpos,funique,iif,nswitch,nif,pall,pany,pcount,pcountNA,
-   pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact,shareData,getData,clearData)
+   pmean,pprod,psum,setlevels,topn,uniqLen,vswitch,psort,charToFact,shareData,getData,clearData,
+   pallNA, pallv, panyv, panyNA, pfirst, plast)
 
 # --------------------------------------------------------------------------------------------------
 #                                   END

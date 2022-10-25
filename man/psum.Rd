@@ -30,6 +30,8 @@ Vector-valued (statistical) functions operating in parallel over vectors passed 
   panyv(..., value)
   pcount(..., value)
   pcountNA(...)
+  pfirst(...)
+  plast(...)
 }
 \arguments{
   \item{...}{ suitable (atomic) vectors of the same length, or a single list of vectors (such as a \code{data.frame}). See Details on the allowed data types for each function, and Examples.}

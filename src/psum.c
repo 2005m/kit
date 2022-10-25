@@ -830,6 +830,7 @@ SEXP pcountNAR(SEXP args) {
   return ans;
 }
 
+
 SEXP pfirstR(SEXP last, SEXP args) {
   
   if(!IS_BOOL(last)) error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
