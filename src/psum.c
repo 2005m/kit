@@ -806,13 +806,13 @@ SEXP pcountNAR(SEXP args) {
 }
 
 SEXP pfirstR(SEXP last, SEXP args) {
-  if (!IS_BOOL(last)) {
-    error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
-  }
+  
+  if(!IS_BOOL(last)) error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
+  
   const int n = length(args);
-  if (n < 1) {
-    error("Please supply at least 1 argument. (%d argument supplied)", n);
-  }
+  if(n == 1) return args;
+  if(n < 1) error("Please supply at least 1 argument. (%d argument supplied)", n);
+  
   int nprotect = 1;
   if(asLogical(last)) {
     SEXP argsrev = PROTECT(allocVector(VECSXP, n)); ++nprotect;
@@ -825,8 +825,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
   int hasFactor = isFactor(args0);
-  SEXP levels;
-  if(hasFactor) levels = getAttrib(args0, R_LevelsSymbol);
+  SEXP levels = hasFactor ? getAttrib(args0, R_LevelsSymbol) : R_NilValue;
   
   for (int i = 1; i < n; ++i) {
     SEXP argsi = PTR_ETL(args, i);
@@ -857,7 +856,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case INTSXP: {
     int *restrict pans = INTEGER(ans);
     for (int i = 1; i < n; ++i) {
-      int *pa = INTEGER(PTR_ETL(args, i));
+      const int *restrict pa = INTEGER(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(pans[j] == NA_INTEGER) {
@@ -874,7 +873,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
       SEXPTYPE targsi = UTYPEOF(PTR_ETL(args, i));
       ssize_t nna = 0;
       if(targsi == INTSXP || targsi == LGLSXP) {
-        int *pa = INTEGER(PTR_ETL(args, i));
+        const int *restrict pa = INTEGER(PTR_ETL(args, i));
         for (ssize_t j = 0; j < len0; ++j) {
           if(ISNAN(pans[j])) {
             if(pa[j] == NA_INTEGER) ++nna;
@@ -882,7 +881,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
           }
         }
       } else {
-        double *pa = REAL(PTR_ETL(args, i));
+        const double *restrict pa = REAL(PTR_ETL(args, i));
         for (ssize_t j = 0; j < len0; ++j) {
           if(ISNAN(pans[j])) {
             if(ISNAN(pa[j])) ++nna;
@@ -896,7 +895,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case CPLXSXP: {
     Rcomplex *restrict pans = COMPLEX(ans);
     for (int i = 1; i < n; ++i) {
-      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      const Rcomplex *restrict pa = COMPLEX(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(ISNAN_COMPLEX(pans[j])) {
@@ -910,7 +909,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case STRSXP: {
     SEXP *restrict pans = STRING_PTR(ans);
     for (int i = 1; i < n; ++i) {
-      SEXP *pa = STRING_PTR(PTR_ETL(args, i));
+      const SEXP *restrict pa = STRING_PTR(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(pans[j] == NA_STRING) {
@@ -924,7 +923,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case VECSXP: {
     SEXP *restrict pans = (SEXP *)DATAPTR_RO(ans);
     for (int i = 1; i < n; ++i) {
-      const SEXP *pa = SEXPPTR_RO(PTR_ETL(args, i));
+      const SEXP *restrict pa = SEXPPTR_RO(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(xlength(pans[j]) == 0) {
