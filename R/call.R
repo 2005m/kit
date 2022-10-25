@@ -11,9 +11,14 @@ iif         = function(test, yes, no, na=NULL, tprom=FALSE, nThread=getOption("k
 nif         = function(..., default=NULL) .Call(CnifR, default, parent.frame(), as.list(substitute(...())))
 nswitch     = function(x, ..., default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CnswitchR, x, default, nThread, checkEnc, list(...))
 pall        = function(..., na.rm=FALSE) .Call(CpallR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+pallNA      = function(...) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); .Call(CpcountNAR, x) == length(x) }
+pallv       = function(..., value) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); pcount(..., value = value) == length(x) }                                                                     
 pany        = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 panyNA      = function(...) as.logical(pcountNA(...))
+panyv       = function(..., value) as.logical(pcount(..., value = value))
 pcountNA    = function(...) .Call(CpcountNAR, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+pfirst      = function(...) .Call(CpfirstR, FALSE, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+plast       = function(...) .Call(CpfirstR, TRUE, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 psum        = function(..., na.rm=FALSE) .Call(CpsumR,  na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
@@ -25,10 +30,6 @@ vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.
 .onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.12 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
-
-pallNA      = function(...) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); .Call(CpcountNAR, x) == length(x) }
-pallv       = function(..., value) { x = if (...length() == 1L && is.list(..1)) unclass(..1) else list(...); pcount(..., value = value) == length(x) }                                                                     
-panyv       = function(..., value) as.logical(pcount(..., value = value))
 
 pcount      = function(..., value) {
   if(is.na(value[1])) {

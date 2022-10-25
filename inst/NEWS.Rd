@@ -4,17 +4,26 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.12 (2022-04-23)}{
+\section{version 0.0.12 (2022-10-29)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
       
       \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}).
+      
+      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists. Thanks to Sebastian Krantz for the PR.
+      
+      \item Functions \code{\strong{pallNA}}, \code{\strong{pallv}}, \code{\strong{panyv}} and \code{\strong{panyNA}} are new and complement existing functions \code{\strong{pall}} and \code{\strong{pany}}. These new functions operate on a provided value or NA. Thnaks for Sebastian Krantz for the suggestion.
     }
   }
   \subsection{Bug Fixes}{
     \itemize{
       \item Function \code{\strong{charToFact}} was not returning proper results. Thanks to @alex-raw for raising an issue.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item C compiler warnings on CRAN R-devel caused by compilation with -Wstrict-prototypes are now fixed. Declaration of functions without prototypes is depreciated in all versions of C. Thanks to Sebastian Krantz for the PR.
     }
   }
 }
