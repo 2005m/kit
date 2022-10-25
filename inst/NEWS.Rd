@@ -4,30 +4,27 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.13 (2022-10-25)}{
+\section{version 0.0.12 (2022-10-25)}{
   \subsection{New Features}{
     \itemize{
-      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists.
-    }
-  }
-  \subsection{Notes}{
-    \itemize{
-      \item C compiler warnings on CRAN R-devel caused by compilation with -Wstrict-prototypes are now fixed. Declaration of functions without prototypes is depreciated in all versions of C.
-    }
-  }
-}
-
-\section{version 0.0.12 (2022-04-23)}{
-  \subsection{New Features}{
-    \itemize{
+    
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
       
       \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}).
+      
+      \item Functions \code{\strong{panyv}}, \code{\strong{panyNA}}, \code{\strong{pallv}} and \code{\strong{pallNA}} are added as efficient wrappers around \code{\strong{pcount}} and \code{\strong{pcountNA}}. They are parallel equivalents of scalar functions \code{anyv}, \code{allv} and \code{allNA} in the 'collapse' R package. 
+      
+      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists. They are parallel equivalents to the (column-wise) \code{ffirst} and \code{flast} functions in the 'collapse' R package. Implemented by @SebKrantz. 
+      
+      \item Functions \code{\strong{psum/pprod/pmean}} also support logical vectors as input. Implemented by @SebKrantz. 
     }
   }
   \subsection{Bug Fixes}{
     \itemize{
       \item Function \code{\strong{charToFact}} was not returning proper results. Thanks to @alex-raw for raising an issue.
+      
+      \item C compiler warnings on CRAN R-devel caused by compilation with -Wstrict-prototypes are now fixed. Declaration of functions without prototypes is depreciated in all versions of C.
+
     }
   }
 }
