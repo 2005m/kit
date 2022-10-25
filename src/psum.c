@@ -804,3 +804,140 @@ SEXP pcountNAR(SEXP args) {
   UNPROTECT(1);
   return ans;
 }
+
+SEXP pfirstR(SEXP last, SEXP args) {
+  if (!IS_BOOL(last)) {
+    error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
+  }
+  const int n = length(args);
+  if (n < 1) {
+    error("Please supply at least 1 argument. (%d argument supplied)", n);
+  }
+  int nprotect = 1;
+  if(asLogical(last)) {
+    SEXP argsrev = PROTECT(allocVector(VECSXP, n)); ++nprotect;
+    for(int i = 0; i < n; ++i) SET_VECTOR_ELT(argsrev, i, PTR_ETL(args, n-i-1));
+    args = argsrev;
+  }
+  
+  const SEXP args0 = PTR_ETL(args, 0);
+  SEXPTYPE anstype = UTYPEOF(args0);
+  SEXPTYPE type0 = anstype;
+  const R_xlen_t len0 = xlength(args0);
+  int hasFactor = isFactor(args0);
+  SEXP levels;
+  if(hasFactor) levels = getAttrib(args0, R_LevelsSymbol);
+  
+  for (int i = 1; i < n; ++i) {
+    SEXP argsi = PTR_ETL(args, i);
+    SEXPTYPE type = UTYPEOF(argsi);
+    R_xlen_t len1 = xlength(argsi);
+    if (len1 != len0) {
+      error("Argument %d is of length %zu but argument %d is of length %zu. "
+              "If you wish to 'recycle' your argument, please use rep() to make this intent "
+              "clear to the readers of your code.", i+1, len1, 1, len0);
+    }
+    if (type != anstype) {
+      if((type == REALSXP || type == INTSXP || type == LGLSXP) && (anstype == REALSXP || anstype == INTSXP || anstype == LGLSXP)) {
+        if(type == REALSXP) anstype = REALSXP;
+        else if(anstype == LGLSXP) anstype = INTSXP;
+      } else error("All arguments need to have the same data type, except for numeric and logical types");
+    }
+    if(type == INTSXP) hasFactor += isFactor(argsi);
+    if(hasFactor) {
+      if(hasFactor != i + 1) error("If one argument is a factor, all arguments need to be factors");
+      if(!R_compute_identical(getAttrib(argsi, R_LevelsSymbol), levels, 16)) error("All factors need to have identical levels");
+    } 
+  }
+  
+  SEXP ans = (anstype != type0) ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
+  
+  switch(anstype) {
+  case LGLSXP:
+  case INTSXP: {
+    int *restrict pans = INTEGER(ans);
+    for (int i = 1; i < n; ++i) {
+      int *pa = INTEGER(PTR_ETL(args, i));
+      ssize_t nna = 0;
+      for (ssize_t j = 0; j < len0; ++j) {
+        if(pans[j] == NA_INTEGER) {
+          if(pa[j] == NA_INTEGER) ++nna;
+          else pans[j] = pa[j];
+        }
+      }
+      if(nna == 0) break;
+    }
+  } break;
+  case REALSXP: {
+    double *restrict pans = REAL(ans);
+    for (int i = 1; i < n; ++i) {
+      SEXPTYPE targsi = UTYPEOF(PTR_ETL(args, i));
+      ssize_t nna = 0;
+      if(targsi == INTSXP || targsi == LGLSXP) {
+        int *pa = INTEGER(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if(ISNAN(pans[j])) {
+            if(pa[j] == NA_INTEGER) ++nna;
+            else pans[j] = (double)pa[j];
+          }
+        }
+      } else {
+        double *pa = REAL(PTR_ETL(args, i));
+        for (ssize_t j = 0; j < len0; ++j) {
+          if(ISNAN(pans[j])) {
+            if(ISNAN(pa[j])) ++nna;
+            else pans[j] = pa[j];
+          }
+        }
+      }
+      if(nna == 0) break;
+    }
+  } break;
+  case CPLXSXP: {
+    Rcomplex *restrict pans = COMPLEX(ans);
+    for (int i = 1; i < n; ++i) {
+      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      ssize_t nna = 0;
+      for (ssize_t j = 0; j < len0; ++j) {
+        if(ISNAN_COMPLEX(pans[j])) {
+          if(ISNAN_COMPLEX(pa[j])) ++nna;
+          else pans[j] = pa[j];
+        }
+      }
+      if(nna == 0) break;
+    }
+  } break;
+  case STRSXP: {
+    SEXP *restrict pans = STRING_PTR(ans);
+    for (int i = 1; i < n; ++i) {
+      SEXP *pa = STRING_PTR(PTR_ETL(args, i));
+      ssize_t nna = 0;
+      for (ssize_t j = 0; j < len0; ++j) {
+        if(pans[j] == NA_STRING) {
+          if(pa[j] == NA_STRING) ++nna;
+          else pans[j] = pa[j];
+        }
+      }
+      if(nna == 0) break;
+    }
+  } break;
+  case VECSXP: {
+    SEXP *restrict pans = (SEXP *)DATAPTR_RO(ans);
+    for (int i = 1; i < n; ++i) {
+      const SEXP *pa = SEXPPTR_RO(PTR_ETL(args, i));
+      ssize_t nna = 0;
+      for (ssize_t j = 0; j < len0; ++j) {
+        if(xlength(pans[j]) == 0) {
+          if(xlength(pa[j]) == 0) ++nna;
+          else pans[j] = pa[j];
+        }
+      }
+      if(nna == 0) break;
+    }
+  } break;
+  default: error("Unsupported data type: %s", type2char(anstype));
+  }
+  
+  UNPROTECT(nprotect);
+  return ans;
+}

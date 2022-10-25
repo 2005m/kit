@@ -4,6 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.13 (2022-10-25)}{
+  \subsection{New Features}{
+    \itemize{
+      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item C compiler warnings on CRAN R-devel caused by compilation with -Wstrict-prototypes are now fixed. Declaration of functions without prototypes is depreciated in all versions of C.
+    }
+  }
+}
+
 \section{version 0.0.12 (2022-04-23)}{
   \subsection{New Features}{
     \itemize{

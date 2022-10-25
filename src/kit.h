@@ -94,6 +94,7 @@ extern SEXP pallR(SEXP na, SEXP args);
 extern SEXP panyR(SEXP na, SEXP args);
 extern SEXP pcountR(SEXP x, SEXP args);
 extern SEXP pcountNAR(SEXP args);
+extern SEXP pfirstR(SEXP last, SEXP args);
 extern SEXP pmeanR(SEXP na, SEXP args);
 extern SEXP pprodR(SEXP na, SEXP args);
 extern SEXP psumR(SEXP na, SEXP args);

@@ -1,10 +1,11 @@
 Package: kit
 Type: Package
 Title: Data Manipulation Functions Implemented in C
-Version: 0.0.12
-Date: 2022-04-23
-Authors@R: c(person("Morgan", "Jacob", role = c("aut", "cre", "cph"), email = "morgan.emailbox@gmail.com"))
-Author: Morgan Jacob [aut, cre, cph]
+Version: 0.0.13
+Date: 2022-10-25
+Authors@R: c(person("Morgan", "Jacob", role = c("aut", "cre", "cph"), email = "morgan.emailbox@gmail.com"), 
+             person("Sebastian", "Krantz", role = "ctb"))
+Author: Morgan Jacob [aut, cre, cph], Sebastian Krantz [ctb]
 Maintainer: Morgan Jacob <morgan.emailbox@gmail.com>
 Description: Basic functions, implemented in C, for large data manipulation. Fast vectorised ifelse()/nested if()/switch() functions, psum()/pprod() functions equivalent to pmin()/pmax() plus others which are missing from base R. Most of these functions are callable at C level.
 License: GPL-3

@@ -14,6 +14,8 @@ pall        = function(..., na.rm=FALSE) .Call(CpallR, na.rm, if (...length() ==
 pany        = function(..., na.rm=FALSE) .Call(CpanyR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 panyNA      = function(...) as.logical(pcountNA(...))
 pcountNA    = function(...) .Call(CpcountNAR, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+pfirst      = function(...) .Call(CpfirstR, FALSE, if (...length() == 1L && is.list(..1)) ..1 else list(...))
+plast       = function(...) .Call(CpfirstR, TRUE, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pmean       = function(..., na.rm=FALSE) .Call(CpmeanR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 pprod       = function(..., na.rm=FALSE) .Call(CpprodR, na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
 psum        = function(..., na.rm=FALSE) .Call(CpsumR,  na.rm, if (...length() == 1L && is.list(..1)) ..1 else list(...))
