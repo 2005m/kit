@@ -9,11 +9,13 @@
     \itemize{
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
       
-      \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}).
+      \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}). \code{\strong{pcountNA}} also supports list-vectors as inputs and counts empty or \code{NULL} elements as \code{NA}.
       
-      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists. Thanks to Sebastian Krantz for the PR.
+      \item Functions \code{\strong{panyv}}, \code{\strong{panyNA}}, \code{\strong{pallv}} and \code{\strong{pallNA}} are added as efficient wrappers around \code{\strong{pcount}} and \code{\strong{pcountNA}}. They are parallel equivalents of scalar functions \code{base::anyNA} and \code{anyv}, \code{allv} and \code{allNA} in the 'collapse' R package. 
       
-      \item Functions \code{\strong{pallNA}}, \code{\strong{pallv}}, \code{\strong{panyv}} and \code{\strong{panyNA}} are new and complement existing functions \code{\strong{pall}} and \code{\strong{pany}}. These new functions operate on a provided value or NA. Thnaks for Sebastian Krantz for the suggestion.
+      \item Functions \code{\strong{pfirst}} and \code{\strong{plast}} are added to efficiently obtain the row-wise first and last non-missing value or non-empty element of lists. They are parallel equivalents to the (column-wise) \code{ffirst} and \code{flast} functions in the 'collapse' R package. Implemented by @SebKrantz. 
+      
+      \item Functions \code{\strong{psum/pprod/pmean}} also support logical vectors as input. Implemented by @SebKrantz. 
     }
   }
   \subsection{Bug Fixes}{

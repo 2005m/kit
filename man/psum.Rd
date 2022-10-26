@@ -12,37 +12,52 @@
 \alias{pcountNA}
 \alias{pfirst}
 \alias{plast}
-\title{Parallel Statistical Functions}
+\title{Parallel (Statistical) Functions}
 \description{
-Similar to \code{pmin} and \code{pmax} but for sum, product, mean, first and last non-missing value, and for logical evaluations and counting. Only works for integer, double and complex types. 
-These functions do not recycle vectors. \code{pany} and \code{pall} are derived from base functions \code{all} and \code{any}. Note that \code{pmean} only works with integer and double types.
-\code{pcountNA} is equivalent to \code{pcount} with the argument \code{value} set to \code{NA} and they both allow \code{NA} counting in the case of mixed data types. \code{pfirst} and \code{plast} find the first non-missing value or non-empty element of lists. 
+Vector-valued (statistical) functions operating in parallel over vectors passed as arguments, or a single list of vectors (such as a data frame). Similar to \code{\link{pmin}} and \code{\link{pmax}}, except that these functions do not recycle vectors. 
 }
 \usage{
-  psum(..., na.rm=FALSE)
-  pprod(..., na.rm=FALSE)
-  pall(..., na.rm=FALSE)
+  psum(..., na.rm = FALSE)
+  pprod(..., na.rm = FALSE)
+  pmean(..., na.rm = FALSE)
+  pfirst(...)  # (na.rm = TRUE)
+  plast(...)   # (na.rm = TRUE)
+  pall(..., na.rm = FALSE)
   pallNA(...)
   pallv(..., value)
-  pany(..., na.rm=FALSE)
+  pany(..., na.rm = FALSE)
   panyNA(...)
   panyv(..., value)
-  pmean(..., na.rm=FALSE)
   pcount(..., value)
   pcountNA(...)
   pfirst(...)
   plast(...)
 }
 \arguments{
-  \item{...}{ Numeric arguments of type integer, double complex, logical vector for \code{pall} and \code{pany}, or any types for \code{pcountNA}, \code{pfirst}, \code{plast}. Alternatively these functions also accept a single \code{data.frame}. See example 7 below.}
-  \item{na.rm}{ A logical indicating whether missing values should be removed. Default value is \code{FALSE}.}
-  \item{value}{ A non \code{NULL} value of length 1. \code{pcount} will count how many times it occurs.}
+  \item{...}{ suitable (atomic) vectors of the same length, or a single list of vectors (such as a \code{data.frame}). See Details on the allowed data types for each function, and Examples.}
+  \item{na.rm}{ A logical indicating whether missing values should be removed. Default value is \code{FALSE}, except for \code{pfirst} and \code{plast}.}
+  \item{value}{ A non \code{NULL} value of length 1. } % \code{pcount} will count how many times it occurs.
+}
+\details{
+Functions \code{psum}, \code{pprod} work for integer, logical, double and complex types. \code{pmean} only supports integer, logical and double types. All 3 functions will error if used with factors.
+
+\code{pfirst}/\code{plast} select the first/last non-missing value (or non-empty or \code{NULL} value for list-vectors). They accept all vector types with defined missing values + lists, but can only jointly handle integer and double types (not numeric and complex or character and factor). If factors are passed, they all need to have identical levels.
+
+\code{pany} and \code{pall} are derived from base functions \code{all} and \code{any} and only allow logical inputs.
+
+\code{pcount} counts the occurrence of \code{value}, and expects arguments of the same data type (except for \code{value = NA}). \code{pcountNA} is equivalent to \code{pcount} with \code{value = NA}, and they both allow \code{NA} counting in mixed-type data. \code{pcountNA} additionally supports list vectors and counts empty or \code{NULL} elements as \code{NA}. 
+
+Functions \code{panyv/pallv} are wrappers around \code{pcount}, and \code{panyNA/pallNA} are wrappers around \code{pcountNA}. They return a logical vector instead of the integer count. 
+
+None of these functions recycle vectors i.e. all input vectors need to have the same length. All functions support long vectors with up to \code{2^64-1} elements.
 }
 \value{
-Return the sum, product or mean of all numeric arguments. The value returned will be of the type of the highest argument types (integer < double < complex). For \code{pall} and \code{pany}, a logical vector is returned.
-Functions \code{psum}, \code{pprod} and \code{pmean} will result in error if used with factors.
+\code{psum/pprod/pmean} return the sum, product or mean of all arguments. The value returned will be of the highest argument type (integer < double < complex). \code{pall[v/NA]} and \code{pany[v/NA]} return a logical vector. \code{pcount[NA]} returns an integer vector. \code{pfirst/plast} return a vector of the same type as the inputs. 
 }
-\author{Morgan Jacob}
+\seealso{
+Package 'collapse' provides column-wise and scalar-valued analogues to many of these functions.
+}
+\author{Morgan Jacob and Sebastian Krantz}
 \examples{
 x = c(1, 3, NA, 5)
 y = c(2, NA, 4, 1)
@@ -60,25 +75,31 @@ pprod(x, y, z, na.rm = TRUE)
 pmean(x, y, z, na.rm = FALSE)
 pmean(x, y, z, na.rm = TRUE)
 
+# Example 4: pfirst and plast
+pfirst(x, y, z)
+plast(x, y, z)
+
 # Adjust x, y, and z to use in pall and pany
 x = c(TRUE, FALSE, NA, FALSE)
 y = c(TRUE, NA, TRUE, TRUE)
 z = c(TRUE, TRUE, FALSE, NA)
 
-# Example 4: pall
+# Example 5: pall
 pall(x, y, z, na.rm = FALSE)
 pall(x, y, z, na.rm = TRUE)
 
-# Example 5: pany
+# Example 6: pany
 pany(x, y, z, na.rm = FALSE)
 pany(x, y, z, na.rm = TRUE)
 
-# Example 6: pcount
+# Example 7: pcount
 pcount(x, y, z, value = TRUE)
+pcountNA(x, y, z)
 
-# Example 7: data.frameas an input
+# Example 8: list/data.frame as an input
 pprod(iris[,1:2])
 psum(iris[,1:2])
+pmean(iris[,1:2])
 
 # Benchmarks
 # ----------

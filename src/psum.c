@@ -31,16 +31,16 @@ SEXP psumR(SEXP na, SEXP args) {
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
   Rboolean hasFactor = isFactor(args0);
-  if (anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
-    error("Argument %d is of type %s. Only integer, double and complex types are supported."
-          "Data.frame (of the previous types) is also supported as a single input. ",
+  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
+    error("Argument %d is of type %s. Only integer/logical, double and complex types are supported. "
+          "A data.frame (of the previous types) is also supported as a single input. ",
           1, type2char(anstype));
   }
   for (int i = 1; i < n; ++i) {
     SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
-    if (type != INTSXP && type != REALSXP && type != CPLXSXP) {
-      error("Argument %d is of type %s. Only integer, double and complex types are supported. " , i+1, type2char(type));
+    if (type != LGLSXP && type != INTSXP && type != REALSXP && type != CPLXSXP) {
+      error("Argument %d is of type %s. Only integer/logical, double and complex types are supported. " , i+1, type2char(type));
     }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
@@ -52,6 +52,7 @@ SEXP psumR(SEXP na, SEXP args) {
     }
     hasFactor = hasFactor ? TRUE : isFactor(PTR_ETL(args, i));
   }
+  if(anstype == LGLSXP) anstype = INTSXP; // We can sum logical vectors into an integer vector
   if (hasFactor) {
     error("Function 'psum' is not meaningful for factors.");
   }
@@ -164,16 +165,16 @@ SEXP pprodR(SEXP na, SEXP args) {
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
   Rboolean hasFactor = isFactor(args0);
-  if (anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
-    error("Argument %d is of type %s. Only integer, double and complex types are supported."
-          "Data.frame (of the previous types) is also supported as a single input. ",
+  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP && anstype != CPLXSXP) {
+    error("Argument %d is of type %s. Only integer/logical, double and complex types are supported. "
+          "A data.frame (of the previous types) is also supported as a single input. ",
           1, type2char(anstype));
   }
   for (int i = 1; i < n; ++i) {
     SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
-    if (type != INTSXP && type != REALSXP && type != CPLXSXP) {
-      error("Argument %d is of type %s. Only integer, double and complex types are supported.", i+1, type2char(type));
+    if (type != LGLSXP && type != INTSXP && type != REALSXP && type != CPLXSXP) {
+      error("Argument %d is of type %s. Only integer/logical, double and complex types are supported.", i+1, type2char(type));
     }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
@@ -192,7 +193,9 @@ SEXP pprodR(SEXP na, SEXP args) {
   SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
   const bool narm = asLogical(na);
   switch(anstype) {
-  case INTSXP: {
+  case LGLSXP:   // This is useful, pprod can basically work like pall() for logical arguments, and also works if some arguments are not logical..
+  case INTSXP: { // Multiplication will likely cause integer overflows. So likely that base::prod only returns doubles, see typeof(base::prod(1:4))...
+                 // So the question is should there be integer return at all, or rather double return if all inputs are integer or logical..
     int *restrict pans =INTEGER(ans);
     if(narm) {
       for (ssize_t j = 0; j < len0; ++j) {
@@ -213,6 +216,7 @@ SEXP pprodR(SEXP na, SEXP args) {
         }
       }
     }
+    // if(anstype == LGLSXP) SET_TYPEOF(ans, LGLSXP); // Not needed, can use pall() instead if we want this...
   } break;
   case REALSXP: {
     double *restrict pans = REAL(ans);
@@ -409,20 +413,19 @@ SEXP pmeanR(SEXP na, SEXP args) {
     error("Please supply at least 1 argument. (%d argument supplied)", n);
   }
   const SEXP args0 = PTR_ETL(args, 0);
-  SEXPTYPE anstype = UTYPEOF(args0);
-  SEXPTYPE type0 = REALSXP;
+  SEXPTYPE type0 = UTYPEOF(args0);
   const R_xlen_t len0 = xlength(args0);
   Rboolean hasFactor = isFactor(args0);
-  if (anstype != INTSXP && anstype != REALSXP) {
-    error("Argument %d is of type %s. Only integer and double types are supported."
-          "Data.frame (of the previous types) is also supported as a single input. ",
-          1, type2char(anstype));
+  if (type0 != LGLSXP && type0 != INTSXP && type0 != REALSXP) {
+    error("Argument %d is of type %s. Only integer/logical and double types are supported. "
+          "A data.frame (of the previous types) is also supported as a single input. ",
+          1, type2char(type0));
   }
   for (int i = 1; i < n; ++i) {
     SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
-    if (type != INTSXP && type != REALSXP) {
-      error("Argument %d is of type %s. Only integer and double types are supported.", i+1, type2char(type));
+    if (type != LGLSXP && type != INTSXP && type != REALSXP) {
+      error("Argument %d is of type %s. Only integer/logical and double types are supported.", i+1, type2char(type));
     }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
@@ -434,8 +437,8 @@ SEXP pmeanR(SEXP na, SEXP args) {
   if (hasFactor) {
     error("Function 'pmean' is not meaningful for factors.");
   }
-  int nprotect=2;
-  SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, type0)) : PROTECT(duplicate(args0));
+  int nprotect = 2;
+  SEXP ans = type0 != REALSXP ? PROTECT(coerceVector(args0, REALSXP)) : PROTECT(duplicate(args0));
   const bool narm = asLogical(na);
   SEXP den = PROTECT(allocVector(REALSXP, len0));
   double *restrict pden = REAL(den);
@@ -454,8 +457,8 @@ SEXP pmeanR(SEXP na, SEXP args) {
   }
   for (int i = 1; i < n; ++i) {
     SEXPTYPE targsi = UTYPEOF(PTR_ETL(args, i));
-    if (targsi != type0) {
-      REPROTECT(dbl_a = coerceVector(PTR_ETL(args, i), type0), Idbl);
+    if (targsi != REALSXP) {
+      REPROTECT(dbl_a = coerceVector(PTR_ETL(args, i), REALSXP), Idbl);
     } else {
       REPROTECT(dbl_a = PTR_ETL(args, i), Idbl);
     }
@@ -688,13 +691,17 @@ SEXP pcountNAR(SEXP args) {
   const SEXP args0 = PTR_ETL(args, 0);
   SEXPTYPE anstype = UTYPEOF(args0);
   const R_xlen_t len0 = xlength(args0);
-  if (anstype != LGLSXP && anstype != INTSXP && anstype != REALSXP &&
-      anstype != CPLXSXP && anstype != STRSXP) {
-    error("Argument %d is of type %s. Only logical, integer, double, complex and"
-            " character types are supported.", 1, type2char(anstype));
+  if (!IS_VALID_TYPE(anstype)) {
+    error("Argument %d is of type %s. Only logical, integer, double, complex, "
+          "character and list types are supported.", 1, type2char(anstype));
   }
   for (int i = 1; i < n; ++i) {
+    SEXPTYPE type = UTYPEOF(PTR_ETL(args, i));
     R_xlen_t len1 = xlength(PTR_ETL(args, i));
+    if (!IS_VALID_TYPE(type)) {
+      error("Argument %d is of type %s. Only logical, integer, double, complex, "
+            "character and list types are supported.", i+1, type2char(type));
+    }
     if (len1 != len0) {
       error("Argument %d is of length %zu but argument %d is of length %zu. "
               "If you wish to 'recycle' your argument, please use rep() to make this intent "
@@ -749,6 +756,15 @@ SEXP pcountNAR(SEXP args) {
         }
       }
     } break;
+    case VECSXP: {
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = SEXPPTR_RO(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (xlength(px[j]) == 0) {
+          pans[j]++;
+        }
+      }
+    } break;
     } // # nocov end
     }
   } else {
@@ -798,6 +814,15 @@ SEXP pcountNAR(SEXP args) {
         }
       }
     } break;
+    case VECSXP: {
+      const SEXP pa = PTR_ETL(args, i);
+      const SEXP *restrict px = SEXPPTR_RO(pa);
+      for (ssize_t j = 0; j < len0; ++j) {
+        if (xlength(px[j]) == 0) {
+          pans[j]++;
+        }
+      }
+    } break;
     }
     }
   }
@@ -807,13 +832,13 @@ SEXP pcountNAR(SEXP args) {
 
 
 SEXP pfirstR(SEXP last, SEXP args) {
-  if (!IS_BOOL(last)) {
-    error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
-  }
+  
+  if(!IS_BOOL(last)) error("Argument 'na.rm' must be TRUE or FALSE and length 1.");
+  
   const int n = length(args);
-  if (n < 1) {
-    error("Please supply at least 1 argument. (%d argument supplied)", n);
-  }
+  if(n == 1) return args;
+  if(n < 1) error("Please supply at least 1 argument. (%d argument supplied)", n);
+  
   int nprotect = 1;
   if(asLogical(last)) {
     SEXP argsrev = PROTECT(allocVector(VECSXP, n)); ++nprotect;
@@ -826,8 +851,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   SEXPTYPE type0 = anstype;
   const R_xlen_t len0 = xlength(args0);
   int hasFactor = isFactor(args0);
-  SEXP levels;
-  if(hasFactor) levels = getAttrib(args0, R_LevelsSymbol);
+  SEXP levels = hasFactor ? getAttrib(args0, R_LevelsSymbol) : R_NilValue;
   
   for (int i = 1; i < n; ++i) {
     SEXP argsi = PTR_ETL(args, i);
@@ -847,7 +871,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
     if(type == INTSXP) hasFactor += isFactor(argsi);
     if(hasFactor) {
       if(hasFactor != i + 1) error("If one argument is a factor, all arguments need to be factors");
-      if(!R_compute_identical(getAttrib(argsi, R_LevelsSymbol), levels, 16)) error("All factors need to have identical levels");
+      if(!R_compute_identical(getAttrib(argsi, R_LevelsSymbol), levels, 0)) error("All factors need to have identical levels");
     } 
   }
   
@@ -858,7 +882,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case INTSXP: {
     int *restrict pans = INTEGER(ans);
     for (int i = 1; i < n; ++i) {
-      int *pa = INTEGER(PTR_ETL(args, i));
+      const int *restrict pa = INTEGER(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(pans[j] == NA_INTEGER) {
@@ -875,7 +899,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
       SEXPTYPE targsi = UTYPEOF(PTR_ETL(args, i));
       ssize_t nna = 0;
       if(targsi == INTSXP || targsi == LGLSXP) {
-        int *pa = INTEGER(PTR_ETL(args, i));
+        const int *restrict pa = INTEGER(PTR_ETL(args, i));
         for (ssize_t j = 0; j < len0; ++j) {
           if(ISNAN(pans[j])) {
             if(pa[j] == NA_INTEGER) ++nna;
@@ -883,7 +907,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
           }
         }
       } else {
-        double *pa = REAL(PTR_ETL(args, i));
+        const double *restrict pa = REAL(PTR_ETL(args, i));
         for (ssize_t j = 0; j < len0; ++j) {
           if(ISNAN(pans[j])) {
             if(ISNAN(pa[j])) ++nna;
@@ -897,7 +921,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case CPLXSXP: {
     Rcomplex *restrict pans = COMPLEX(ans);
     for (int i = 1; i < n; ++i) {
-      Rcomplex *pa = COMPLEX(PTR_ETL(args, i));
+      const Rcomplex *restrict pa = COMPLEX(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(ISNAN_COMPLEX(pans[j])) {
@@ -911,7 +935,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case STRSXP: {
     SEXP *restrict pans = STRING_PTR(ans);
     for (int i = 1; i < n; ++i) {
-      SEXP *pa = STRING_PTR(PTR_ETL(args, i));
+      const SEXP *restrict pa = STRING_PTR(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(pans[j] == NA_STRING) {
@@ -925,7 +949,7 @@ SEXP pfirstR(SEXP last, SEXP args) {
   case VECSXP: {
     SEXP *restrict pans = (SEXP *)DATAPTR_RO(ans);
     for (int i = 1; i < n; ++i) {
-      const SEXP *pa = SEXPPTR_RO(PTR_ETL(args, i));
+      const SEXP *restrict pa = SEXPPTR_RO(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(xlength(pans[j]) == 0) {

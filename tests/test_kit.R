@@ -689,10 +689,10 @@ check("0005.001", psum(x, y, z, na.rm = FALSE), c(6, NA, NA, 7))
 check("0005.002", psum(x, y, z, na.rm = TRUE), c(6, 7, 8, 7))
 check("0005.003", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 7L))
 check("0005.004", psum(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 7L, 8L, 7L))
-check("0005.005", psum(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0005.005", psum(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer/logical, double and complex types are supported. A data.frame (of the previous types) is also supported as a single input.")
 check("0005.006", psum(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 check("0005.007", psum(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
-check("0005.008", psum(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
+check("0005.008", psum(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer/logical, double and complex types are supported.")
 check("0005.009", psum(1:10, 1:10, 21:30), 1:10 + 1:10 + 21:30)
 check("0005.010", psum(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 check("0005.011", psum(x, na.rm = FALSE), x)
@@ -711,7 +711,7 @@ check("0005.023", psum(NA_integer_, na.rm = TRUE), 0L)
 check("0005.024", psum(NA_real_, na.rm = TRUE), 0)
 check("0005.025", psum(NA_complex_, na.rm = TRUE), 0+0i)
 check("0005.026", psum(iris[,1:2]), rowSums(iris[,1:2]))
-check("0005.027", psum(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0005.027", psum(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer/logical, double and complex types are supported. A data.frame (of the previous types) is also supported as a single input.")
 check("0005.028", psum(1:150,iris$Species, na.rm = FALSE), error="Function 'psum' is not meaningful for factors.")
 check("0005.029", psum(unclass(mtcars)),psum(mtcars))
 
@@ -723,10 +723,10 @@ check("0006.001", pprod(x, y, z, na.rm = FALSE), c(6, NA, NA, 5))
 check("0006.002", pprod(x, y, z, na.rm = TRUE), c(6, 12, 16, 5))
 check("0006.003", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 5L))
 check("0006.004", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 12L, 16L, 5L))
-check("0006.005", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0006.005", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer/logical, double and complex types are supported. A data.frame (of the previous types) is also supported as a single input.")
 check("0006.006", pprod(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 check("0006.007", pprod(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
-check("0006.008", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer, double and complex types are supported.")
+check("0006.008", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer/logical, double and complex types are supported.")
 check("0006.009", pprod(1:10, 1:10, 21:30), 1:10 * 1:10 * 21:30)
 check("0006.010", pprod(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 check("0006.011", pprod(x, na.rm = FALSE), x)
@@ -745,7 +745,7 @@ check("0006.023", pprod(NA_integer_, na.rm = TRUE), 1L)
 check("0006.024", pprod(NA_real_, na.rm = TRUE), 1)
 check("0006.025", pprod(NA_complex_, na.rm = TRUE), 1+0i)
 check("0006.026", pprod(iris[,1:2]), iris$Sepal.Length*iris$Sepal.Width)
-check("0006.027", pprod(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer, double and complex types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0006.027", pprod(iris[,1:2],iris[,1:2]), error = "Argument 1 is of type list. Only integer/logical, double and complex types are supported. A data.frame (of the previous types) is also supported as a single input.")
 check("0006.028", pprod(1:150,iris$Species, na.rm = FALSE), error="Function 'pprod' is not meaningful for factors.")
 check("0006.029", pprod(unclass(mtcars)),pprod(mtcars))
 
@@ -1102,10 +1102,10 @@ z1 = sample(c(1,2,NA),1e2,TRUE)
 
 check("0011.001", pmean(x, y, z, na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = FALSE)))
 check("0011.002", pmean(x, y, z, na.rm = TRUE), sapply(1:4, function(i) mean(c(x[i], y[i], z[i]), na.rm = TRUE)))
-check("0011.003", pmean(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer and double types are supported.Data.frame (of the previous types) is also supported as a single input.")
+check("0011.003", pmean(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer/logical and double types are supported. A data.frame (of the previous types) is also supported as a single input.")
 check("0011.004", pmean(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 check("0011.005", pmean(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
-check("0011.006", pmean(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer and double types are supported.")
+check("0011.006", pmean(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer/logical and double types are supported.")
 check("0011.007", pmean(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 check("0011.008", pmean(x, na.rm = FALSE), sapply(1:4, function(i) mean(c(x[i]), na.rm = FALSE)))
 check("0011.009", pmean(c(1,3,NA,5,NA), c(2,NA,4,1,NA), na.rm = TRUE), sapply(1:5, function(i) mean(c(c(1,3,NA,5,NA)[i], c(2,NA,4,1,NA)[i]), na.rm = TRUE)))
@@ -1740,23 +1740,74 @@ check("0027.003", panyNA(v), c(FALSE, TRUE, FALSE, FALSE))
 check("0027.004", panyNA(w), c(TRUE, FALSE, FALSE, FALSE))
 check("0027.005", panyNA(x), c(FALSE, FALSE, TRUE, FALSE))
 
-# --------------------------------------------------------------------------------------------------
-#                                   pfirst
-# --------------------------------------------------------------------------------------------------
-
-check("0028.001", pfirst(v), v)
-check("0028.002", pfirst(x, y), c(1, 3, 4, 5))
-check("0028.003", pfirst(w), w)
-
-# --------------------------------------------------------------------------------------------------
-#                                   plast
-# --------------------------------------------------------------------------------------------------
-
-check("0029.001", plast(v), v)
-check("0029.002", plast(x, y), c(2, 3, 4, 1))
-check("0029.003", plast(w), w)
-
 rm(v,w,x,y,z,f1,d1)
+
+# --------------------------------------------------------------------------------------------------
+#                                   pfirst and plast
+# --------------------------------------------------------------------------------------------------
+
+x = c(1, 3, NA, 5)
+y = c(2, NA, 4, 1)
+z = c(3, 4, 4, NA)
+x1 = sample(c("a","b",NA),1e2,TRUE)
+y1 = sample(c("c","d",NA),1e2,TRUE)
+z1 = sample(c("e","f",NA),1e2,TRUE)
+
+base_pfirst <- function(...) {
+  x = if(...length() == 1L && is.list(..1)) unclass(..1) else list(...)
+  res = x[[1]]
+  if(length(x) == 1L) return(res)
+  for(i in 2:length(x)) {
+    miss <- is.na(res)
+    res[miss] <- x[[i]][miss]
+  }
+  res
+}
+
+base_plast <- function(...) {
+  x = if(...length() == 1L && is.list(..1)) unclass(..1) else list(...)
+  n = length(x)
+  res = x[[n]]
+  if(n == 1L) return(res)
+  for(i in (n-1):1) {
+    miss <- is.na(res)
+    res[miss] <- x[[i]][miss]
+  }
+  res
+}
+
+check("0028.001", pfirst(x, y, z), base_pfirst(x, y, z))
+check("0028.002", plast(x, y, z), base_plast(x, y, z))
+check("0028.003", pfirst(y, z, x), base_pfirst(y, z, x))
+check("0028.004", plast(y, z, x), base_plast(y, z, x))
+
+check("0028.005", pfirst(x1, y1, z1), base_pfirst(x1, y1, z1))
+check("0028.006", plast(x1, y1, z1), base_plast(x1, y1, z1))
+check("0028.007", pfirst(y1, z1, x1), base_pfirst(y1, z1, x1))
+check("0024.008", plast(y1, z1, x1), base_plast(y1, z1, x1))
+
+check("0028.009", pfirst(list(x1, y1, z1)), base_pfirst(list(x1, y1, z1)))
+check("0028.010", plast(list(x1, y1, z1)), base_plast(list(x1, y1, z1)))
+check("0028.011", pfirst(data.frame(y1, z1, x1)), base_pfirst(data.frame(y1, z1, x1)))
+check("0024.012", plast(data.frame(y1, z1, x1)), base_plast(data.frame(y1, z1, x1)))
+
+check("0028.013", pfirst(list(1, NULL), list(NULL, 2)), list(1, 2))
+check("0028.014", plast(list(1, NULL), list(NULL, 2)), list(1, 2))
+
+check("0028.015", pfirst(as.character(z), y), error = "All arguments need to have the same data type, except for numeric and logical types")
+check("0028.016", pfirst(x, y, 1:2), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+check("0028.017", pfirst(1:10, 1:5), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
+check("0028.018", pfirst(x, as.list(z), y), error = "All arguments need to have the same data type, except for numeric and logical types")
+
+check("0028.019", typeof(pfirst(1:4, x)), "double")
+check("0028.020", typeof(pfirst(x, 1:4)), "double")
+
+check("0028.021", pfirst(as.factor(x), x), error = "If one argument is a factor, all arguments need to be factors")
+check("0028.022", pfirst(x, as.factor(x)), error = "If one argument is a factor, all arguments need to be factors")
+check("0028.023", pfirst(as.factor(x), as.factor(y)), error = "All factors need to have identical levels")
+check("0028.024", class(pfirst(as.factor(x1), as.factor(x1))), "factor")
+
+rm(x, y, z, x1, y1, z1, base_pfirst, base_plast)
 
 # --------------------------------------------------------------------------------------------------
 #                                   CLEAN FUNCTIONS

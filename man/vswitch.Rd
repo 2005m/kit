@@ -18,9 +18,9 @@
   \item{values}{A vector or list with values from \code{x} to match. Note that \code{x} and \code{values} must have the same class and attributes.}
   \item{outputs}{A list or vector with the outputs to return for every matching values. Each item of the list must be of length 1 or length of \code{x}. Note that if all list items are of length 1 then it might be simpler to use a vector.}
   \item{...}{A sequence of values and outputs in the following order \code{value1, output1, value2, output2, ..., valueN, outputN}. Values \code{value1, value2, ..., valueN} must all have length1, same type and attributes. Each \code{output} may either share length with \code{x} or be length 1. Please see Examples section for further details.}
-  \item{default}{Values to return is no match. Must be a vector or list of length 1 or same length as \code{x}. Also, \code{default} must have the same type, class and aatributes as items from \code{outputs}.}
+  \item{default}{Values to return is no match. Must be a vector or list of length 1 or same length as \code{x}. Also, \code{default} must have the same type, class and attributes as items from \code{outputs}.}
   \item{nThread}{ A integer for the number of threads to use with \emph{openmp}. Default value is \code{getOption("kit.nThread")}.}
-  \item{checkEnc}{ A logical value whether or not to check if \code{x} and \code{values} have comparable and consistant encoding. Default is \code{TRUE}.}
+  \item{checkEnc}{ A logical value whether or not to check if \code{x} and \code{values} have comparable and consistent encoding. Default is \code{TRUE}.}
 }
 \value{
   A vector or list of the same length as \code{x} with values from \code{outputs} items and from \code{default} if missing.
