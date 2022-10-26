@@ -189,40 +189,43 @@ SEXP pprodR(SEXP na, SEXP args) {
   if (hasFactor) {
     error("Function 'pprod' is not meaningful for factors.");
   }
+  if(anstype != CPLXSXP) anstype = REALSXP; // Disabling integer return, see note below.
   int nprotect=1;
   SEXP ans = anstype != type0 ? PROTECT(coerceVector(args0, anstype)) : PROTECT(duplicate(args0));
   const bool narm = asLogical(na);
   switch(anstype) {
-  case LGLSXP:   // This is useful, pprod can basically work like pall() for logical arguments, and also works if some arguments are not logical..
-  case INTSXP: { // Multiplication will likely cause integer overflows. So likely that base::prod only returns doubles, see typeof(base::prod(1:4))...
-                 // So the question is should there be integer return at all, or rather double return if all inputs are integer or logical..
-    int *restrict pans =INTEGER(ans);
-    if(narm) {
-      for (ssize_t j = 0; j < len0; ++j) {
-        if (pans[j] == NA_INTEGER) {
-          pans[j] = 1; 
-        }
-      }
-    }
-    for (int i = 1; i < n; ++i) {
-      int *pa = INTEGER(PTR_ETL(args, i));
-      if (narm) {
-        for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] = pa[j]==NA_INTEGER ? pans[j] : (pans[j] * pa[j]);
-        }
-      } else {
-        for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] = (pans[j] == NA_INTEGER || pa[j] == NA_INTEGER) ? NA_INTEGER : (pans[j] * pa[j]);
-        }
-      }
-    }
-    // if(anstype == LGLSXP) SET_TYPEOF(ans, LGLSXP); // Not needed, can use pall() instead if we want this...
-  } break;
+  // NOTE: Disabling integer return, as base::prod() only returns doubles. Useful to avoid integer overflows. 
+  // case LGLSXP:   // pprod can basically work like pall() for logical arguments, and also works if some arguments are not logical..
+  // case INTSXP: { // Multiplication will likely cause integer overflows. So likely that base::prod only returns doubles, see typeof(base::prod(1:4))...
+  //                // So the question is should there be integer return at all, or rather double return if all inputs are integer or logical..
+  //   int *restrict pans =INTEGER(ans);
+  //   if(narm) {
+  //     for (ssize_t j = 0; j < len0; ++j) {
+  //       if (pans[j] == NA_INTEGER) {
+  //         pans[j] = 1; 
+  //       }
+  //     }
+  //   }
+  //   for (int i = 1; i < n; ++i) {
+  //     int *pa = INTEGER(PTR_ETL(args, i));
+  //     if (narm) {
+  //       for (ssize_t j = 0; j < len0; ++j) {
+  //         pans[j] = pa[j]==NA_INTEGER ? pans[j] : (pans[j] * pa[j]);
+  //       }
+  //     } else {
+  //       for (ssize_t j = 0; j < len0; ++j) {
+  //         pans[j] = (pans[j] == NA_INTEGER || pa[j] == NA_INTEGER) ? NA_INTEGER : (pans[j] * pa[j]);
+  //       }
+  //     }
+  //   }
+  //   // if(anstype == LGLSXP) SET_TYPEOF(ans, LGLSXP); // Not needed, can use pall() instead if we want this...
+  // } break;
   case REALSXP: {
     double *restrict pans = REAL(ans);
-    SEXP dbl_a = R_NilValue;
-    PROTECT_INDEX Idbl;
-    PROTECT_WITH_INDEX(dbl_a, &Idbl); nprotect++;
+    // Since the return value is always double, even if all inputs are integers or logical values, need a more efficient solution here...
+    // SEXP dbl_a = R_NilValue;
+    // PROTECT_INDEX Idbl;
+    // PROTECT_WITH_INDEX(dbl_a, &Idbl); nprotect++;
     if(narm) {
       for (ssize_t j = 0; j < len0; ++j) {
         if (ISNAN(pans[j])) {
@@ -232,19 +235,33 @@ SEXP pprodR(SEXP na, SEXP args) {
     }
     for (int i = 1; i < n; ++i) {
       SEXPTYPE targsi = UTYPEOF(PTR_ETL(args, i));
-      if (targsi != anstype) {
-        REPROTECT(dbl_a = coerceVector(PTR_ETL(args, i), anstype), Idbl);
-      } else {
-        REPROTECT(dbl_a = PTR_ETL(args, i), Idbl);
-      }
-      double *pa = REAL(dbl_a);
-      if (narm) {
-        for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] = ISNAN(pa[j]) ? pans[j] : (pans[j] * pa[j]);
+      // if (targsi != anstype) {
+      //   REPROTECT(dbl_a = coerceVector(PTR_ETL(args, i), anstype), Idbl);
+      // } else {
+      //   REPROTECT(dbl_a = PTR_ETL(args, i), Idbl);
+      // }
+      // double *pa = REAL(dbl_a);
+      if(targsi == anstype) {
+        double *pa = REAL(PTR_ETL(args, i));
+        if (narm) {
+          for (ssize_t j = 0; j < len0; ++j) {
+            pans[j] = ISNAN(pa[j]) ? pans[j] : (pans[j] * pa[j]);
+          }
+        } else {
+          for (ssize_t j = 0; j < len0; ++j) {
+            pans[j] *= pa[j];
+          }
         }
       } else {
-        for (ssize_t j = 0; j < len0; ++j) {
-          pans[j] *= pa[j];
+        int *pa = INTEGER(PTR_ETL(args, i));
+        if (narm) {
+          for (ssize_t j = 0; j < len0; ++j) {
+            pans[j] = pa[j] == NA_INTEGER ? pans[j] : (pans[j] * pa[j]);
+          }
+        } else {
+          for (ssize_t j = 0; j < len0; ++j) {
+            pans[j] = pa[j] == NA_INTEGER ? NA_REAL : (pans[j] * pa[j]);
+          }
         }
       }
     }

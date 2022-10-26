@@ -30,8 +30,6 @@ Vector-valued (statistical) functions operating in parallel over vectors passed 
   panyv(..., value)
   pcount(..., value)
   pcountNA(...)
-  pfirst(...)
-  plast(...)
 }
 \arguments{
   \item{...}{ suitable (atomic) vectors of the same length, or a single list of vectors (such as a \code{data.frame}). See Details on the allowed data types for each function, and Examples.}
@@ -52,7 +50,7 @@ Functions \code{panyv/pallv} are wrappers around \code{pcount}, and \code{panyNA
 None of these functions recycle vectors i.e. all input vectors need to have the same length. All functions support long vectors with up to \code{2^64-1} elements.
 }
 \value{
-\code{psum/pprod/pmean} return the sum, product or mean of all arguments. The value returned will be of the highest argument type (integer < double < complex). \code{pall[v/NA]} and \code{pany[v/NA]} return a logical vector. \code{pcount[NA]} returns an integer vector. \code{pfirst/plast} return a vector of the same type as the inputs. 
+\code{psum/pprod/pmean} return the sum, product or mean of all arguments. The value returned will be of the highest argument type (integer < double < complex). \code{pprod} only returns double or complex. \code{pall[v/NA]} and \code{pany[v/NA]} return a logical vector. \code{pcount[NA]} returns an integer vector. \code{pfirst/plast} return a vector of the same type as the inputs. 
 }
 \seealso{
 Package 'collapse' provides column-wise and scalar-valued analogues to many of these functions.
