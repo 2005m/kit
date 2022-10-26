@@ -25,6 +25,8 @@
   }
   \subsection{Notes}{
     \itemize{
+     \item Function \code{\strong{pprod}} now returns double output even if inputs are integer - in line with \code{base::prod} - to avoid integer overflows.
+    
       \item C compiler warnings on CRAN R-devel caused by compilation with -Wstrict-prototypes are now fixed. Declaration of functions without prototypes is depreciated in all versions of C. Thanks to Sebastian Krantz for the PR.
     }
   }
