@@ -5,10 +5,8 @@
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
 \section{version 0.0.12 (2022-10-29)}{
-
   \subsection{New Features}{
     \itemize{
-    
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.
       
       \item Function \code{\strong{pcountNA}} and \code{\strong{pcount(..., value = NA)}} allow \code{NA} counting with mixed data type (including \code{data.frame}). \code{\strong{pcountNA}} also supports list-vectors as inputs and counts empty or \code{NULL} elements as \code{NA}.
