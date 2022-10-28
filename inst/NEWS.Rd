@@ -4,7 +4,15 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.12 (2022-10-29)}{
+\section{version 0.0.13 (2022-10-29)}{
+  \subsection{Notes}{
+    \itemize{
+     \item Function \code{\strong{pprod}} now returns double output even if inputs are integer - in line with \code{base::prod} - to avoid integer overflows.
+    }
+  }
+}
+
+\section{version 0.0.12 (2022-10-26)}{
   \subsection{New Features}{
     \itemize{
       \item Function \code{\strong{pcountNA}} is equivalent to \code{\strong{pcount(..., value = NA)}}.

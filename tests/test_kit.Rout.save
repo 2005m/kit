@@ -53,7 +53,7 @@ Type 'q()' to quit R.
 + }
 > 
 > library(kit); unloadNamespace("kit")
-Attaching kit 0.0.12 (OPENMP enabled using 1 thread)
+Attaching kit 0.0.13 (OPENMP enabled using 1 thread)
 > 
 > topn        = kit::topn
 > setlevels   = kit::setlevels
@@ -741,13 +741,13 @@ Attaching kit 0.0.12 (OPENMP enabled using 1 thread)
 > 
 > check("0006.001", pprod(x, y, z, na.rm = FALSE), c(6, NA, NA, 5))
 > check("0006.002", pprod(x, y, z, na.rm = TRUE), c(6, 12, 16, 5))
-> check("0006.003", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6L, NA_integer_, NA_integer_, 5L))
-> check("0006.004", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6L, 12L, 16L, 5L))
+> check("0006.003", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = FALSE), c(6, NA_real_, NA_real_, 5))
+> check("0006.004", pprod(as.integer(x), as.integer(y), as.integer(z), na.rm = TRUE), c(6, 12, 16, 5))
 > check("0006.005", pprod(as.raw(z), y, na.rm = TRUE), error = "Argument 1 is of type raw. Only integer/logical, double and complex types are supported. A data.frame (of the previous types) is also supported as a single input.")
 > check("0006.006", pprod(x, y, 1:2, na.rm = FALSE), error = "Argument 3 is of length 2 but argument 1 is of length 4. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0006.007", pprod(1:10, 1:5, na.rm = FALSE), error = "Argument 2 is of length 5 but argument 1 is of length 10. If you wish to 'recycle' your argument, please use rep() to make this intent clear to the readers of your code.")
 > check("0006.008", pprod(x, as.raw(z), y, na.rm = TRUE), error = "Argument 2 is of type raw. Only integer/logical, double and complex types are supported.")
-> check("0006.009", pprod(1:10, 1:10, 21:30), 1:10 * 1:10 * 21:30)
+> check("0006.009", pprod(1:10, 1:10, 21:30), as.double(1:10 * 1:10 * 21:30))
 > check("0006.010", pprod(x, y, z, na.rm = NA), error = "Argument 'na.rm' must be TRUE or FALSE and length 1.")
 > check("0006.011", pprod(x, na.rm = FALSE), x)
 > check("0006.012", pprod(as.integer(x), y, z, na.rm = TRUE), c(6, 12, 16, 5))
@@ -761,7 +761,7 @@ Attaching kit 0.0.12 (OPENMP enabled using 1 thread)
 > check("0006.020", pprod(as.complex(x), as.complex(y), as.complex(z), na.rm = TRUE), as.complex(c(6, 12, 16, 5)))
 > check("0006.021", pprod(x, y, z, rep(Inf, 4L), na.rm = FALSE), x*y*z*Inf)
 > check("0006.022", pprod(x, y, z, rep(Inf, 4L), na.rm = TRUE), rep(Inf, 4L))
-> check("0006.023", pprod(NA_integer_, na.rm = TRUE), 1L)
+> check("0006.023", pprod(NA_integer_, na.rm = TRUE), 1)
 > check("0006.024", pprod(NA_real_, na.rm = TRUE), 1)
 > check("0006.025", pprod(NA_complex_, na.rm = TRUE), 1+0i)
 > check("0006.026", pprod(iris[,1:2]), iris$Sepal.Length*iris$Sepal.Width)
@@ -1843,4 +1843,4 @@ Attaching kit 0.0.12 (OPENMP enabled using 1 thread)
 > 
 > proc.time()
    user  system elapsed 
-  4.188   0.501   4.694 
+  4.295   0.535   4.834 

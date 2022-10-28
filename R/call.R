@@ -27,7 +27,7 @@ topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(ind
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
 
-.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.12 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
+.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.13 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onLoad     = function(libname, pkgname) options("kit.nThread"=1L)   #nocov
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
 
