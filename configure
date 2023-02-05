@@ -21,8 +21,13 @@ if [ "$R_NO_OPENMP" = "1" ]; then
     sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lomp|g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
   fi
 else
-  echo "*** On Linux and OpenMP supported!"
-  sed -e "s|@openmp_cflags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@openmp_libslags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@realtime_libslags@|-lrt|g;" src/Makevars.in > src/Makevars
+  if [ "`uname`" = "Darwin" ] ;then
+    echo "*** On Darwin and OpenMP supported!"
+    sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lomp|g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
+  else
+    echo "*** On Linux and OpenMP supported!"
+    sed -e "s|@openmp_cflags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@openmp_libslags@|\$(SHLIB_OPENMP_CFLAGS)|g; s|@realtime_libslags@|-lrt|g;" src/Makevars.in > src/Makevars
+  fi
 fi
 
 exit 0
