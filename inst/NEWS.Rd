@@ -7,7 +7,7 @@
 \section{version 0.0.14 (2022-03-03)}{
   \subsection{Notes}{
     \itemize{
-     \item Update configure file to support GCC
+     \item Update configure file to extend support for GCC
     }
   }
 }
