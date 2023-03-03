@@ -690,7 +690,7 @@ SEXP countOccurDataFrameR(SEXP x) { // move to matrix if possible (change hash a
   const R_xlen_t len_i = xlength(px[0]);
   SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
   for (R_xlen_t i = 0; i < len_x; ++i) {
-    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i],ScalarLogical(false)))), (unsigned)len_i*sizeof(int));
+    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i]))), (unsigned)len_i*sizeof(int));
   }
   UNPROTECT((int)len_x);
   const size_t n2 = 2U * (size_t) len_i;

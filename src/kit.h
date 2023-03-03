@@ -75,7 +75,7 @@ extern SEXP cpsortR(SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env
 extern SEXP dfToMatrix(SEXP df);
 extern SEXP dupR(SEXP x, SEXP uniq, SEXP fromLast);
 extern SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast);
-extern SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast);
+extern SEXP dupVecIndexOnlyR(SEXP x);
 extern SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast);
 extern SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast);
 extern SEXP dupLenR(SEXP x);
@@ -87,7 +87,7 @@ extern SEXP fposMatR(SEXP needle, SEXP haystack, SEXP all, SEXP overlap);
 extern SEXP fposVectR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap);
 extern SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads);
 extern SEXP nifR(SEXP na, SEXP rho, SEXP args);
-extern SEXP nifInternalR(SEXP na, SEXP rho, SEXP args);
+extern SEXP nifInternalR(SEXP na, SEXP args);
 extern SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args);
 extern SEXP ompEnabledR(void);
 extern SEXP pallR(SEXP na, SEXP args);

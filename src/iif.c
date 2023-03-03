@@ -526,7 +526,7 @@ SEXP nifR(SEXP na, SEXP rho, SEXP args) {
   return ans;
 }
 
-SEXP nifInternalR(SEXP na, SEXP rho, SEXP args) { // # nocov start
+SEXP nifInternalR(SEXP na, SEXP args) { // # nocov start
   R_len_t n=length(args);
   if (n % 2) {
     error("Received %d inputs; please supply an even number of arguments in ... "

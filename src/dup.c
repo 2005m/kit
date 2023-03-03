@@ -70,7 +70,7 @@ SEXP dupDataFrameR(SEXP x, SEXP uniq, SEXP fromLast) { // move to matrix if poss
   SEXP ans = buniq ? R_NilValue: PROTECT(allocVector(LGLSXP, len_i));
   SEXP mlv = PROTECT(allocMatrix(INTSXP, (int)len_i, (int)len_x));
   for (R_xlen_t i = 0; i < len_x; ++i) {
-    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i], fromLast))), (unsigned)len_i*sizeof(int));
+    memcpy(INTEGER(mlv)+i*len_i, INTEGER(PROTECT(dupVecIndexOnlyR(px[i]))), (unsigned)len_i*sizeof(int));
   }
   UNPROTECT((int)len_x);
   const size_t n2 = 2U * (size_t) len_i;
@@ -920,7 +920,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
   } else {
     error("Type %s is not supported.", type2char(tx));
   }
-  R_xlen_t count = 0;
+  size_t count = 0;
   int *restrict h = (int*)Calloc(M, int);
   SEXP ans = buniq ? R_NilValue : PROTECT(allocVector(LGLSXP, n));
   int *restrict pans = buniq ? (int*)Calloc(n, int) : LOGICAL(ans);
@@ -1291,7 +1291,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
       }
       Free(h);
       SEXP indx = PROTECT(allocVector(tx, count));
-      R_xlen_t ct = 0;
+      size_t ct = 0;
       for (int i = 0; ct < count; ++i) {
         if (pans[i]) {
           SET_STRING_ELT(indx, ct++, px[i]);
@@ -1345,7 +1345,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
  * Vector Index Only
  */
 
-SEXP dupVecIndexOnlyR(SEXP x, SEXP fromLast) {
+SEXP dupVecIndexOnlyR(SEXP x) {
   const R_xlen_t n = xlength(x);
   const SEXPTYPE tx = UTYPEOF(x);
   int K;
