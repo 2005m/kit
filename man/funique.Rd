@@ -4,7 +4,7 @@
 \alias{uniqLen}
 \title{ Fast duplicated and unique}
 \description{
-Similar to base R functions \code{duplicated} and \code{unique}, \code{fduplicated} and \code{funique} are slightly faster for vectors and much faster for \code{data.frame}. Function \code{uniqLen} is equivalent to base R \code{length(unique)} or \code{data.tbale::uniqueN}.
+Similar to base R functions \code{duplicated} and \code{unique}, \code{fduplicated} and \code{funique} are slightly faster for vectors and much faster for \code{data.frame}. Function \code{uniqLen} is equivalent to base R \code{length(unique)} or \code{data.table::uniqueN}.
 }
 \usage{
   fduplicated(x, fromLast = FALSE)
