@@ -1,12 +1,12 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 ebb6ec9a2df672303a3161254100f42d *configure
-053a68d2275f501029fd8c99570e158e *DESCRIPTION
-c7065c61d52676c8fd8fe3d816a58449 *inst/NEWS.Rd
+d72aef923111bceb966d62503c02794d *DESCRIPTION
+cdddf0b1457b495d4de9965fcb2bc50b *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 2ddfa8d8739668eedda260e6ddc935d4 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
 6d9bff9dee1049f5761a4f615cfc54bf *man/fpos.Rd
-1cce4277e2dd16a0f68c96d744b7bc17 *man/funique.Rd
+a07f56c53efff16e209ed17543ced8ec *man/funique.Rd
 290552d634a47a886682515ef363e93f *man/iif.Rd
 578fe4903cc4f5d7bc5a6f346be1e9e9 *man/nif.Rd
 ef4ce6330a0f6a2ec63ccfd365729963 *man/psort.Rd
