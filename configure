@@ -22,10 +22,10 @@ if [ "$R_NO_OPENMP" = "1" ]; then
   fi
 else
   if [ "`uname`" = "Darwin" ] ;then
-      if gcc --version | grep -i "gcc" > dev/null; then
+      if gcc --version | grep -i "gcc" > /dev/null; then
         echo "*** On Darwin and GCC OpenMP supported!"
         sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lgomp|g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
-      elif clang --version | grep -i "clang" > dev/null; then
+      elif clang --version | grep -i "clang" > /dev/null; then
         echo "*** On Darwin and CLANG OpenMP supported!"
         sed -e "s|@openmp_cflags@|-Xpreprocessor -fopenmp|g; s|@openmp_libslags@|-lomp|g; s|@realtime_libslags@||g;" src/Makevars.in > src/Makevars
       fi

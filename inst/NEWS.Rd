@@ -4,7 +4,15 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.14 (2022-08-12)}{
+\section{version 0.0.15 (2023-08-14)}{
+  \subsection{Notes}{
+    \itemize{
+     \item Correct tyop in configure file
+    }
+  }
+}
+
+\section{version 0.0.14 (2023-08-12)}{
   \subsection{Notes}{
     \itemize{
      \item Update configure file to extend support for GCC
@@ -16,7 +24,7 @@
   }
 }
 
-\section{version 0.0.13 (2022-02-24)}{
+\section{version 0.0.13 (2023-02-24)}{
   \subsection{Notes}{
     \itemize{
      \item Function \code{pprod} now returns double output even if inputs are integer - in line with \code{base::prod} - to avoid integer overflows.
