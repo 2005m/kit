@@ -4,10 +4,10 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.15 (2023-08-14)}{
+\section{version 0.0.15 (2023-10-01)}{
   \subsection{Notes}{
     \itemize{
-     \item Correct tyop in configure file
+     \item Correct typo in configure file
     }
   }
 }
