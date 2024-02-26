@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 d2761d00effd7b096a5bea21bc38742e *configure
-f26c0015784f555768de9fd4dbd52191 *DESCRIPTION
-771ad7a0ba9d6856cecdc324826a8d09 *inst/NEWS.Rd
+63e50ec034f2ae68dc2cac70b943bc5a *DESCRIPTION
+06bd5048f6b3775957ec019ae7637a9a *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 2ddfa8d8739668eedda260e6ddc935d4 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -16,7 +16,7 @@ a137f7855b41b074e2babaf8a1562551 *man/shareData.Rd
 54f91d543a10f8c9aef7082da2b86de7 *man/topn.Rd
 a7f31cee15b9624dab8f4d13d3c66bad *man/vswitch.Rd
 c797ca387dccc02751cfe85108fb0159 *NAMESPACE
-24ce4885aedbca5309ed2ee126324aa2 *R/call.R
+a19c6faffef01603c022f6291d46bf21 *R/call.R
 2d6c06dfc570d456af125c160cf150d7 *README.md
 b68e68fed386fa0ce15ec6ec2e1f91a5 *src/dup.c
 17b8c354cd84b5d85ab5a62ef2bfab4e *src/dupLen.c
@@ -34,4 +34,4 @@ bafdafd654269acd054525571dbe1b44 *src/share.c
 b9daa73f97bb19027aaa5bfdc00c4087 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
 3f8dc4ecf4ad26fb959a2291ab167630 *tests/test_kit.R
-de61e8bccc19816a0e07c9153a33473b *tests/test_kit.Rout.save
+f0b7442cb1c46dd6a5f7344199bc1ac4 *tests/test_kit.Rout.save

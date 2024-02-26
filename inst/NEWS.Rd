@@ -4,6 +4,14 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.16 (2024-03-01)}{
+  \subsection{Notes}{
+    \itemize{
+     \item Check if \code{"kit.nThread"} is defined before setting it to \code{1L}
+    }
+  }
+}
+
 \section{version 0.0.15 (2023-10-01)}{
   \subsection{Notes}{
     \itemize{
