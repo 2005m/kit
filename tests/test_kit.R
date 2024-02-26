@@ -33,7 +33,6 @@ check = function(test,x,y,error=NULL,warning=NULL) {
   return(invisible(FALSE))
 }
 
-library(kit); unloadNamespace("kit")
 
 topn        = kit::topn
 setlevels   = kit::setlevels

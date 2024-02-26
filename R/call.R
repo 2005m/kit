@@ -27,14 +27,20 @@ topn        = function(vec, n=6L, decreasing=TRUE, hasna=TRUE,index=TRUE) if(ind
 uniqLen     = function(x) .Call(CdupLenR, x)
 vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.nThread"), checkEnc = TRUE) .Call(CvswitchR, x, values, outputs, default, nThread, checkEnc)
 
-.onAttach   = function(libname, pkgname) packageStartupMessage(paste0("Attaching kit 0.0.16 (OPENMP ",if(.Call(CompEnabledR)) "enabled" else "disabled"," using 1 thread)"))
 .onUnload   = function(libpath) library.dynam.unload("kit", libpath) #nocov
 
-.onLoad     = function(libname, pkgname) {
-  if (!("kit.nThread" %in% names(options()))) {
-    options("kit.nThread"=1L)
-  }
-}
+.onAttach   = function(libname, pkgname) { #nocov
+  omp = if(.Call(CompEnabledR)) "enabled" else "disabled" #nocov
+  nth = getOption("kit.nThread") #nocov
+  thd = if (nth > 1L) " threads)" else " thread)" #nocov
+  packageStartupMessage(paste0("Attaching kit 0.0.16 (OPENMP ",omp," using ",nth,thd)) #nocov
+} #nocov
+
+.onLoad     = function(libname, pkgname) { #nocov
+  if (!("kit.nThread" %in% names(options()))) { #nocov
+    options("kit.nThread"=1L) #nocov
+  } #nocov
+} #nocov
 
 pcount      = function(..., value) {
   if(is.na(value[1])) {

@@ -52,8 +52,6 @@ Type 'q()' to quit R.
 +   return(invisible(FALSE))
 + }
 > 
-> library(kit); unloadNamespace("kit")
-Attaching kit 0.0.16 (OPENMP enabled using 1 thread)
 > 
 > topn        = kit::topn
 > setlevels   = kit::setlevels

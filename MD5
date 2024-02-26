@@ -16,7 +16,7 @@ a137f7855b41b074e2babaf8a1562551 *man/shareData.Rd
 54f91d543a10f8c9aef7082da2b86de7 *man/topn.Rd
 a7f31cee15b9624dab8f4d13d3c66bad *man/vswitch.Rd
 c797ca387dccc02751cfe85108fb0159 *NAMESPACE
-a19c6faffef01603c022f6291d46bf21 *R/call.R
+82928f8fb69a52a14469d8e1f225ba3d *R/call.R
 2d6c06dfc570d456af125c160cf150d7 *README.md
 b68e68fed386fa0ce15ec6ec2e1f91a5 *src/dup.c
 17b8c354cd84b5d85ab5a62ef2bfab4e *src/dupLen.c
@@ -33,5 +33,5 @@ bafdafd654269acd054525571dbe1b44 *src/share.c
 53711690f6c15f3f36edb4b9360043a4 *src/topn.c
 b9daa73f97bb19027aaa5bfdc00c4087 *src/utils.c
 3476a1e2381bb86f68a72844ee61bc7b *src/vswitch.c
-3f8dc4ecf4ad26fb959a2291ab167630 *tests/test_kit.R
-f0b7442cb1c46dd6a5f7344199bc1ac4 *tests/test_kit.Rout.save
+b28a565eeb0b8e5f7e2969be373d32f4 *tests/test_kit.R
+84aecd97807e8ec130ee14422da21389 *tests/test_kit.Rout.save
