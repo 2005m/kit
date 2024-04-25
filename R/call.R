@@ -33,7 +33,7 @@ vswitch     = function(x, values, outputs, default=NULL, nThread=getOption("kit.
   omp = if(.Call(CompEnabledR)) "enabled" else "disabled" #nocov
   nth = getOption("kit.nThread") #nocov
   thd = if (nth > 1L) " threads)" else " thread)" #nocov
-  packageStartupMessage(paste0("Attaching kit 0.0.16 (OPENMP ",omp," using ",nth,thd)) #nocov
+  packageStartupMessage(paste0("Attaching kit 0.0.17 (OPENMP ",omp," using ",nth,thd)) #nocov
 } #nocov
 
 .onLoad     = function(libname, pkgname) { #nocov

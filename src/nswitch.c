@@ -1,6 +1,6 @@
 /*
  * kit : Useful R Functions Implemented in C
- * Copyright (C) 2020-2021  Morgan Jacob
+ * Copyright (C) 2020-2024  Morgan Jacob
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,7 +151,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -164,7 +164,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -177,7 +177,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -190,7 +190,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j], pvalues[0])) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -203,7 +203,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -244,7 +244,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -257,7 +257,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -270,7 +270,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -283,7 +283,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j], pvalues[0])) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -296,7 +296,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -308,7 +308,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = SEXPPTR_RO(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (R_compute_identical(px[j],pvalues[0],0)) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -337,7 +337,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -350,7 +350,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -363,7 +363,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -376,7 +376,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j], pvalues[0])) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -389,7 +389,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -401,7 +401,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = SEXPPTR_RO(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (R_compute_identical(px[j],pvalues[0],0)) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -431,7 +431,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -444,7 +444,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -457,7 +457,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -470,7 +470,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j],pvalues[0])) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -483,7 +483,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -495,7 +495,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = SEXPPTR_RO(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (R_compute_identical(px[j],pvalues[0],0)) {
-            pans[j] = pto[i & amask[i]];
+            pans[j] = pto[j & amask[i]];
           }
         }
       }
@@ -521,7 +521,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -533,7 +533,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -545,7 +545,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -557,7 +557,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j],pvalues[0])) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -569,7 +569,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -581,7 +581,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = SEXPPTR_RO(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (R_compute_identical(px[j],pvalues[0],0)) {
-            SET_STRING_ELT(ans, j, pto[i & amask[i]]);
+            SET_STRING_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -609,7 +609,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = LOGICAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -621,7 +621,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const int *restrict pvalues = INTEGER(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -633,7 +633,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const double *restrict pvalues = REAL(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -645,7 +645,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const Rcomplex *restrict pvalues = COMPLEX(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (EQUAL_CPLX(px[j], pvalues[0])) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -657,7 +657,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (px[j] == pvalues[0]) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }
@@ -669,7 +669,7 @@ SEXP nswitchR(SEXP x, SEXP na, SEXP nthreads, SEXP chkenc, SEXP args) {
         const SEXP *restrict pvalues = SEXPPTR_RO(PTR_ETL(args, 2*i));
         for (ssize_t j = 0; j < len_x; ++j) {
           if (R_compute_identical(px[j],pvalues[0],0)) {
-            SET_VECTOR_ELT(ans, j, pto[i & amask[i]]);
+            SET_VECTOR_ELT(ans, j, pto[j & amask[i]]);
           }
         }
       }

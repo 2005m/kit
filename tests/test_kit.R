@@ -1547,6 +1547,12 @@ check("0019.061", nswitch(c(enc1,enc1),enc1,1),c(1,1))
 check("0019.062", nswitch(c(enc2,enc2),enc2,1),c(1,1))
 check("0019.063", nswitch(c(enc1,enc2),enc2,1),c(1,1))
 check("0019.064", nswitch(c(enc1,enc1),enc2,1),c(1,1))
+check("0019.065", nswitch(rep(1:4, each = 2), 1L, 1:8, 2L, 11:18, 3L, 21:28, 4L, 31:38), vswitch(x = rep(1:4, each = 2), values = c(1L,2L,3L,4L), outputs = list(1:8,11:18,21:28,31:38)))
+check("0019.066", nswitch(rep(1:4, each = 2), 1L, as.numeric(1:8), 2L, as.numeric(11:18), 3L, as.numeric(21:28), 4L, as.numeric(31:38)), vswitch(x = rep(1:4, each = 2), values = c(1L,2L,3L,4L), outputs = list(as.numeric(1:8),as.numeric(11:18),as.numeric(21:28),as.numeric(31:38))))
+check("0019.067", nswitch(rep(1:4, each = 2), 1L, as.character(1:8), 2L, as.character(11:18), 3L, as.character(21:28), 4L, as.character(31:38)), vswitch(x = rep(1:4, each = 2), values = c(1L,2L,3L,4L), outputs = list(as.character(1:8),as.character(11:18),as.character(21:28),as.character(31:38))))
+check("0019.068", nswitch(rep(as.numeric(1:4), each = 2), 1, 1:8, 2, 11:18, 3, 21:28, 4, 31:38), vswitch(x = rep(as.numeric(1:4), each = 2), values = c(1,2,3,4), outputs = list(1:8,11:18,21:28,31:38)))
+check("0019.069", nswitch(rep(as.numeric(1:4), each = 2), 1, as.numeric(1:8), 2, as.numeric(11:18), 3, as.numeric(21:28), 4, as.numeric(31:38)), vswitch(x = rep(as.numeric(1:4), each = 2), values = c(1,2,3,4), outputs = list(as.numeric(1:8),as.numeric(11:18),as.numeric(21:28),as.numeric(31:38))))
+check("0019.070", nswitch(rep(as.numeric(1:4), each = 2), 1, as.character(1:8), 2, as.character(11:18), 3, as.character(21:28), 4, as.character(31:38)), vswitch(x = rep(as.numeric(1:4), each = 2), values = c(1,2,3,4), outputs = list(as.character(1:8),as.character(11:18),as.character(21:28),as.character(31:38))))
 
 rm(x1,x2,x3,x4,x5,x6,s1,s2,class2133, enc1, enc2)
 
