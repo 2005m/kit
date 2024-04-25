@@ -4,6 +4,19 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.17 (2024-04-25)}{
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Fix \code{nswitch}. Thanks to Sebastian Krantz for raising an issue.
+    }
+  }
+  \subsection{Notes}{
+    \itemize{
+      \item Update copyright date in c files
+    }
+  }
+}
+
 \section{version 0.0.16 (2024-03-01)}{
   \subsection{Notes}{
     \itemize{
