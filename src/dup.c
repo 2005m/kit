@@ -847,7 +847,8 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         }
       }
       if (j != len) {
-        SETLENGTH(ans, j);
+        ans = Rf_xlengthgets(ans, j);
+        copyMostAttrib(x, ans);
       }
     }
     Free(count);
@@ -892,7 +893,8 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
         }
       }
       if (j != 3) {
-        SETLENGTH(ans, j);
+        ans = Rf_xlengthgets(ans, j);
+        copyMostAttrib(x, ans);
       }
     }
     Free(count);

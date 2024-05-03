@@ -4,7 +4,7 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{version 0.0.17 (2024-04-25)}{
+\section{version 0.0.17 (2024-05-03)}{
   \subsection{Bug Fixes}{
     \itemize{
       \item Fix \code{nswitch}. Thanks to Sebastian Krantz for raising an issue.
@@ -13,6 +13,8 @@
   \subsection{Notes}{
     \itemize{
       \item Update copyright date in c files
+
+      \item Fix note on CRAN regarding SETLENGTH
     }
   }
 }
