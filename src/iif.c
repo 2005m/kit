@@ -230,7 +230,7 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
     const SEXP *restrict pa  = SEXPPTR_RO(a);
     const SEXP *restrict pb  = SEXPPTR_RO(b);
-    const SEXP *restrict pna = SEXPPTR_RO(na);
+    const SEXP *restrict pna = na_non_null ? SEXPPTR_RO(na) : NULL;
     for (ssize_t i=0; i<len_l; ++i) {
       if (pl[i]==NA_LOGICAL) {
         if (na_non_null) {
