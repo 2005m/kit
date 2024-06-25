@@ -766,7 +766,7 @@ SEXP pcountNAR(SEXP args) {
     } break;
     case STRSXP: {
       const SEXP pa = PTR_ETL(args, i);
-      const SEXP *restrict px = STRING_PTR(pa);
+      const SEXP *restrict px = STRING_PTR_RO(pa);
       for (ssize_t j = 0; j < len0; ++j) {
         if (px[j] == NA_STRING) {
           pans[j]++;
@@ -824,7 +824,7 @@ SEXP pcountNAR(SEXP args) {
     } break;
     case STRSXP: {
       const SEXP pa = PTR_ETL(args, i);
-      const SEXP *restrict px = STRING_PTR(pa);
+      const SEXP *restrict px = STRING_PTR_RO(pa);
       for (ssize_t j = 0; j < len0; ++j) {
         if (px[j] == NA_STRING) {
           pans[j]++;
@@ -950,9 +950,9 @@ SEXP pfirstR(SEXP last, SEXP args) {
     }
   } break;
   case STRSXP: {
-    SEXP *restrict pans = STRING_PTR(ans);
+    SEXP *restrict pans = STRING_PTR_RO(ans);
     for (int i = 1; i < n; ++i) {
-      const SEXP *restrict pa = STRING_PTR(PTR_ETL(args, i));
+      const SEXP *restrict pa = STRING_PTR_RO(PTR_ETL(args, i));
       ssize_t nna = 0;
       for (ssize_t j = 0; j < len0; ++j) {
         if(pans[j] == NA_STRING) {

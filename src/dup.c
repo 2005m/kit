@@ -672,7 +672,7 @@ SEXP dupMatrixR(SEXP x, SEXP uniq, Rboolean idx, SEXP fromLast) {
     }
   } break;
   case STRSXP : {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     if (buniq) {
       if (pfromLast) {
         for (R_xlen_t i = len_i-1; i > -1; --i) {
@@ -1259,7 +1259,7 @@ SEXP dupVecR(SEXP x, SEXP uniq, SEXP fromLast) {
     }
   } break;
   case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     size_t id = 0;
     if (buniq) {
       if (pfromLast) {
@@ -1458,7 +1458,7 @@ SEXP dupVecIndexOnlyR(SEXP x) {
     }
   } break;
   case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     size_t id = 0;
     for (int i = 0; i < n; ++i) {
       id = HASH(((intptr_t) px[i] & 0xffffffff), K);

@@ -178,7 +178,7 @@ SEXP countNAR(SEXP x) {
     }
   } break;
   case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     for (ssize_t i=0; i<len_x; ++i) {
       if (px[i] == NA_STRING) {
         cnt++;
@@ -259,9 +259,9 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
       UNPROTECT(1);
     } break;
     case STRSXP : {
-      const SEXP *restrict ptmp = STRING_PTR(pdf[i]);
+      const SEXP *restrict ptmp = STRING_PTR_RO(pdf[i]);
       SEXP TYPECOL = PROTECT(allocVector(STRSXP, len_rws));
-      SEXP *restrict pc = STRING_PTR(TYPECOL);
+      SEXP *restrict pc = STRING_PTR_RO(TYPECOL);
       for (R_xlen_t j = 0; j < len_rws; ++j) {
         pc[j] = ptmp[prws[j]];
       }
@@ -326,7 +326,7 @@ SEXP subSetRowMatrix(SEXP mat, SEXP rws) {
   } break;
   case STRSXP : {
     mato = PROTECT(allocMatrix(STRSXP, len_rws, col_mat));
-    const SEXP *restrict pmat = STRING_PTR(mat);
+    const SEXP *restrict pmat = STRING_PTR_RO(mat);
     for (int i = 0; i < col_mat; ++i) {
       for (int j = 0; j < len_rws; ++j) {
         SET_STRING_ELT(mato, j+len_rws*i, pmat[prws[j]+row_mat*i]);
@@ -400,7 +400,7 @@ SEXP subSetColMatrix(SEXP x, R_xlen_t idx) { // # nocov start
     memcpy(COMPLEX(ans), COMPLEX(x)+pidx, (unsigned)len_i*sizeof(Rcomplex));
   } break;
   case STRSXP : {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     for (R_xlen_t i = 0; i < len_i; ++i) {
       SET_STRING_ELT(ans, i, px[i + pidx]);
     }
@@ -638,7 +638,7 @@ SEXP countOccurR(SEXP x) { // can be improved for factors
     }
   } break;
   case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     size_t id = 0;
     for (int i = 0; i < n; ++i) {
       id = HASH(((intptr_t) px[i] & 0xffffffff), K);
@@ -798,7 +798,7 @@ SEXP dfToMatrix(SEXP df) {
   } break;
   case STRSXP :{
     for (int i = 0; i < len_x; ++i) {
-      const SEXP *restrict ppx = STRING_PTR(px[i]);
+      const SEXP *restrict ppx = STRING_PTR_RO(px[i]);
       const int ct = i*len_i;
       for (int j = 0; j < len_i; ++j) {
         SET_STRING_ELT(mlv, j+ct, ppx[j]);
@@ -812,7 +812,7 @@ SEXP dfToMatrix(SEXP df) {
 
 bool isMixEnc(SEXP x) {
   const R_xlen_t len = xlength(x);
-  SEXP *px = STRING_PTR(x);
+  SEXP *px = STRING_PTR_RO(x);
   const cetype_t ces = getCharCE(px[0]);
   for (R_xlen_t i = 1; i < len; ++i)
     if(getCharCE(px[i]) != ces)
@@ -821,7 +821,7 @@ bool isMixEnc(SEXP x) {
 }
 
 SEXP enc2UTF8(SEXP x) {
-  SEXP *px = STRING_PTR(x);
+  SEXP *px = STRING_PTR_RO(x);
   const R_xlen_t len = xlength(x);
   if (getCharCE(px[0]) != CE_UTF8) {
     SEXP ans = PROTECT(allocVector(STRSXP, len));

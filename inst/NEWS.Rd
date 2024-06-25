@@ -4,6 +4,14 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.19 (2024-06-26)}{
+  \subsection{Bug Fixes}{
+    \itemize{
+      \item Fix warnings in C code.
+    }
+  }
+}
+
 \section{version 0.0.18 (2024-06-06)}{
   \subsection{Bug Fixes}{
     \itemize{

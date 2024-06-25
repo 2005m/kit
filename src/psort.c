@@ -119,7 +119,7 @@ static void recursiveRadixrev(SEXP *restrict pans, const size_t k, size_t *restr
 
 static SEXP rsort (SEXP x) {
   const size_t len = LENGTH(x);
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   SEXP ans = PROTECT(allocVector(STRSXP, len));
   uint8_t nprotect = 1;
   
@@ -153,7 +153,7 @@ static SEXP rsort (SEXP x) {
     nprotect++;
     size_t start = 0;
     size_t *restrict newpos = malloc(257*sizeof(size_t));
-    recursiveRadix(STRING_PTR(ans), 1, pos, incr, test, tmp, STRING_PTR(tmp), start,newpos);
+    recursiveRadix(STRING_PTR_RO(ans), 1, pos, incr, test, tmp, STRING_PTR_RO(tmp), start,newpos);
     free(newpos);
   }
   
@@ -167,7 +167,7 @@ static SEXP rsort (SEXP x) {
 
 static SEXP rsortrev (SEXP x) {
   const size_t len = LENGTH(x);
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   SEXP ans = PROTECT(allocVector(STRSXP, len));
   uint8_t nprotect = 1;
   
@@ -201,7 +201,7 @@ static SEXP rsortrev (SEXP x) {
     nprotect++;
     size_t start = 0;
     size_t *restrict newpos = malloc(257*sizeof(size_t));
-    recursiveRadixrev(STRING_PTR(ans), 1, pos, incr, test, tmp, STRING_PTR(tmp), start,newpos);
+    recursiveRadixrev(STRING_PTR_RO(ans), 1, pos, incr, test, tmp, STRING_PTR_RO(tmp), start,newpos);
     free(newpos);
   }
   
@@ -226,7 +226,7 @@ static SEXP dupVecSort(SEXP x) {
   size_t id = 0;
   int *restrict h = (int*)calloc(M, sizeof(int));
   int *restrict pans = (int*)calloc(n, sizeof(int));
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   for (int i = 0; i < n; ++i) {
     id = HASHSTR(px[i]);
     while (h[id]) {
@@ -262,7 +262,7 @@ static int *buildTable (SEXP x) {
   while (M < n2) { M *= 2; K++;}
   size_t id = 0;
   int *h = (int*)calloc(M, sizeof(int));
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   for (int i = 0; i < n; ++i) {
     id = HASHSTR(px[i]);
     while (h[id]) {
@@ -404,7 +404,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
     return valSorted;
   }*/
   
-  SEXP *restrict pvalSorted = STRING_PTR(valSorted);
+  SEXP *restrict pvalSorted = STRING_PTR_RO(valSorted);
   const int nlen = LENGTH(valSorted);
   
   int NAidx = -1;
@@ -442,7 +442,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   
   if (early) {
     if (na_pos == NA_LOGICAL && cl) {
-      const SEXP *restrict pa = STRING_PTR(valSorted); // already used pvalSorted
+      const SEXP *restrict pa = STRING_PTR_RO(valSorted); // already used pvalSorted
       int ct = 0;
       for (int i = nlen-1; i >= 0; --i) {
         if(pa[i] == NA_STRING) {
@@ -460,7 +460,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
   }
   
   int *restrict lookupTable = buildTable(valSorted);
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   int nth = asInteger(nthread);
   nth = nth > max_thread ? max_thread : (nth < min_thread ? min_thread : nth); //revisit this
   
@@ -521,7 +521,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
       SET_STRING_ELT(ans, pos[lv[j]]++ , px[j]);
     }
     if (na_pos == NA_LOGICAL) {
-      const SEXP *restrict pa = STRING_PTR(ans);
+      const SEXP *restrict pa = STRING_PTR_RO(ans);
       int ct = 0;
       for (int i = xlen-1; i >= 0; --i) {
         if(pa[i] == NA_STRING) {
@@ -570,7 +570,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
   SEXP uVals = PROTECT(dupVecSort(x));
   const int n = LENGTH(uVals);
   SEXP valSorted = PROTECT(callToSort2(uVals, "quick", dcr, 1, env));
-  SEXP *restrict pvalSorted = STRING_PTR(valSorted);
+  SEXP *restrict pvalSorted = STRING_PTR_RO(valSorted);
   
   int NAidx = -1;
   for (int i = 0; i < n; ++i) {
@@ -592,7 +592,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
   }
 
   int *restrict lookupTable = buildTable(valSorted);
-  const SEXP *restrict px = STRING_PTR(x);
+  const SEXP *restrict px = STRING_PTR_RO(x);
   int nth = asInteger(nthread);
   nth = nth > max_thread ? max_thread : (nth < min_thread ? min_thread : nth); //revisit this
   

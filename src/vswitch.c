@@ -74,7 +74,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
   SEXP xans = R_NilValue, vans = R_NilValue;
   bool utfcon = false;
   if (pchkenc && type_x == STRSXP) {
-    if (isMixEnc(x) || isMixEnc(values) || getCharCE(STRING_PTR(x)[0]) != getCharCE(STRING_PTR(values)[0])) {
+    if (isMixEnc(x) || isMixEnc(values) || getCharCE(STRING_PTR_RO(x)[0]) != getCharCE(STRING_PTR_RO(values)[0])) {
       xans = PROTECT(enc2UTF8(x)); nprotect++;
       vans = PROTECT(enc2UTF8(values)); nprotect++;
       utfcon = true;
@@ -192,8 +192,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           int *ppo = LOGICAL(po[i]);
           OMP_PARALLEL_FOR(nth)
@@ -285,8 +285,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           int *ppo = INTEGER(po[i]);
           OMP_PARALLEL_FOR(nth)
@@ -378,8 +378,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           double *ppo = REAL(po[i]);
           OMP_PARALLEL_FOR(nth)
@@ -472,8 +472,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           Rcomplex *ppo = COMPLEX(po[i]);
           OMP_PARALLEL_FOR(nth)
@@ -504,7 +504,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
      *  This part is for STRING
      */
     case STRSXP:{
-      const SEXP *restrict pna = nonna ? STRING_PTR(na) : NULL; 
+      const SEXP *restrict pna = nonna ? STRING_PTR_RO(na) : NULL; 
       ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       for (ssize_t j=0; j<len_x; ++j) {
         SET_STRING_ELT(ans, j, nonna ? pna[j & namask] : NA_STRING);
@@ -514,7 +514,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const int *restrict px = LOGICAL(x);
         const int *restrict pvalues = LOGICAL(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -526,7 +526,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const int *restrict px = INTEGER(x);
         const int *restrict pvalues = INTEGER(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -538,7 +538,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const double *restrict px = REAL(x);
         const double *restrict pvalues = REAL(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -550,7 +550,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const Rcomplex *restrict px = COMPLEX(x);
         const Rcomplex *restrict pvalues = COMPLEX(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (EQUAL_CPLX(px[j],pvalues[i])) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -559,10 +559,10 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -574,7 +574,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const SEXP *restrict px = SEXPPTR_RO(x);
         const SEXP *restrict pvalues = SEXPPTR_RO(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR(po[i]);
+          SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (R_compute_identical(px[j], pvalues[i], 0)) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -647,8 +647,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
           const SEXP *ppo = SEXPPTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
@@ -758,8 +758,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
@@ -846,8 +846,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
@@ -934,8 +934,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
@@ -1023,8 +1023,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         OMP_PARALLEL_FOR(nth)
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
@@ -1053,12 +1053,12 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
      *  This part is for STRING
      */
     case STRSXP:{
-      const SEXP *restrict pna = nonna ? STRING_PTR(na) : NULL; 
+      const SEXP *restrict pna = nonna ? STRING_PTR_RO(na) : NULL; 
       ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
       for (ssize_t j=0; j<len_x; ++j) {
         SET_STRING_ELT(ans, j, nonna ? pna[j & namask] : NA_STRING);
       }
-      const SEXP *restrict pto = STRING_PTR(outputs);
+      const SEXP *restrict pto = STRING_PTR_RO(outputs);
       switch(type_x) {
       case LGLSXP: {
         const int *restrict px = LOGICAL(x);
@@ -1105,8 +1105,8 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         }
       } break;
       case STRSXP: {
-        const SEXP *restrict px = STRING_PTR(utfcon ? xans : x);
-        const SEXP *restrict pvalues = STRING_PTR(utfcon ? vans : values);
+        const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
+        const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t j=0; j<len_x; ++j) {
           for (ssize_t i=0; i<len_values; ++i) {
             if (px[j]==pvalues[i]) {

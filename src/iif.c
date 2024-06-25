@@ -217,9 +217,9 @@ SEXP iifR(SEXP l, SEXP a, SEXP b, SEXP na, SEXP tprom, SEXP nthreads) {
     const ssize_t amask = len_a>1 ? SSIZE_MAX : 0;
     const ssize_t bmask = len_b>1 ? SSIZE_MAX : 0;
     const ssize_t namask = len_na>1 ? SSIZE_MAX : 0;
-    const SEXP *restrict pa = STRING_PTR(a);
-    const SEXP *restrict pb = STRING_PTR(b);
-    const SEXP *restrict pna = na_non_null ? STRING_PTR(na) : NULL;
+    const SEXP *restrict pa = STRING_PTR_RO(a);
+    const SEXP *restrict pb = STRING_PTR_RO(b);
+    const SEXP *restrict pna = na_non_null ? STRING_PTR_RO(na) : NULL;
     for (ssize_t i=0; i<len_l; ++i) {
       SET_STRING_ELT(ans, i, pl[i] == 1 ? pa[i & amask] : (pl[i] == 0 ? pb[i & bmask] :(na_non_null ? pna[i & namask] : NA_STRING)));
     }
@@ -459,7 +459,7 @@ SEXP nifR(SEXP na, SEXP rho, SEXP args) {
       }
     } break;
     case STRSXP: {
-      const SEXP *restrict pouts = STRING_PTR(outs);
+      const SEXP *restrict pouts = STRING_PTR_RO(outs);
       if (imask) {
         for (ssize_t j=0; j<len2; ++j) {
           if (pcons[j]==1) {
@@ -479,7 +479,7 @@ SEXP nifR(SEXP na, SEXP rho, SEXP args) {
       }
       if (i==dn) {
         const ssize_t bmask = len_na>1 ? SSIZE_MAX : 0;
-        const SEXP *restrict pna = nonna ? STRING_PTR(na) : NULL;
+        const SEXP *restrict pna = nonna ? STRING_PTR_RO(na) : NULL;
         for (ssize_t j=0; j<l; ++j) {
           SET_STRING_ELT(ans, p[j], nonna ? pna[p[j] & bmask] : NA_STRING);
         }
@@ -733,7 +733,7 @@ SEXP nifInternalR(SEXP na, SEXP args) { // # nocov start
       }
     } break;
     case STRSXP: {
-      const SEXP *restrict pouts = STRING_PTR(outs);
+      const SEXP *restrict pouts = STRING_PTR_RO(outs);
       if (imask) {
         for (ssize_t j=0; j<len2; ++j) {
           if (pcons[j]==1) {
@@ -753,7 +753,7 @@ SEXP nifInternalR(SEXP na, SEXP args) { // # nocov start
       }
       if (i==dn) {
         const ssize_t bmask = len_na>1 ? SSIZE_MAX : 0;
-        const SEXP *restrict pna = nonna ? STRING_PTR(na) : NULL;
+        const SEXP *restrict pna = nonna ? STRING_PTR_RO(na) : NULL;
         for (ssize_t j=0; j<l; ++j) {
           SET_STRING_ELT(ans, p[j], nonna ? pna[p[j] & bmask] : NA_STRING);
         }

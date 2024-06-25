@@ -231,7 +231,7 @@ SEXP dupLenMatrixR(SEXP x) {
     }
   } break;
   case STRSXP : {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     for (R_xlen_t i = 0; i < len_i; ++i) {
       R_xlen_t key = 0;
       for (R_xlen_t j = 0; j < len_x; ++j) {
@@ -388,7 +388,7 @@ SEXP dupLenVecR(SEXP x) {
     }
   } break;
   case STRSXP: {
-    const SEXP *restrict px = STRING_PTR(x);
+    const SEXP *restrict px = STRING_PTR_RO(x);
     size_t id = 0;
     for (int i = 0; i < n; ++i) {
       id = HASH(((intptr_t) px[i] & 0xffffffff), K);
