@@ -261,9 +261,8 @@ SEXP subSetRowDataFrame(SEXP df, SEXP rws) {
     case STRSXP : {
       const SEXP *restrict ptmp = STRING_PTR_RO(pdf[i]);
       SEXP TYPECOL = PROTECT(allocVector(STRSXP, len_rws));
-      SEXP *restrict pc = STRING_PTR_RO(TYPECOL);
       for (R_xlen_t j = 0; j < len_rws; ++j) {
-        pc[j] = ptmp[prws[j]];
+        SET_STRING_ELT(TYPECOL,j, ptmp[prws[j]]);
       }
       copyMostAttrib(pdf[i], TYPECOL);
       SET_VECTOR_ELT(dfo, i, TYPECOL);
@@ -812,7 +811,7 @@ SEXP dfToMatrix(SEXP df) {
 
 bool isMixEnc(SEXP x) {
   const R_xlen_t len = xlength(x);
-  SEXP *px = STRING_PTR_RO(x);
+  const SEXP *px = STRING_PTR_RO(x);
   const cetype_t ces = getCharCE(px[0]);
   for (R_xlen_t i = 1; i < len; ++i)
     if(getCharCE(px[i]) != ces)
@@ -821,7 +820,7 @@ bool isMixEnc(SEXP x) {
 }
 
 SEXP enc2UTF8(SEXP x) {
-  SEXP *px = STRING_PTR_RO(x);
+  const SEXP *px = STRING_PTR_RO(x);
   const R_xlen_t len = xlength(x);
   if (getCharCE(px[0]) != CE_UTF8) {
     SEXP ans = PROTECT(allocVector(STRSXP, len));

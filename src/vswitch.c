@@ -514,7 +514,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const int *restrict px = LOGICAL(x);
         const int *restrict pvalues = LOGICAL(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -526,7 +526,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const int *restrict px = INTEGER(x);
         const int *restrict pvalues = INTEGER(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -538,7 +538,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const double *restrict px = REAL(x);
         const double *restrict pvalues = REAL(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -550,7 +550,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const Rcomplex *restrict px = COMPLEX(x);
         const Rcomplex *restrict pvalues = COMPLEX(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (EQUAL_CPLX(px[j],pvalues[i])) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -562,7 +562,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const SEXP *restrict px = STRING_PTR_RO(utfcon ? xans : x);
         const SEXP *restrict pvalues = STRING_PTR_RO(utfcon ? vans : values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (px[j]==pvalues[i]) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);
@@ -574,7 +574,7 @@ SEXP vswitchR(SEXP x, SEXP values, SEXP outputs, SEXP na, SEXP nthreads, SEXP ch
         const SEXP *restrict px = SEXPPTR_RO(x);
         const SEXP *restrict pvalues = SEXPPTR_RO(values);
         for (ssize_t i=0; i<len_values; ++i) {
-          SEXP *ppo = STRING_PTR_RO(po[i]);
+          const SEXP *ppo = STRING_PTR_RO(po[i]);
           for (ssize_t j=0; j<len_x; ++j) {
             if (R_compute_identical(px[j], pvalues[i], 0)) {
               SET_STRING_ELT(ans, j, ppo[j & amask[i]]);

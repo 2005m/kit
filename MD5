@@ -28,10 +28,10 @@ a52426250b954a335b1121948e057ee7 *src/Makevars.in
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 1e8b11cf04b116653c0a82a20f72490b *src/nswitch.c
 7b6cc295ee89e397e47957097cf15417 *src/psort.c
-d9e5ee62440914d68cec114cd9717af2 *src/psum.c
+8c15e9c171d447aed088cec849323fab *src/psum.c
 7589054d8388fe7ed3354a5aa388eb02 *src/share.c
 ef9329d7e748c13b9526fca1788a1891 *src/topn.c
-8b27a6955a60f8c94b6ae39845948bb9 *src/utils.c
-ffd709a7cfedf05d54c7577f8a248a28 *src/vswitch.c
+58a06280212a06ea2b8039bebb03fcdf *src/utils.c
+37787d47d80dfd40bc3d12699ed30441 *src/vswitch.c
 6af1b66c0c90f6809c960e2133c1b5e4 *tests/test_kit.R
 0dce9bd953fe40b1c8fae3d01a597e7c *tests/test_kit.Rout.save
