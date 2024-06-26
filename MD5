@@ -27,7 +27,7 @@ b929f70ab892f155eeead08c160ffc25 *src/kit.h
 a52426250b954a335b1121948e057ee7 *src/Makevars.in
 95e3011e37d9dde0d75f3a3819b2acd3 *src/Makevars.win
 1e8b11cf04b116653c0a82a20f72490b *src/nswitch.c
-7b6cc295ee89e397e47957097cf15417 *src/psort.c
+0bb2655499d4ac66b45be687d6fae6e9 *src/psort.c
 8c15e9c171d447aed088cec849323fab *src/psum.c
 7589054d8388fe7ed3354a5aa388eb02 *src/share.c
 ef9329d7e748c13b9526fca1788a1891 *src/topn.c

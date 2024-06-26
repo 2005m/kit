@@ -31,16 +31,16 @@
 static int K = 8;
 static size_t M = 256;
 
-static void recursiveRadix(SEXP *restrict pans, const size_t k, size_t *restrict pos,
+static void recursiveRadix(const SEXP *restrict pans, const size_t k, size_t *restrict pos,
                            size_t *restrict incr, uint8_t *restrict test, SEXP tmp,
-                           SEXP *restrict ptmp, size_t start, size_t *restrict newpos) {
+                           const SEXP *restrict ptmp, size_t start, size_t *restrict newpos) {
   for (uint16_t i = 1; i < 257; ++i){
     if (pos[i] ==  1) {
       start++; continue;
     }
     if (pos[i] > 1) {
       const size_t ct = pos[i];
-      SEXP *npans = pans + start;
+      SEXP *npans = (SEXP*)pans + start;
       memset(incr, 0, 257*sizeof(size_t));
       for(size_t j = 0; j < ct; ++j) {
         test[j] = (uint8_t)(CHAR(npans[j])[k]);
@@ -74,16 +74,16 @@ static void recursiveRadix(SEXP *restrict pans, const size_t k, size_t *restrict
   }
 }
 
-static void recursiveRadixrev(SEXP *restrict pans, const size_t k, size_t *restrict pos,
+static void recursiveRadixrev(const SEXP *restrict pans, const size_t k, size_t *restrict pos,
                               size_t *restrict incr, uint8_t *restrict test, SEXP tmp,
-                              SEXP *restrict ptmp, size_t start, size_t *restrict newpos) {
+                              const SEXP *restrict ptmp, size_t start, size_t *restrict newpos) {
   for (uint16_t i = 256; i > 0; --i){
     if (pos[i] ==  1) {
       start++; continue;
     }
     if (pos[i] > 1) {
       const size_t ct = pos[i];
-      SEXP *npans = pans + start;
+      SEXP *npans = (SEXP*)pans + start;
       memset(incr, 0, 257*sizeof(size_t));
       for(size_t j = 0; j < ct; ++j) {
         test[j] = (uint8_t)(CHAR(npans[j])[k]);
@@ -404,7 +404,7 @@ SEXP cpsortR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, SEXP
     return valSorted;
   }*/
   
-  SEXP *restrict pvalSorted = STRING_PTR_RO(valSorted);
+  SEXP *restrict pvalSorted = (SEXP*)STRING_PTR_RO(valSorted);
   const int nlen = LENGTH(valSorted);
   
   int NAidx = -1;
@@ -570,7 +570,7 @@ SEXP charToFactR (SEXP x, SEXP decreasing, SEXP nthread, SEXP nalast, SEXP env, 
   SEXP uVals = PROTECT(dupVecSort(x));
   const int n = LENGTH(uVals);
   SEXP valSorted = PROTECT(callToSort2(uVals, "quick", dcr, 1, env));
-  SEXP *restrict pvalSorted = STRING_PTR_RO(valSorted);
+  SEXP *restrict pvalSorted = (SEXP*)STRING_PTR_RO(valSorted);
   
   int NAidx = -1;
   for (int i = 0; i < n; ++i) {
