@@ -75,7 +75,7 @@ SEXP dupLenDataFrameR(SEXP x) {
     K++;
   }
   R_xlen_t count = 0;
-  int *restrict h = (int*) Calloc(M, int);
+  int *restrict h = (int*) R_Calloc(M, int);
   const int *restrict v = INTEGER(mlv);
   size_t id = 0;
   for (R_xlen_t i = 0; i < len_i; ++i) {
@@ -98,7 +98,7 @@ SEXP dupLenDataFrameR(SEXP x) {
     count++;
     label2:;
   }
-  Free(h);
+  R_Free(h);
   UNPROTECT(1);
   return ScalarInteger(count);
 }
@@ -118,7 +118,7 @@ SEXP dupLenMatrixR(SEXP x) {
     K++;
   }
   R_xlen_t count = 0;
-  int *restrict h = (int*) Calloc(M, int);
+  int *restrict h = (int*) R_Calloc(M, int);
   size_t id = 0;
   switch(UTYPEOF(x)) {
   case LGLSXP : {
@@ -254,11 +254,11 @@ SEXP dupLenMatrixR(SEXP x) {
     }
   } break;
   default: {
-    Free(h);
+    R_Free(h);
     error("Matrix of type %s are not supported.", type2char(UTYPEOF(x)));
   }
   }
-  Free(h);
+  R_Free(h);
   return ScalarInteger(count);
 }
 
@@ -270,7 +270,7 @@ SEXP dupLenVecR(SEXP x) {
   if (isFactor(x)) {
     const int len = LENGTH(PROTECT(getAttrib(x, R_LevelsSymbol)));
     UNPROTECT(1);
-    bool *restrict count = (bool*)Calloc(len+1,bool);
+    bool *restrict count = (bool*)R_Calloc(len+1,bool);
     const int *restrict px = INTEGER(x);
     const int xlen = LENGTH(x);
     int j = 0;
@@ -282,11 +282,11 @@ SEXP dupLenVecR(SEXP x) {
         count[px[i]] = true;
       }
     }
-    Free(count);
+    R_Free(count);
     return ScalarInteger(j);
   }
   if (isLogical(x)) {
-    bool *restrict count = (bool*)Calloc(3,bool);
+    bool *restrict count = (bool*)R_Calloc(3,bool);
     const int *restrict px = LOGICAL(x);
     const int xlen = LENGTH(x);
     int j = 0;
@@ -299,7 +299,7 @@ SEXP dupLenVecR(SEXP x) {
         count[cs] = true;
       }
     }
-    Free(count);
+    R_Free(count);
     return ScalarInteger(j);
   }
   const R_xlen_t n = xlength(x);
@@ -321,7 +321,7 @@ SEXP dupLenVecR(SEXP x) {
     error("Type %s is not supported.", type2char(tx)); // # nocov
   }
   R_xlen_t count = 0;
-  int *restrict h = (int*)Calloc(M, int);
+  int *restrict h = (int*)R_Calloc(M, int);
   switch (tx) {
   case INTSXP: {
     const int *restrict px = INTEGER(x);
@@ -404,6 +404,6 @@ SEXP dupLenVecR(SEXP x) {
     }
   } break;
   }
-  Free(h);
+  R_Free(h);
   return ScalarInteger(count);
 }

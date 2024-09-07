@@ -64,7 +64,7 @@ static void map_finalizer (SEXP ext) {
   munmap(ptr->length, 256);
   shm_unlink(ptr->LENGTH_ID);
 #endif
-  Free(ptr);
+  R_Free(ptr);
   R_ClearExternalPtr(ext);
   if (verbose_finalizer) Rprintf("* Clear external pointer...OK\n");
 }
@@ -86,7 +86,7 @@ SEXP createMappingObjectR (SEXP MapObjectName, SEXP MapLengthName, SEXP DataObje
   const size_t BUF_SIZE = len*sizeof(Rbyte);
   if (verbose) Rprintf("* Data object size: %zu\n",len*sizeof(Rbyte));
   if (verbose) Rprintf("* Start mapping object...OK\n");
-  struct OBJECT *foo = Calloc(1, struct OBJECT);
+  struct OBJECT *foo = R_Calloc(1, struct OBJECT);
   SEXP ext = PROTECT(R_MakeExternalPtr(foo, R_NilValue, R_NilValue));
   R_RegisterCFinalizerEx(ext, map_finalizer, TRUE);
   if (verbose) Rprintf("* Register finalizer...OK\n");

@@ -1,7 +1,7 @@
 6071edd604dbeb75308cfbedc7790398 *cleanup
 d2761d00effd7b096a5bea21bc38742e *configure
-333734960a1399c3fb463327554da3e2 *DESCRIPTION
-66302e8b5f49ea7f34b2608a1f397f52 *inst/NEWS.Rd
+8522c4bb9195d54629546f67108343b2 *DESCRIPTION
+28ac3ba56b8c042c2ffcc247881367a2 *inst/NEWS.Rd
 a87b0f223435ed35607e8514562b8bfe *LICENSE
 2ddfa8d8739668eedda260e6ddc935d4 *man/charToFact.Rd
 8f19a2c9feb2f352580fd4892650f285 *man/count.Rd
@@ -17,9 +17,9 @@ a137f7855b41b074e2babaf8a1562551 *man/shareData.Rd
 a7f31cee15b9624dab8f4d13d3c66bad *man/vswitch.Rd
 c797ca387dccc02751cfe85108fb0159 *NAMESPACE
 4eb6d6a80ed6d9396f89c21ff11ff3e0 *R/call.R
-2d6c06dfc570d456af125c160cf150d7 *README.md
-7772ede8a29575aee4fc449383fa5008 *src/dup.c
-2b2b6f22af562d8c40127c69cc541331 *src/dupLen.c
+a05428b6647b841b77139b15e180a82c *README.md
+a5a903a410a187a46f7507c9df49f63a *src/dup.c
+3781c4e2abdce2dbca33f53ac8713e8c *src/dupLen.c
 5eaee76c99ff42679577592ae9c5a29f *src/fpos.c
 015be143fce94516ad10b968df592df5 *src/iif.c
 6d91dc90d2db4ede5f044b824d4f34a3 *src/init.c
@@ -29,7 +29,7 @@ a52426250b954a335b1121948e057ee7 *src/Makevars.in
 1e8b11cf04b116653c0a82a20f72490b *src/nswitch.c
 0bb2655499d4ac66b45be687d6fae6e9 *src/psort.c
 8c15e9c171d447aed088cec849323fab *src/psum.c
-7589054d8388fe7ed3354a5aa388eb02 *src/share.c
+d3de1fdedb3870cebd670f7bfde188cc *src/share.c
 ef9329d7e748c13b9526fca1788a1891 *src/topn.c
 58a06280212a06ea2b8039bebb03fcdf *src/utils.c
 37787d47d80dfd40bc3d12699ed30441 *src/vswitch.c
