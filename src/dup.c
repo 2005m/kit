@@ -23,7 +23,7 @@
  */
 
 SEXP dupR(SEXP x, SEXP uniq, SEXP fromLast) {
-  if (isFrame(x)) {
+  if (isDataFrame(x)) {
     SEXP ans = PROTECT(dupDataFrameR(x, uniq, fromLast));
     UNPROTECT(1);
     return ans;
