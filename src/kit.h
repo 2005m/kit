@@ -21,6 +21,11 @@
   #define DATAPTR_RO(x) ((const void *)DATAPTR(x))
 #endif
 
+#include <Rinternals.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 #if R_VERSION < R_Version(4, 5, 0)
 # define isDataFrame(x) Rf_isFrame(x)
 # define R_ClosureFormals(x) FORMALS(x)
@@ -43,11 +48,6 @@ void CLEAR_ATTRIB(SEXP x)
   UNSET_S4_OBJECT(x);
 }
 #endif
-
-#include <Rinternals.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 
 #if !defined SSIZE_MAX
   #define SSIZE_MAX LLONG_MAX
