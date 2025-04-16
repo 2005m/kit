@@ -387,7 +387,7 @@ SEXP subSetColMatrix(SEXP x, R_xlen_t idx) { // # nocov start
   const R_xlen_t pidx = idx * len_i;
   switch(xt) {
   case LGLSXP : {
-    memcpy(LOGICAL(ans), LOGICAL(x)+pidx, (unsigned)len_i*sizeof(Rboolean));
+    memcpy(LOGICAL(ans), LOGICAL(x)+pidx, (unsigned)len_i*sizeof(*LOGICAL(ans));
   } break;
   case INTSXP : {
     memcpy(INTEGER(ans), INTEGER(x)+pidx, (unsigned)len_i*sizeof(int));
