@@ -15,10 +15,35 @@
 #include <R.h>
 #include <R_ext/Rdynload.h>
 #include <Rversion.h>
+
 #if !defined(R_VERSION) || R_VERSION < R_Version(3, 5, 0)
   #define USE_RINTERNALS
   #define DATAPTR_RO(x) ((const void *)DATAPTR(x))
 #endif
+
+#if R_VERSION < R_Version(4, 5, 0)
+# define isDataFrame(x) Rf_isFrame(x)
+# define R_ClosureFormals(x) FORMALS(x)
+# define R_ClosureEnv(x) CLOENV(x)
+# define R_ParentEnv(x) ENCLOS(x)
+
+SEXP R_mkClosure(SEXP formals, SEXP body, SEXP env)
+{
+  SEXP fun = Rf_allocSExp(CLOSXP);
+  SET_FORMALS(fun, formals);
+  SET_BODY(fun, body);
+  SET_CLOENV(fun, env);
+  return fun;
+}
+
+void CLEAR_ATTRIB(SEXP x)
+{
+  SET_ATTRIB(x, R_NilValue);
+  SET_OBJECT(x, 0);
+  UNSET_S4_OBJECT(x);
+}
+#endif
+
 #include <Rinternals.h>
 #include <stdlib.h>
 #include <stdint.h>
