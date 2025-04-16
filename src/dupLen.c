@@ -23,7 +23,7 @@
  */
 
 SEXP dupLenR(SEXP x) {
-  if (isFrame(x)) {
+  if (isDataFrame(x)) {
     SEXP ans = PROTECT(dupLenDataFrameR(x));
     UNPROTECT(1);
     return ans;
