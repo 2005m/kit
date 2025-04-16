@@ -464,7 +464,7 @@ SEXP addColToDataFrame(SEXP df, SEXP mcol, SEXP coln) {
 
 // Try to improve this by removing element in the loop or initilising at 0 
 SEXP countOccurR(SEXP x) { // can be improved for factors
-  if (isFrame(x)) {
+  if (isDataFrame(x)) {
     SEXP ans = PROTECT(countOccurDataFrameR(x));
     UNPROTECT(1);
     return ans;
