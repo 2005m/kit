@@ -24,7 +24,7 @@ SEXP fposR(SEXP ndle, SEXP hsk, SEXP all, SEXP overlap) {
   if (isS4(hsk) || isS4(ndle)) {
     error("S4 class objects are not supported.");
   }
-  if (isFrame(ndle) || isFrame(hsk)) {
+  if (isDataFrame(ndle) || isDataFrame(hsk)) {
     error("Please note that data.frame(s) are not supported.");
   }
   if (!R_compute_identical(PROTECT(GetArrayDimnames(ndle)), R_NilValue, 0)) {
