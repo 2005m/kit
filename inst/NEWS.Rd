@@ -4,6 +4,16 @@
 
 \newcommand{\CRANpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{version 0.0.20 (2025-04-17)}{
+  \subsection{Notes}{
+    \itemize{
+      \item Update copyright date in c files
+
+      \item Fix note on CRAN regarding Rf_isFrame
+    }
+  }
+}
+
 \section{version 0.0.19 (2024-09-07)}{
   \subsection{Bug Fixes}{
     \itemize{
